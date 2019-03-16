@@ -60,15 +60,10 @@ public abstract class ConstantInfo {
             case ConstantNameAndType:
                 return new ConstantNameAndTypeInfo();
             case ConstantMethodType:
-                System.out.println("null");
                 return null;
             case ConstantMethodHandle:
-                System.out.println("null");
-
                 return null;
             case ConstantInvokeDynamic:
-                System.out.println("null");
-
                 return null;
             default:
                 throw new ClassFormatException("constant pool tag");

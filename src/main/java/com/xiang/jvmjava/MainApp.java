@@ -51,6 +51,7 @@ public class MainApp {
         System.out.println("accessFlag: "+ Integer.toHexString(classFile.getAccessFlags()));
         System.out.println(classFile.getClassName());
         System.out.println(classFile.getSuperClassName());
+        System.out.println(Arrays.toString(classFile.getInterfaceNames()));
         for (MemberInfo field : classFile.getFields()) {
             System.out.println(field.getName());
         }

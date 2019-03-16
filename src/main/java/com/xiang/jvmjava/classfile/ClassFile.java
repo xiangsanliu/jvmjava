@@ -85,12 +85,19 @@ public class ClassFile {
         return this.constantPool.getClassName(this.thisClass);
     }
 
-
     public String getSuperClassName() {
         if (this.superClass > 0) {
             return this.constantPool.getClassName(this.superClass);
         }
         return "";
+    }
+
+    public String[] getInterfaceNames() {
+        String[] interfaceNames = new String[this.interfaces.length];
+        for (int i = 0; i < this.interfaces.length; i++) {
+            interfaceNames[i] = this.constantPool.getClassName(this.interfaces[i]);
+        }
+        return interfaceNames;
     }
 
 }
