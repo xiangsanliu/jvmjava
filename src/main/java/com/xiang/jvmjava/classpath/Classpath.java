@@ -44,15 +44,15 @@ public class Classpath {
         if (StringUtils.isEmpty(classpath)) {
             classpath = ".";
         }
-        this.userClasspath = Entry.genEntry(classpath);
+        this.userClasspath = Entry.newEntry(classpath);
     }
 
     private void parseBootAndExtClasspath() {
         String jrePath = System.getenv("JAVA_HOME") + "jre";
         String jreLibPath = jrePath + File.separator + "lib" + File.separator + "*";
-        this.bootClasspath = Entry.genEntry(jreLibPath);
+        this.bootClasspath = Entry.newEntry(jreLibPath);
         String extLibPath = jrePath + File.separator + "lib" + File.separator + "ext" + File.separator + "*";
-        this.extClasspath = Entry.genEntry(extLibPath);
+        this.extClasspath = Entry.newEntry(extLibPath);
     }
 
     public static void main(String[] args) {

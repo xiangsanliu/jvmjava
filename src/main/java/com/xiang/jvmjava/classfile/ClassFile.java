@@ -28,17 +28,17 @@ public class ClassFile {
 
     private int[] interfaces;
 
-    private Object[] fields;
+    private MemberInfo[] fields;
 
-    private Object[] methods;
+    private MemberInfo[] methods;
 
-    private Object[] AttributeInfo;
+    private AttributeInfo[] attributes;
 
     public static ClassFile parse(byte[] classData) {
         ClassFile classFile = new ClassFile();
         ClassReader reader = new ClassReader(classData);
         classFile.read(reader);
-        return new ClassFile();
+        return classFile;
     }
 
     private void read(ClassReader reader) {
@@ -49,7 +49,9 @@ public class ClassFile {
         this.thisClass = reader.readUint16();
         this.superClass = reader.readUint16();
         this.interfaces = reader.readUint16s();
-
+        this.fields = MemberInfo.readMembers(reader, this.constantPool);
+        this.methods = MemberInfo.readMembers(reader, this.constantPool);
+        this.attributes = AttributeInfo.readAttributes(reader, this.constantPool);
     }
 
     private void readAndCheckMagic(ClassReader reader) {
@@ -79,5 +81,16 @@ public class ClassFile {
         throw new UnsupportedClassVersionError("minorVersion: " + this.minorVersion + ", majorVersion: " + this.majorVersion);
     }
 
+    public String getClassName() {
+        return this.constantPool.getClassName(this.thisClass);
+    }
+
+
+    public String getSuperClassName() {
+        if (this.superClass > 0) {
+            return this.constantPool.getClassName(this.superClass);
+        }
+        return "";
+    }
 
 }

@@ -43,6 +43,14 @@ public class ClassReader {
         return val;
     }
 
+    public byte[] readBytes(int len) {
+        byte[] bytes = new byte[len];
+        for (int i = 0; i < len; i++) {
+            bytes[i] = this.data.get(index++);
+        }
+        return bytes;
+    }
+
     public int[] readUint16s() {
         int n = readUint16();
         int[] s = new int[n];

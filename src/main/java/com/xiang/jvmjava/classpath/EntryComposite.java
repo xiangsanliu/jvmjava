@@ -20,7 +20,7 @@ class EntryComposite extends Entry {
 
     EntryComposite(String pathList) {
         entries = new ArrayList<>();
-        Arrays.asList(pathList.split(";")).forEach(e -> entries.add(Entry.genEntry(e)));
+        Arrays.asList(pathList.split(";")).forEach(e -> entries.add(Entry.newEntry(e)));
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.xiang.jvmjava.classfile;
 import com.xiang.jvmjava.classfile.constantinfo.*;
 import com.xiang.jvmjava.error.InvalidConstantPoolIndexError;
 import com.xiang.jvmjava.util.Pair;
+import lombok.Getter;
 
 /**
  * @author 项三六
@@ -12,6 +13,7 @@ import com.xiang.jvmjava.util.Pair;
 
 public class ConstantPool {
 
+    @Getter
     private ConstantInfo[] constantInfos;
 
     private ConstantPool(ConstantInfo[] constantInfos) {

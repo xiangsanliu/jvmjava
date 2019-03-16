@@ -1,9 +1,11 @@
 package com.xiang.jvmjava;
 
 import com.xiang.jvmjava.classfile.ClassFile;
+import com.xiang.jvmjava.classfile.MemberInfo;
 import com.xiang.jvmjava.classpath.Classpath;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * @author 项三六
@@ -46,5 +48,17 @@ public class MainApp {
 
     private static void printClassInfo(ClassFile classFile) {
         System.out.printf("version: %d.%d \n", classFile.getMajorVersion(), classFile.getMinorVersion());
+        System.out.println("accessFlag: "+ Integer.toHexString(classFile.getAccessFlags()));
+        System.out.println(classFile.getClassName());
+        System.out.println(classFile.getSuperClassName());
+        for (MemberInfo field : classFile.getFields()) {
+            System.out.println(field.getName());
+        }
+        for (MemberInfo field : classFile.getMethods()) {
+            System.out.println(field.getName());
+        }
+
+
+
     }
 }

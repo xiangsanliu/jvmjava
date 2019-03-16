@@ -16,7 +16,7 @@ abstract class Entry {
     abstract byte[] readClass(String className) throws IOException;
 
 
-    static Entry genEntry(String path) {
+    static Entry newEntry(String path) {
         if (path.contains(";")) {
             return new EntryComposite(path);
         }
