@@ -5,15 +5,14 @@ import com.xiang.jvmjava.instruction.base.NoOperandsInstruction;
 
 /**
  * @author 项三六
- * @time 2019/3/18 19:41
- * @comment
+ * @time 2019/3/18 19:38
+ * @comment pop top1 element
  */
 
-public class Pop2 extends NoOperandsInstruction {
+public class POP extends NoOperandsInstruction {
 
     @Override
     public void Execute(Frame frame) {
-        frame.getOperandStack().popSlot();
         frame.getOperandStack().popSlot();
     }
 }

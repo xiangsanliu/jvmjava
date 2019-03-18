@@ -6,8 +6,9 @@ import com.xiang.jvmjava.instruction.constants.Const;
 import com.xiang.jvmjava.instruction.constants.IPush;
 import com.xiang.jvmjava.instruction.constants.NOP;
 import com.xiang.jvmjava.instruction.load.*;
-import com.xiang.jvmjava.instruction.stack.Pop;
-import com.xiang.jvmjava.instruction.stack.Pop2;
+import com.xiang.jvmjava.instruction.math.*;
+import com.xiang.jvmjava.instruction.stack.POP;
+import com.xiang.jvmjava.instruction.stack.POP2;
 import com.xiang.jvmjava.instruction.stack.Swap;
 import com.xiang.jvmjava.instruction.stack.dup.*;
 import com.xiang.jvmjava.instruction.store.*;
@@ -25,7 +26,7 @@ public abstract class Instruction {
     public abstract void Execute(Frame frame);
 
     public Instruction newInstruction(byte opcode) {
-        switch (opcode) {
+        switch (Byte.toUnsignedInt(opcode)) {
             case 0x00:
                 return new NOP();
             case 0x01:
@@ -201,23 +202,97 @@ public abstract class Instruction {
             // case 0x56:
             // 	return sastore
             case 0x57:
-                return new Pop();
+                return new POP();
             case 0x58:
-                return new Pop2();
+                return new POP2();
             case 0x59:
-                return new Dup();
+                return new DUP();
             case 0x5a:
                 return new DupX1();
             case 0x5b:
                 return new DupX2();
             case 0x5c:
-                return new Dup2();
+                return new DUP2();
             case 0x5d:
                 return new Dup2X1();
             case 0x5e:
                 return new Dup2X2();
             case 0x5f:
                 return new Swap();
+            case 0x60:
+                return new ADD.IAdd();
+            case 0x61:
+                return new ADD.LAdd();
+            case 0x62:
+                return new ADD.FAdd();
+            case 0x63:
+                return new ADD.DAdd();
+            case 0x64:
+                return new SUB.ISub();
+            case 0x65:
+                return new SUB.LSub();
+            case 0x66:
+                return new SUB.FSub();
+            case 0x67:
+                return new SUB.DSub();
+            case 0x68:
+                return new MUL.IMul();
+            case 0x69:
+                return new MUL.LMul();
+            case 0x6a:
+                return new MUL.FMul();
+            case 0x6b:
+                return new MUL.DMul();
+            case 0x6c:
+                return new DIV.IDiv();
+            case 0x6d:
+                return new DIV.LDiv();
+            case 0x6e:
+                return new DIV.FDiv();
+            case 0x6f:
+                return new DIV.DDiv();
+            case 0x70:
+                return new REM.IRem();
+            case 0x71:
+                return new REM.LRem();
+            case 0x72:
+                return new REM.FRem();
+            case 0x73:
+                return new REM.DRem();
+            case 0x74:
+                return new NEG.INeg();
+            case 0x75:
+                return new NEG.LNeg();
+            case 0x76:
+                return new NEG.FNeg();
+            case 0x77:
+                return new NEG.DNeg();
+            case 0x78:
+                return new SH.ISHL();
+            case 0x79:
+                return new SH.LSHL();
+            case 0x7a:
+                return new SH.ISHR();
+            case 0x7b:
+                return new SH.LSHR();
+            case 0x7c:
+                return new SH.IUSHR();
+            case 0x7d:
+                return new SH.LUSHR();
+            case 0x7e:
+                return new AND.IAnd();
+            case 0x7f:
+                return new AND.LAnd();
+            case 0x80:
+                return new OR.IOR();
+            case 0x81:
+                return new OR.LOR();
+            case 0x82:
+                return new XOR.IXOR();
+            case 0x83:
+                return new XOR.LXOR();
+            case 0x84:
+                return new IInc();
             default:
                 throw new UnsupportedOperationException();
         }

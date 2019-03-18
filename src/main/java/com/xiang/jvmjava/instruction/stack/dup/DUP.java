@@ -19,7 +19,7 @@ bottom -> top
 [...][c][b][a][a]
 */
 
-public class Dup extends NoOperandsInstruction {
+public class DUP extends NoOperandsInstruction {
 
     @Override
     public void Execute(Frame frame) {
