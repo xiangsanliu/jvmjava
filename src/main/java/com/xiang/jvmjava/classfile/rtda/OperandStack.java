@@ -12,12 +12,12 @@ public class OperandStack {
 
     private Slot[] slots;
 
-    public OperandStack(Slot[] slots) {
+    private OperandStack(Slot[] slots) {
         this.slots = slots;
         this.size = 0;
     }
 
-    public static OperandStack newOperandStack(int maxStack) {
+    static OperandStack newOperandStack(int maxStack) {
         if (maxStack > 0) {
             return new OperandStack(new Slot[maxStack]);
         }
@@ -69,6 +69,14 @@ public class OperandStack {
         Object ref = this.slots[this.size].ref;
         this.slots[this.size].ref = null;
         return ref;
+    }
+
+    public void pushSlot(Slot slot) {
+        this.slots[this.size++] = slot;
+    }
+
+    public Slot popSlot() {
+        return this.slots[--this.size];
     }
 
 }

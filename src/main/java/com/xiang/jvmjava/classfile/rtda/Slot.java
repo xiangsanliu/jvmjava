@@ -11,7 +11,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-class Slot {
+public class Slot {
 
     int num32;
 

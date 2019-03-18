@@ -12,9 +12,7 @@ import lombok.Setter;
 
 public abstract class Index8Instruction extends Instruction {
 
-    @Getter
-    @Setter
-    int index;
+    protected int index;
 
     @Override
     public void fetchOperands(BytecodeReader reader) {
