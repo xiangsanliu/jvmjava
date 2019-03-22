@@ -15,7 +15,7 @@ public class SH {
     public static class ISHL extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             OperandStack stack = frame.getOperandStack();
             int v2 = stack.popInt();
             int v1 = stack.popInt();
@@ -27,7 +27,7 @@ public class SH {
     public static class ISHR extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             OperandStack stack = frame.getOperandStack();
             int v2 = stack.popInt();
             int v1 = stack.popInt();
@@ -39,7 +39,7 @@ public class SH {
     public static class IUSHR extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             OperandStack stack = frame.getOperandStack();
             int v2 = stack.popInt();
             int v1 = stack.popInt();
@@ -51,7 +51,7 @@ public class SH {
     public static class LSHL extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             OperandStack stack = frame.getOperandStack();
             int v2 = stack.popInt();
             long v1 = stack.popLong();
@@ -63,7 +63,7 @@ public class SH {
     public static class LSHR extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             OperandStack stack = frame.getOperandStack();
             int v2 = stack.popInt();
             long v1 = stack.popLong();
@@ -75,7 +75,7 @@ public class SH {
     public static class LUSHR extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             OperandStack stack = frame.getOperandStack();
             int v2 = stack.popInt();
             long v1 = stack.popLong();

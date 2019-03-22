@@ -16,14 +16,19 @@ public class CodeAttribute extends AttributeInfo {
 
     private ConstantPool constantPool;
 
+    @Getter
     private int maxStack;
 
+    @Getter
     private int maxLocals;
 
+    @Getter
     private byte[] code;
 
+    @Getter
     private ExceptionTableEntry[] exceptionTable;
 
+    @Getter
     private AttributeInfo[] attributes;
 
     public CodeAttribute(ConstantPool constantPool) {

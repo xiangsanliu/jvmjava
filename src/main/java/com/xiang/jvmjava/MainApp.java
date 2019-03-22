@@ -2,10 +2,8 @@ package com.xiang.jvmjava;
 
 import com.xiang.jvmjava.classfile.ClassFile;
 import com.xiang.jvmjava.classfile.MemberInfo;
-import com.xiang.jvmjava.classfile.rtda.Frame;
-import com.xiang.jvmjava.classfile.rtda.LocalVars;
-import com.xiang.jvmjava.classfile.rtda.OperandStack;
 import com.xiang.jvmjava.classpath.Classpath;
+import com.xiang.jvmjava.instruction.Interpreter;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -24,10 +22,7 @@ public class MainApp {
         } else if (cmd.isVersion()) {
             cmd.printVersion();
         } else {
-//            run(cmd);
-            Frame frame = Frame.newFrame(100, 100);
-            testLocalVars(frame.getLocalVars());
-            testOperandStack(frame.getOperandStack());
+            run(cmd);
         }
 
     }
@@ -37,7 +32,10 @@ public class MainApp {
         String className = cmd.getMainClass();
         try {
             ClassFile classFile = loadClass(className, classpath);
-            printClassInfo(classFile);
+            MemberInfo memberInfo = getMainMethod(classFile);
+            if (memberInfo != null) {
+                Interpreter.interpret(memberInfo);
+            }
         } catch (IOException e) {
             System.out.println("Could not find or load Class: " + className);
             e.printStackTrace();
@@ -50,6 +48,15 @@ public class MainApp {
             return null;
         }
         return ClassFile.parse(classData);
+    }
+
+    private static MemberInfo getMainMethod(ClassFile classFile) {
+        for (MemberInfo memberInfo : classFile.getMethods()) {
+            if ("main".equals(memberInfo.getName()) && "([Ljava/lang/String;)V".equals(memberInfo.getDescriptor())) {
+                return memberInfo;
+            }
+        }
+        return null;
     }
 
     private static void printClassInfo(ClassFile classFile) {
@@ -66,40 +73,6 @@ public class MainApp {
         }
 
 
-    }
-
-    private static void testLocalVars(LocalVars vars) {
-        vars.setInt(0, 100);
-        vars.setInt(1, -100);
-        vars.setLong(2, 2997924580L);
-        vars.setLong(4, -2997924580L);
-        vars.setFloat(6, 3.1415926f);
-        vars.setDouble(7, 2.71828182845f);
-        vars.setRef(9, null);
-        System.out.println(vars.getInt(0));
-        System.out.println(vars.getInt(1));
-        System.out.println(vars.getLong(2));
-        System.out.println(vars.getLong(4));
-        System.out.println(vars.getFloat(6));
-        System.out.println(vars.getDouble(7));
-        System.out.println(vars.getRef(9));
-    }
-
-    private static void testOperandStack(OperandStack ops) {
-        ops.pushInt(100);
-        ops.pushInt(-100);
-        ops.pushLong(2997924580L);
-        ops.pushLong(-2997924580L);
-        ops.pushFloat(3.1415926F);
-        ops.pushDouble(2.71828182845D);
-        ops.pushRef(null);
-        System.out.println(ops.popRef());
-        System.out.println(ops.popDouble());
-        System.out.println(ops.popFloat());
-        System.out.println(ops.popLong());
-        System.out.println(ops.popLong());
-        System.out.println(ops.popInt());
-        System.out.println(ops.popInt());
     }
 
 }

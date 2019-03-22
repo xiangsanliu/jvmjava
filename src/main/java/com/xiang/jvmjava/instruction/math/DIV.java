@@ -15,7 +15,7 @@ public class DIV {
     public static class DDiv extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             OperandStack stack = frame.getOperandStack();
             double v2 = stack.popDouble();
             double v1 = stack.popDouble();
@@ -26,7 +26,7 @@ public class DIV {
     public static class FDiv extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             OperandStack stack = frame.getOperandStack();
             float v2 = stack.popFloat();
             float v1 = stack.popFloat();
@@ -37,7 +37,7 @@ public class DIV {
     public static class IDiv extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             OperandStack stack = frame.getOperandStack();
             int v2 = stack.popInt();
             if (0 == v2) {
@@ -51,7 +51,7 @@ public class DIV {
     public static class LDiv extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             OperandStack stack = frame.getOperandStack();
             long v2 = stack.popLong();
             if (0 == v2) {

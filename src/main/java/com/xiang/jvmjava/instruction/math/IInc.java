@@ -24,10 +24,15 @@ public class IInc extends Instruction {
     }
 
     @Override
-    public void Execute(Frame frame) {
+    public void execute(Frame frame) {
         LocalVars localVars = frame.getLocalVars();
         int val = localVars.getInt(this.index);
         val += this.con;
         localVars.setInt(this.index, val);
+    }
+
+    public IInc setIndex(int index) {
+        this.index = index;
+        return this;
     }
 }

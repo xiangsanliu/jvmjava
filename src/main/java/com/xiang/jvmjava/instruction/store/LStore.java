@@ -20,7 +20,7 @@ public class LStore {
     public static class LStoreL extends Index8Instruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             lStore(frame, this.index);
         }
     }
@@ -28,7 +28,7 @@ public class LStore {
     public static class LStore0 extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             lStore(frame, 0);
         }
     }
@@ -36,7 +36,7 @@ public class LStore {
     public static class LStore1 extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             lStore(frame, 1);
         }
     }
@@ -44,7 +44,7 @@ public class LStore {
     public static class LStore2 extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             lStore(frame, 2);
         }
     }
@@ -52,7 +52,7 @@ public class LStore {
     public static class LStore3 extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             lStore(frame, 3);
         }
     }

@@ -22,7 +22,7 @@ bottom -> top
 public class Swap extends NoOperandsInstruction {
 
     @Override
-    public void Execute(Frame frame) {
+    public void execute(Frame frame) {
         OperandStack stack = frame.getOperandStack();
         Slot slot1 = stack.popSlot();
         Slot slot2 = stack.popSlot();

@@ -1,5 +1,7 @@
 package com.xiang.jvmjava.classfile.rtda;
 
+import java.util.Arrays;
+
 /**
  * @author 项三六
  * @time 2019/3/16 18:56
@@ -79,4 +81,8 @@ public class OperandStack {
         return this.slots[--this.size];
     }
 
+    @Override
+    public String toString() {
+        return Arrays.toString(slots);
+    }
 }

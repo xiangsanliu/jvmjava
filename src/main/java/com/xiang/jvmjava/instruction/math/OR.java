@@ -15,7 +15,7 @@ public class OR {
     public static class IOR extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             OperandStack stack = frame.getOperandStack();
             int v2 = stack.popInt();
             int v1 = stack.popInt();
@@ -26,7 +26,7 @@ public class OR {
     public static class LOR extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             OperandStack stack = frame.getOperandStack();
             long v2 = stack.popLong();
             long v1 = stack.popLong();

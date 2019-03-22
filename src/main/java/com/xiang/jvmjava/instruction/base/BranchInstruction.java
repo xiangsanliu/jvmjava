@@ -14,7 +14,7 @@ public abstract class BranchInstruction extends Instruction {
 
     @Getter
     @Setter
-    int offset;
+    protected int offset;
 
     @Override
     public void fetchOperands(BytecodeReader reader) {

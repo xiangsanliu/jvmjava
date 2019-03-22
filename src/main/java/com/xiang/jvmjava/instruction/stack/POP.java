@@ -12,7 +12,7 @@ import com.xiang.jvmjava.instruction.base.NoOperandsInstruction;
 public class POP extends NoOperandsInstruction {
 
     @Override
-    public void Execute(Frame frame) {
+    public void execute(Frame frame) {
         frame.getOperandStack().popSlot();
     }
 }

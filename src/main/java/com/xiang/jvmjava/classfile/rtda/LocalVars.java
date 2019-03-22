@@ -1,5 +1,7 @@
 package com.xiang.jvmjava.classfile.rtda;
 
+import java.util.Arrays;
+
 /**
  * @author 项三六
  * @time 2019/3/16 19:35
@@ -65,4 +67,8 @@ public class LocalVars {
         return this.vars[index].ref;
     }
 
+    @Override
+    public String toString() {
+        return Arrays.toString(vars);
+    }
 }

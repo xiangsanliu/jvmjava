@@ -15,7 +15,7 @@ public class NEG {
     public static class DNeg extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             OperandStack stack = frame.getOperandStack();
             stack.pushDouble(-stack.popDouble());
         }
@@ -24,7 +24,7 @@ public class NEG {
     public static class FNeg extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             OperandStack stack = frame.getOperandStack();
             stack.pushFloat(-stack.popFloat());
         }
@@ -33,7 +33,7 @@ public class NEG {
     public static class INeg extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             OperandStack stack = frame.getOperandStack();
             stack.pushInt(-stack.popInt());
         }
@@ -42,7 +42,7 @@ public class NEG {
     public static class LNeg extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             OperandStack stack = frame.getOperandStack();
             stack.pushLong(-stack.popLong());
         }

@@ -22,7 +22,7 @@ public class IPush {
         }
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             frame.getOperandStack().pushInt(this.val);
         }
 
@@ -38,7 +38,7 @@ public class IPush {
         }
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             frame.getOperandStack().pushInt(this.val);
         }
 

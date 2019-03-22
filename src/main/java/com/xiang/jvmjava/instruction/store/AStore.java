@@ -19,7 +19,7 @@ public class AStore {
     public static class AStoreA extends Index8Instruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             aStore(frame, this.index);
         }
     }
@@ -27,7 +27,7 @@ public class AStore {
     public static class AStore0 extends Index8Instruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             aStore(frame, 0);
         }
     }
@@ -35,7 +35,7 @@ public class AStore {
     public static class AStore1 extends Index8Instruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             aStore(frame, 1);
         }
     }
@@ -43,7 +43,7 @@ public class AStore {
     public static class AStore2 extends Index8Instruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             aStore(frame, 2);
         }
     }
@@ -51,7 +51,7 @@ public class AStore {
     public static class AStore3 extends Index8Instruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             aStore(frame, 3);
         }
     }

@@ -21,13 +21,21 @@ public class Frame {
     @Getter
     private OperandStack operandStack;
 
-    private Frame(LocalVars localVars, OperandStack operandStack) {
+    @Getter
+    private Thread thread;
+
+    @Setter
+    @Getter
+    private int nextPC;
+
+    private Frame(LocalVars localVars, OperandStack operandStack, Thread thread) {
         this.localVars = localVars;
         this.operandStack = operandStack;
+        this.thread = thread;
     }
 
-    public static Frame newFrame(int maxLocals, int maxStack) {
-        return new Frame(LocalVars.newLocalVars(maxLocals), OperandStack.newOperandStack(maxStack));
+    public static Frame newFrame(Thread thread, int maxLocals, int maxStack) {
+        return new Frame(LocalVars.newLocalVars(maxLocals), OperandStack.newOperandStack(maxStack), thread);
     }
 
 

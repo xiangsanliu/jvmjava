@@ -1,5 +1,8 @@
 package com.xiang.jvmjava.classfile.rtda;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * @author 项三六
  * @time 2019/3/16 18:56
@@ -17,6 +20,8 @@ JVM
 
 public class Thread {
 
+    @Getter
+    @Setter
     private int pc;
 
     private JvmStack stack;
@@ -25,7 +30,7 @@ public class Thread {
         this.stack = JvmStack.newStack(maxSize);
     }
 
-    public Thread newThread() {
+    public static Thread newThread() {
         return new Thread(1024);
     }
 
@@ -39,6 +44,10 @@ public class Thread {
 
     public Frame currentFrame() {
         return this.stack.top();
+    }
+
+    public Frame newFrame(int maxLocals, int maxStack) {
+        return Frame.newFrame(this, maxLocals, maxStack);
     }
 
 }

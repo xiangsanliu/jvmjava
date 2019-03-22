@@ -20,7 +20,7 @@ public class LLoad {
     public static class LLoadL extends Index8Instruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             lLoad(frame, this.index);
         }
     }
@@ -28,7 +28,7 @@ public class LLoad {
     public static class LLoad0 extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             lLoad(frame, 0);
         }
     }
@@ -36,7 +36,7 @@ public class LLoad {
     public static class LLoad1 extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             lLoad(frame, 1);
         }
     }
@@ -44,7 +44,7 @@ public class LLoad {
     public static class LLoad2 extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             lLoad(frame, 2);
         }
     }
@@ -52,7 +52,7 @@ public class LLoad {
     public static class LLoad3 extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             lLoad(frame, 3);
         }
     }

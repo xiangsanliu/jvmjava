@@ -20,7 +20,7 @@ public class DLoad {
     public static class DLoadD extends Index8Instruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             dLoad(frame, this.index);
         }
     }
@@ -28,7 +28,7 @@ public class DLoad {
     public static class DLoad0 extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             dLoad(frame, 0);
         }
     }
@@ -36,7 +36,7 @@ public class DLoad {
     public static class DLoad1 extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             dLoad(frame, 1);
         }
     }
@@ -44,7 +44,7 @@ public class DLoad {
     public static class DLoad2 extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             dLoad(frame, 2);
         }
     }
@@ -52,7 +52,7 @@ public class DLoad {
     public static class DLoad3 extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             dLoad(frame, 3);
         }
     }

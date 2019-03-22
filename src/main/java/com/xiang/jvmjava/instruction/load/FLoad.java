@@ -20,7 +20,7 @@ public class FLoad {
     public static class FLoadF extends Index8Instruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             fLoad(frame, this.index);
         }
     }
@@ -28,7 +28,7 @@ public class FLoad {
     public static class FLoad0 extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             fLoad(frame, 0);
         }
     }
@@ -36,7 +36,7 @@ public class FLoad {
     public static class FLoad1 extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             fLoad(frame, 1);
         }
     }
@@ -44,7 +44,7 @@ public class FLoad {
     public static class FLoad2 extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             fLoad(frame, 2);
         }
     }
@@ -52,7 +52,7 @@ public class FLoad {
     public static class FLoad3 extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             fLoad(frame, 3);
         }
     }

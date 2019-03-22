@@ -2,6 +2,7 @@ package com.xiang.jvmjava.classfile.rtda;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * @author 项三六
@@ -11,6 +12,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
+@ToString
 public class Slot {
 
     int num32;

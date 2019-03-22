@@ -20,7 +20,7 @@ public class DStore {
     public static class DStoreD extends Index8Instruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             dStore(frame, this.index);
         }
     }
@@ -28,7 +28,7 @@ public class DStore {
     public static class DStore0 extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             dStore(frame, 0);
         }
     }
@@ -36,7 +36,7 @@ public class DStore {
     public static class DStore1 extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             dStore(frame, 1);
         }
     }
@@ -44,7 +44,7 @@ public class DStore {
     public static class DStore2 extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             dStore(frame, 2);
         }
     }
@@ -52,7 +52,7 @@ public class DStore {
     public static class DStore3 extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             dStore(frame, 3);
         }
     }

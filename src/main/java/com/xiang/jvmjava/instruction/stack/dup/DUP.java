@@ -22,7 +22,7 @@ bottom -> top
 public class DUP extends NoOperandsInstruction {
 
     @Override
-    public void Execute(Frame frame) {
+    public void execute(Frame frame) {
         OperandStack stack = frame.getOperandStack();
         Slot slot = stack.popSlot();
         stack.pushSlot(slot);

@@ -1,7 +1,7 @@
 package com.xiang.jvmjava.classfile;
 
+import com.xiang.jvmjava.classfile.attribute.CodeAttribute;
 import lombok.Getter;
-import lombok.ToString;
 
 /**
  * @author 项三六
@@ -21,7 +21,7 @@ public class MemberInfo {
     private int descriptorIndex;
 
     @Getter
-    private Object[] attributes;
+    private AttributeInfo[] attributes;
 
     public static MemberInfo[] readMembers(ClassReader reader, ConstantPool constantPool) {
         int count = reader.readUint16();
@@ -46,5 +46,14 @@ public class MemberInfo {
 
     public String getDescriptor() {
         return this.constantPool.getUtf8(this.descriptorIndex);
+    }
+
+    public CodeAttribute getCodeAttribute() {
+        for (AttributeInfo attribute : attributes) {
+            if (attribute instanceof CodeAttribute) {
+                return (CodeAttribute) attribute;
+            }
+        }
+        return null;
     }
 }

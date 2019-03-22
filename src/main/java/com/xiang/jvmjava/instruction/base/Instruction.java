@@ -2,9 +2,21 @@ package com.xiang.jvmjava.instruction.base;
 
 import com.xiang.jvmjava.classfile.rtda.Frame;
 import com.xiang.jvmjava.instruction.BytecodeReader;
+import com.xiang.jvmjava.instruction.cmp.*;
 import com.xiang.jvmjava.instruction.constants.Const;
 import com.xiang.jvmjava.instruction.constants.IPush;
 import com.xiang.jvmjava.instruction.constants.NOP;
+import com.xiang.jvmjava.instruction.control.Goto;
+import com.xiang.jvmjava.instruction.control.LookupSwitch;
+import com.xiang.jvmjava.instruction.control.TableSwitch;
+import com.xiang.jvmjava.instruction.conversions.D2X;
+import com.xiang.jvmjava.instruction.conversions.F2X;
+import com.xiang.jvmjava.instruction.conversions.I2X;
+import com.xiang.jvmjava.instruction.conversions.L2X;
+import com.xiang.jvmjava.instruction.extended.GotoW;
+import com.xiang.jvmjava.instruction.extended.IfNotNull;
+import com.xiang.jvmjava.instruction.extended.IfNull;
+import com.xiang.jvmjava.instruction.extended.Wide;
 import com.xiang.jvmjava.instruction.load.*;
 import com.xiang.jvmjava.instruction.math.*;
 import com.xiang.jvmjava.instruction.stack.POP;
@@ -23,10 +35,15 @@ public abstract class Instruction {
 
     public abstract void fetchOperands(BytecodeReader reader);
 
-    public abstract void Execute(Frame frame);
+    public abstract void execute(Frame frame);
 
-    public Instruction newInstruction(byte opcode) {
-        switch (Byte.toUnsignedInt(opcode)) {
+    public static void branch(Frame frame, int offset) {
+        int pc = frame.getThread().getPc();
+        frame.setNextPC(pc + offset);
+    }
+
+    public static Instruction newInstruction(int opcode) {
+        switch (opcode) {
             case 0x00:
                 return new NOP();
             case 0x01:
@@ -64,11 +81,11 @@ public abstract class Instruction {
             case 0x11:
                 return new IPush.SIPush();
             // case 0x12:
-            // 	return &LDC{}
+            // 	return LDC;
             // case 0x13:
-            // 	return &LDC_W{}
+            // 	return LDC_W;
             // case 0x14:
-            // 	return &LDC2_W{}
+            // 	return LDC2_W;
             case 0x15:
                 return new ILoad.ILoadI();
             case 0x16:
@@ -293,9 +310,154 @@ public abstract class Instruction {
                 return new XOR.LXOR();
             case 0x84:
                 return new IInc();
+            case 0x85:
+                return new I2X.I2L();
+            case 0x86:
+                return new I2X.I2F();
+            case 0x87:
+                return new I2X.I2D();
+            case 0x88:
+                return new L2X.L2I();
+            case 0x89:
+                return new L2X.L2F();
+            case 0x8a:
+                return new L2X.L2D();
+            case 0x8b:
+                return new F2X.F2I();
+            case 0x8c:
+                return new F2X.F2L();
+            case 0x8d:
+                return new F2X.F2D();
+            case 0x8e:
+                return new D2X.D2I();
+            case 0x8f:
+                return new D2X.D2L();
+            case 0x90:
+                return new D2X.D2F();
+            case 0x91:
+                return new I2X.I2B();
+            case 0x92:
+                return new I2X.I2C();
+            case 0x93:
+                return new I2X.I2S();
+            case 0x94:
+                return new LCmp();
+            case 0x95:
+                return new FCmp.FCmpL();
+            case 0x96:
+                return new FCmp.FCmpG();
+            case 0x97:
+                return new DCmp.DCmpL();
+            case 0x98:
+                return new DCmp.DCmpG();
+            case 0x99:
+                return new IfCond.IFEQ();
+            case 0x9a:
+                return new IfCond.IFNE();
+            case 0x9b:
+                return new IfCond.IFLT();
+            case 0x9c:
+                return new IfCond.IFGE();
+            case 0x9d:
+                return new IfCond.IFGT();
+            case 0x9e:
+                return new IfCond.IFLE();
+            case 0x9f:
+                return new IF_ICMP.IF_ICMPEQ();
+            case 0xa0:
+                return new IF_ICMP.IF_ICMPNE();
+            case 0xa1:
+                return new IF_ICMP.IF_ICMPLT();
+            case 0xa2:
+                return new IF_ICMP.IF_ICMPGE();
+            case 0xa3:
+                return new IF_ICMP.IF_ICMPGT();
+            case 0xa4:
+                return new IF_ICMP.IF_ICMPLE();
+            case 0xa5:
+                return new IF_ACMP.IF_ACMPEQ();
+            case 0xa6:
+                return new IF_ACMP.IF_ACMPNE();
+            case 0xa7:
+                return new Goto();
+            // case 0xa8:
+            // 	return &JSR{}
+            // case 0xa9:
+            // 	return &RET{}
+            case 0xaa:
+                return new TableSwitch();
+            case 0xab:
+                return new LookupSwitch();
+            // case 0xac:
+            // 	return ireturn
+            // case 0xad:
+            // 	return lreturn
+            // case 0xae:
+            // 	return freturn
+            // case 0xaf:
+            // 	return dreturn
+            // case 0xb0:
+            // 	return areturn
+            // case 0xb1:
+            // 	return _return
+            //	case 0xb2:
+            //		return &GET_STATIC{}
+            // case 0xb3:
+            // 	return &PUT_STATIC{}
+            // case 0xb4:
+            // 	return &GET_FIELD{}
+            // case 0xb5:
+            // 	return &PUT_FIELD{}
+            //	case 0xb6:
+            //		return &INVOKE_VIRTUAL{}
+            // case 0xb7:
+            // 	return &INVOKE_SPECIAL{}
+            // case 0xb8:
+            // 	return &INVOKE_STATIC{}
+            // case 0xb9:
+            // 	return &INVOKE_INTERFACE{}
+            // case 0xba:
+            // 	return &INVOKE_DYNAMIC{}
+            // case 0xbb:
+            // 	return &NEW{}
+            // case 0xbc:
+            // 	return &NEW_ARRAY{}
+            // case 0xbd:
+            // 	return &ANEW_ARRAY{}
+            // case 0xbe:
+            // 	return arraylength
+            // case 0xbf:
+            // 	return athrow
+            // case 0xc0:
+            // 	return &CHECK_CAST{}
+            // case 0xc1:
+            // 	return &INSTANCE_OF{}
+            // case 0xc2:
+            // 	return monitorenter
+            // case 0xc3:
+            // 	return monitorexit
+            case 0xc4:
+                return new Wide();
+            // case 0xc5:
+            // 	return &MULTI_ANEW_ARRAY{}
+            case 0xc6:
+                return new IfNull();
+            case 0xc7:
+                return new IfNotNull();
+            case 0xc8:
+                return new GotoW();
+            // case 0xc9:
+            // 	return &JSR_W{}
+            // case 0xca: breakpoint
+            // case 0xfe: impdep1
+            // case 0xff: impdep2
             default:
                 throw new UnsupportedOperationException();
         }
     }
 
+    @Override
+    public String toString() {
+        return getClass().getSimpleName();
+    }
 }

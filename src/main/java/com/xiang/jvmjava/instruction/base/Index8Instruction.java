@@ -1,8 +1,6 @@
 package com.xiang.jvmjava.instruction.base;
 
 import com.xiang.jvmjava.instruction.BytecodeReader;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * @author 项三六
@@ -19,4 +17,8 @@ public abstract class Index8Instruction extends Instruction {
         this.index = reader.readUint8();
     }
 
+    public Index8Instruction setIndex(int index) {
+        this.index = index;
+        return this;
+    }
 }

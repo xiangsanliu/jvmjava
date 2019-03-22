@@ -15,7 +15,7 @@ public class ADD {
     public static class DAdd extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             OperandStack stack = frame.getOperandStack();
             double v1 = stack.popDouble();
             double v2 = stack.popDouble();
@@ -26,7 +26,7 @@ public class ADD {
     public static class FAdd extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             OperandStack stack = frame.getOperandStack();
             float v1 = stack.popFloat();
             float v2 = stack.popFloat();
@@ -37,7 +37,7 @@ public class ADD {
     public static class IAdd extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             OperandStack stack = frame.getOperandStack();
             int v1 = stack.popInt();
             int v2 = stack.popInt();
@@ -48,7 +48,7 @@ public class ADD {
     public static class LAdd extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             OperandStack stack = frame.getOperandStack();
             long v1 = stack.popLong();
             long v2 = stack.popLong();

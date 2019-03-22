@@ -20,7 +20,7 @@ public class IStore {
     public static class IStoreI extends Index8Instruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             iStore(frame, this.index);
         }
     }
@@ -28,7 +28,7 @@ public class IStore {
     public static class IStore0 extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             iStore(frame, 0);
         }
     }
@@ -36,7 +36,7 @@ public class IStore {
     public static class IStore1 extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             iStore(frame, 1);
         }
     }
@@ -44,7 +44,7 @@ public class IStore {
     public static class IStore2 extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             iStore(frame, 2);
         }
     }
@@ -52,7 +52,7 @@ public class IStore {
     public static class IStore3 extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             iStore(frame, 3);
         }
     }

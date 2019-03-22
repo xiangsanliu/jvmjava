@@ -15,7 +15,7 @@ public class XOR {
     public static class IXOR extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             OperandStack stack = frame.getOperandStack();
             int v1 = stack.popInt();
             int v2 = stack.popInt();
@@ -26,7 +26,7 @@ public class XOR {
     public static class LXOR extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             OperandStack stack = frame.getOperandStack();
             long v1 = stack.popLong();
             long v2 = stack.popLong();

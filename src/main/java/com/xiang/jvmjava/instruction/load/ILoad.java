@@ -20,7 +20,7 @@ public class ILoad {
     public static class ILoadI extends Index8Instruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             iLoad(frame, this.index);
         }
     }
@@ -28,7 +28,7 @@ public class ILoad {
     public static class ILoad0 extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             iLoad(frame, 0);
         }
     }
@@ -36,7 +36,7 @@ public class ILoad {
     public static class ILoad1 extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             iLoad(frame, 1);
         }
     }
@@ -44,7 +44,7 @@ public class ILoad {
     public static class ILoad2 extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             iLoad(frame, 2);
         }
     }
@@ -52,7 +52,7 @@ public class ILoad {
     public static class ILoad3 extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             iLoad(frame, 3);
         }
     }

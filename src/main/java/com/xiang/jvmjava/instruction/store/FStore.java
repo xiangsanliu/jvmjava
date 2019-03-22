@@ -20,7 +20,7 @@ public class FStore {
     public static class FStoreF extends Index8Instruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             fStore(frame, this.index);
         }
     }
@@ -28,7 +28,7 @@ public class FStore {
     public static class FStore0 extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             fStore(frame, 0);
         }
     }
@@ -36,7 +36,7 @@ public class FStore {
     public static class FStore1 extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             fStore(frame, 1);
         }
     }
@@ -44,7 +44,7 @@ public class FStore {
     public static class FStore2 extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             fStore(frame, 2);
         }
     }
@@ -52,7 +52,7 @@ public class FStore {
     public static class FStore3 extends NoOperandsInstruction {
 
         @Override
-        public void Execute(Frame frame) {
+        public void execute(Frame frame) {
             fStore(frame, 3);
         }
     }
