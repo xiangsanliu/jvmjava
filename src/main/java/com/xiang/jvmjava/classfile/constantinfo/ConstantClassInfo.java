@@ -33,4 +33,8 @@ public class ConstantClassInfo extends ConstantInfo {
     public String toString() {
         return this.constantPool.getUtf8(this.nameIndex);
     }
+
+    public String getName() {
+        return this.constantPool.getUtf8(this.nameIndex);
+    }
 }

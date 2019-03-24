@@ -1,6 +1,7 @@
 package com.xiang.jvmjava.instruction.cmp;
 
 import com.xiang.jvmjava.classfile.rtda.Frame;
+import com.xiang.jvmjava.classfile.rtda.heap.JvmObject;
 import com.xiang.jvmjava.instruction.base.BranchInstruction;
 import com.xiang.jvmjava.instruction.base.Instruction;
 
@@ -16,8 +17,8 @@ public class IF_ACMP {
 
         @Override
         public void execute(Frame frame) {
-            Object ref2 = frame.getOperandStack().popRef();
-            Object ref1 = frame.getOperandStack().popRef();
+            JvmObject ref2 = frame.getOperandStack().popRef();
+            JvmObject ref1 = frame.getOperandStack().popRef();
             if (ref1 == ref2) {
                 Instruction.branch(frame, offset);
             }
@@ -28,8 +29,8 @@ public class IF_ACMP {
 
         @Override
         public void execute(Frame frame) {
-            Object ref2 = frame.getOperandStack().popRef();
-            Object ref1 = frame.getOperandStack().popRef();
+            JvmObject ref2 = frame.getOperandStack().popRef();
+            JvmObject ref1 = frame.getOperandStack().popRef();
             if (ref1 != ref2) {
                 Instruction.branch(frame, offset);
             }

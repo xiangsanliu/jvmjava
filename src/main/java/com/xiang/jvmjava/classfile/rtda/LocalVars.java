@@ -1,5 +1,7 @@
 package com.xiang.jvmjava.classfile.rtda;
 
+import com.xiang.jvmjava.classfile.rtda.heap.JvmObject;
+
 import java.util.Arrays;
 
 /**
@@ -42,7 +44,7 @@ public class LocalVars {
         setLong(index, Double.doubleToLongBits(val));
     }
 
-    public void setRef(int index, Object ref) {
+    public void setRef(int index, JvmObject ref) {
         this.vars[index] = new Slot();
         this.vars[index].ref = ref;
     }
@@ -63,7 +65,7 @@ public class LocalVars {
         return Double.longBitsToDouble(this.vars[index].num64);
     }
 
-    public Object getRef(int index) {
+    public JvmObject getRef(int index) {
         return this.vars[index].ref;
     }
 

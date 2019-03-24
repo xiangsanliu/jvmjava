@@ -1,5 +1,6 @@
 package com.xiang.jvmjava.classfile.rtda;
 
+import com.xiang.jvmjava.classfile.rtda.heap.JvmObject;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -19,6 +20,6 @@ public class Slot {
 
     long num64;
 
-    Object ref;
+    JvmObject ref;
 
 }

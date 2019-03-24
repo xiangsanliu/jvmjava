@@ -1,5 +1,7 @@
 package com.xiang.jvmjava.classfile.rtda;
 
+import com.xiang.jvmjava.classfile.rtda.heap.JvmObject;
+
 import java.util.Arrays;
 
 /**
@@ -61,14 +63,14 @@ public class OperandStack {
         return Double.longBitsToDouble(this.popLong());
     }
 
-    public void pushRef(Object ref) {
+    public void pushRef(JvmObject ref) {
         this.slots[this.size] = new Slot();
         this.slots[this.size++].ref = ref;
     }
 
-    public Object popRef() {
+    public JvmObject popRef() {
         this.size--;
-        Object ref = this.slots[this.size].ref;
+        JvmObject ref = this.slots[this.size].ref;
         this.slots[this.size].ref = null;
         return ref;
     }

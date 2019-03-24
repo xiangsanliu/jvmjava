@@ -20,7 +20,7 @@ public class ConstantPool {
         this.constantInfos = constantInfos;
     }
 
-    public static ConstantPool readConstantPool(ClassReader reader) {
+    static ConstantPool readConstantPool(ClassReader reader) {
         int count = reader.readUint16();
         ConstantPool constantPool = new ConstantPool(new ConstantInfo[count]);
         ConstantInfo[] constantInfos = constantPool.constantInfos;

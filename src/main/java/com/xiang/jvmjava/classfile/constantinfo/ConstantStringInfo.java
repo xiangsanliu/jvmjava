@@ -1,7 +1,7 @@
 package com.xiang.jvmjava.classfile.constantinfo;
 
 import com.xiang.jvmjava.classfile.ClassReader;
-import com.xiang.jvmjava.classfile.ConstantInfo;
+import com.xiang.jvmjava.classfile.ConstantLiteralInfo;
 import com.xiang.jvmjava.classfile.ConstantPool;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +12,7 @@ import lombok.Setter;
  * @comment
  */
 
-public class ConstantStringInfo extends ConstantInfo {
+public class ConstantStringInfo extends ConstantLiteralInfo {
 
     private ConstantPool constantPool;
 
@@ -32,5 +32,10 @@ public class ConstantStringInfo extends ConstantInfo {
     @Override
     public String toString() {
         return this.constantPool.getUtf8(this.stringIndex);
+    }
+
+    @Override
+    public Object value() {
+        return toString();
     }
 }

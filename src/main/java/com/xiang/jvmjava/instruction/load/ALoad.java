@@ -1,6 +1,7 @@
 package com.xiang.jvmjava.instruction.load;
 
 import com.xiang.jvmjava.classfile.rtda.Frame;
+import com.xiang.jvmjava.classfile.rtda.heap.JvmObject;
 import com.xiang.jvmjava.instruction.base.Index8Instruction;
 import com.xiang.jvmjava.instruction.base.NoOperandsInstruction;
 
@@ -13,7 +14,7 @@ import com.xiang.jvmjava.instruction.base.NoOperandsInstruction;
 public class ALoad {
 
     private static void aLoad(Frame frame, int index) {
-        Object ref = frame.getLocalVars().getRef(index);
+        JvmObject ref = frame.getLocalVars().getRef(index);
         frame.getOperandStack().pushRef(ref);
     }
 

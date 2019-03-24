@@ -3,6 +3,8 @@ package com.xiang.jvmjava.classfile;
 import com.sun.org.apache.bcel.internal.classfile.ClassFormatException;
 import com.xiang.jvmjava.classfile.constantinfo.*;
 
+import java.util.Objects;
+
 /**
  * @author 项三六
  * @time 2019/3/15 17:11
@@ -31,7 +33,7 @@ public abstract class ConstantInfo {
     static ConstantInfo readConstantInfo(ClassReader reader, ConstantPool constantPool) {
         int tag = reader.readUint8();
         ConstantInfo constantInfo = newConstantInfo(tag, constantPool);
-        constantInfo.readInfo(reader);
+        Objects.requireNonNull(constantInfo).readInfo(reader);
         return constantInfo;
     }
 
@@ -52,11 +54,11 @@ public abstract class ConstantInfo {
             case ConstantClass:
                 return new ConstantClassInfo(constantPool);
             case ConstantFieldRef:
-                return new ConstantMemberRefInfo(constantPool);
+                return new ConstantFieldRefInfo(constantPool);
             case ConstantMethodRef:
-                return new ConstantMemberRefInfo(constantPool);
+                return new ConstantMethodRefInfo(constantPool);
             case ConstantInterfaceMethodRef:
-                return new ConstantMemberRefInfo(constantPool);
+                return new ConstantInterfaceMethodRefInfo(constantPool);
             case ConstantNameAndType:
                 return new ConstantNameAndTypeInfo();
             case ConstantMethodType:

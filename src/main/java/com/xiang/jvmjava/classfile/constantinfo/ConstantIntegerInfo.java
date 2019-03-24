@@ -1,7 +1,7 @@
 package com.xiang.jvmjava.classfile.constantinfo;
 
 import com.xiang.jvmjava.classfile.ClassReader;
-import com.xiang.jvmjava.classfile.ConstantInfo;
+import com.xiang.jvmjava.classfile.ConstantLiteralInfo;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +13,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ConstantIntegerInfo extends ConstantInfo {
+public class ConstantIntegerInfo extends ConstantLiteralInfo {
 
     private int val;
 
@@ -21,5 +21,10 @@ public class ConstantIntegerInfo extends ConstantInfo {
     public void readInfo(ClassReader reader) {
         // TODO convert to int32
         this.val = reader.readUint32();
+    }
+
+    @Override
+    public Object value() {
+        return val;
     }
 }

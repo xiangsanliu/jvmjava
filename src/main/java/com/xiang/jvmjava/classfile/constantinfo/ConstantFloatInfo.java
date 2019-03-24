@@ -1,7 +1,7 @@
 package com.xiang.jvmjava.classfile.constantinfo;
 
 import com.xiang.jvmjava.classfile.ClassReader;
-import com.xiang.jvmjava.classfile.ConstantInfo;
+import com.xiang.jvmjava.classfile.ConstantLiteralInfo;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +13,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class ConstantFloatInfo extends ConstantInfo {
+public class ConstantFloatInfo extends ConstantLiteralInfo {
 
     float val;
 
@@ -23,4 +23,8 @@ public class ConstantFloatInfo extends ConstantInfo {
         this.val = Float.intBitsToFloat(bytes);
     }
 
+    @Override
+    public Object value() {
+        return val;
+    }
 }

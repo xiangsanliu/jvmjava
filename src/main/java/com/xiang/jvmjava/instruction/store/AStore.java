@@ -1,6 +1,7 @@
 package com.xiang.jvmjava.instruction.store;
 
 import com.xiang.jvmjava.classfile.rtda.Frame;
+import com.xiang.jvmjava.classfile.rtda.heap.JvmObject;
 import com.xiang.jvmjava.instruction.base.Index8Instruction;
 
 /**
@@ -12,7 +13,7 @@ import com.xiang.jvmjava.instruction.base.Index8Instruction;
 public class AStore {
 
     private static void aStore(Frame frame, int index) {
-        Object ref = frame.getOperandStack().popRef();
+        JvmObject ref = frame.getOperandStack().popRef();
         frame.getLocalVars().setRef(index, ref);
     }
 
