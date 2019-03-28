@@ -1,6 +1,7 @@
 package com.xiang.jvmjava.classfile;
 
 import com.xiang.jvmjava.classfile.attribute.CodeAttribute;
+import com.xiang.jvmjava.classfile.attribute.ConstantValueAttribute;
 import lombok.Getter;
 
 /**
@@ -56,4 +57,14 @@ public class MemberInfo {
         }
         return null;
     }
+
+    public ConstantValueAttribute getConstantValueAttribute() {
+        for (AttributeInfo attribute : attributes) {
+            if (attribute instanceof ConstantValueAttribute) {
+                return (ConstantValueAttribute) attribute;
+            }
+        }
+        return null;
+    }
+
 }

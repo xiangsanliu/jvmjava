@@ -16,7 +16,7 @@ public class Frame {
     private Frame lower;
 
     @Getter
-    private LocalVars localVars;
+    private Slots localVars;
 
     @Getter
     private OperandStack operandStack;
@@ -28,14 +28,14 @@ public class Frame {
     @Getter
     private int nextPC;
 
-    private Frame(LocalVars localVars, OperandStack operandStack, Thread thread) {
+    private Frame(Slots localVars, OperandStack operandStack, Thread thread) {
         this.localVars = localVars;
         this.operandStack = operandStack;
         this.thread = thread;
     }
 
     public static Frame newFrame(Thread thread, int maxLocals, int maxStack) {
-        return new Frame(LocalVars.newLocalVars(maxLocals), OperandStack.newOperandStack(maxStack), thread);
+        return new Frame(Slots.newLocalVars(maxLocals), OperandStack.newOperandStack(maxStack), thread);
     }
 
 

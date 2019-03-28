@@ -16,10 +16,10 @@ import lombok.ToString;
 @ToString
 public class Slot {
 
-    int num32;
+    public int num32;
 
-    long num64;
+    public long num64;
 
-    JvmObject ref;
+    public JvmObject ref;
 
 }

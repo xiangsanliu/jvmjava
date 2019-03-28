@@ -1,7 +1,9 @@
 package com.xiang.jvmjava.classfile.rtda.heap;
 
 import com.xiang.jvmjava.classfile.ClassFile;
+import com.xiang.jvmjava.classfile.rtda.Slots;
 import lombok.Getter;
+import lombok.Setter;
 
 
 /**
@@ -11,6 +13,7 @@ import lombok.Getter;
  */
 
 @Getter
+@Setter
 public class JvmClass {
 
     private int accessFlags;
@@ -20,12 +23,12 @@ public class JvmClass {
     private JvmConstantPool constantPool;
     private Field[] fields;
     private Method[] methods;
-    private Object loader;
+    private ClassLoader loader;
     private JvmClass superClass;
     private JvmClass[] interfaces;
     private int instanceSlotCount;
     private int staticSlotCount;
-    private Object staticVars;
+    private Slots staticVars;
 
     public static JvmClass newClass(ClassFile classFile) {
         JvmClass clazz = new JvmClass();
@@ -69,6 +72,27 @@ public class JvmClass {
 
     public boolean isEnum() {
         return 0 != (this.accessFlags & AccessFlags.ACC_ENUM);
+    }
+
+    public String getPackageName() {
+        int i = this.name.lastIndexOf('/');
+        if (i >= 0) {
+            return this.name.substring(0, i);
+        }
+        return "";
+    }
+
+    public boolean isAccessibleTo(JvmClass other) {
+        return this.isPublic() || this.getPackageName().equals(other.getPackageName());
+    }
+
+    public boolean isSubClassOf(JvmClass other) {
+        for (JvmClass c = this.superClass; c != null; c = c.getSuperClass()) {
+            if (c == other) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

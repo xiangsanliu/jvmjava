@@ -1,6 +1,7 @@
 package com.xiang.jvmjava.classfile.rtda.heap;
 
 import com.xiang.jvmjava.classfile.ClassFile;
+import com.xiang.jvmjava.classfile.rtda.Slots;
 import com.xiang.jvmjava.classpath.Classpath;
 import lombok.Getter;
 import lombok.Setter;
@@ -41,9 +42,104 @@ public class ClassLoader {
         return defineClass(data);
     }
 
-    private JvmClass defineClass(byte[] data) {
+    private JvmClass defineClass(byte[] data) throws IOException {
         ClassFile classFile = ClassFile.parse(data);
-        return JvmClass.newClass(classFile);
+        JvmClass clazz = JvmClass.newClass(classFile);
+        resolveSuperClass(clazz);
+        resolveInterfaces(clazz);
+        this.classMap.put(clazz.getName(), clazz);
+        return clazz;
+    }
+
+    private void resolveSuperClass(JvmClass clazz) throws IOException {
+        if (!"java/lang/Object".equals(clazz.getName())) {
+            clazz.setSuperClass(clazz.getLoader().loadClass(clazz.getSuperClassName()));
+        }
+    }
+
+    private void resolveInterfaces(JvmClass clazz) throws IOException {
+        String[] interfaceNames = clazz.getInterfaceNames();
+        int count = interfaceNames.length;
+        if (count > 0) {
+            JvmClass[] interfaces = new JvmClass[count];
+            for (int i = 0; i < count; i++) {
+                interfaces[i] = clazz.getLoader().loadClass(interfaceNames[i]);
+            }
+            clazz.setInterfaces(interfaces);
+        }
+    }
+
+    private void link(JvmClass clazz) {
+//        verify
+//        prepare
+    }
+
+    private static void prepare(JvmClass clazz) {
+        calcInstanceFieldSlotIds(clazz);
+        calcStaticFieldSlotIds(clazz);
+        allocAndInitStaticVars(clazz);
+    }
+
+    private static void calcInstanceFieldSlotIds(JvmClass clazz) {
+        int slotId = 0;
+        if (clazz.getSuperClass() != null) {
+            slotId = clazz.getSuperClass().getInstanceSlotCount();
+        }
+        for (Field field : clazz.getFields()) {
+            if (!field.isStatic()) {
+                field.setSlotId(slotId);
+                slotId++;
+                if (field.isLongOrDouble()) {
+                    slotId++;
+                }
+            }
+        }
+    }
+
+    private static void calcStaticFieldSlotIds(JvmClass clazz) {
+        int slotId = 0;
+        for (Field field : clazz.getFields()) {
+            if (field.isStatic()) {
+                slotId++;
+                if (field.isLongOrDouble()) {
+                    slotId++;
+                }
+            }
+        }
+        clazz.setStaticSlotCount(slotId);
+    }
+
+    private static void allocAndInitStaticVars(JvmClass clazz) {
+        clazz.setStaticVars(new Slots(clazz.getStaticSlotCount()));
+        for (Field field : clazz.getFields()) {
+            if (field.isStatic() && field.isFinal()) {
+                initStaticFinalVar(clazz, field);
+            }
+        }
+    }
+
+    private static void initStaticFinalVar(JvmClass clazz, Field field) {
+        Slots vars = clazz.getStaticVars();
+        JvmConstantPool constantPool = clazz.getConstantPool();
+        int index = field.getConstantValueIndex();
+        if (index > 0) {
+            switch (field.getDescriptor()) {
+                case "Z":
+                case "B":
+                case "C":
+                case "S":
+                case "I":
+                    vars.setInt(field.getSlotId(), (Integer) constantPool.getConstant(index));
+                case "J":
+                    vars.setLong(field.getSlotId(), (Long) constantPool.getConstant(index));
+                case "F":
+                    vars.setFloat(field.getSlotId(), (Float) constantPool.getConstant(index));
+                case "D":
+                    vars.setDouble(field.getSlotId(), (Double) constantPool.getConstant(index));
+                case "Ljava/lang/String":
+                    throw new UnsupportedOperationException("暂时先用这个错误顶着");
+            }
+        }
     }
 
 

@@ -12,18 +12,58 @@ import lombok.Getter;
 @Getter
 public class ClassMember {
 
-    private int accessFlags;
+    protected int accessFlags;
 
-    private String name;
+    protected String name;
 
-    private String descriptor;
+    protected String descriptor;
 
     protected JvmClass clazz;
 
-    void copyMemberInfo(MemberInfo memberInfo) {
-        this.accessFlags = memberInfo.getAccessFlags();
-        this.name = memberInfo.getName();
-        this.descriptor = memberInfo.getDescriptor();
+    void copyMemberInfo(MemberInfo info) {
+        this.accessFlags = info.getAccessFlags();
+        this.name = info.getName();
+        this.descriptor = info.getDescriptor();
     }
 
+    void copyAttributes(MemberInfo info) {
+    }
+
+    public boolean isPublic() {
+        return 0 != (this.accessFlags & AccessFlags.ACC_PUBLIC);
+    }
+
+    public boolean isPrivate() {
+        return 0 != (this.accessFlags & AccessFlags.ACC_PRIVATE);
+    }
+
+    public boolean isProtected() {
+        return 0 != (this.accessFlags & AccessFlags.ACC_PROTECTED);
+    }
+
+    public boolean isStatic() {
+        return 0 != (this.accessFlags & AccessFlags.ACC_STATIC);
+    }
+
+    public boolean isFinal() {
+        return 0 != (this.accessFlags & AccessFlags.ACC_FINAL);
+    }
+
+    public boolean isSynthetic() {
+        return 0 != (this.accessFlags & AccessFlags.ACC_SYNTHETIC);
+    }
+
+    public boolean isAccessibleTo(JvmClass d) {
+        if (this.isPublic()) {
+            return true;
+        }
+        JvmClass c = this.getClazz();
+        if (this.isProtected()) {
+            return d == c || d.isSubClassOf(c) || c.getPackageName().equals(d.getPackageName());
+        }
+        if (!this.isPrivate()) {
+            return c.getPackageName().equals(d.getPackageName());
+        }
+        return d == c;
+    }
 }

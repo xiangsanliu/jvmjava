@@ -5,39 +5,45 @@ import com.xiang.jvmjava.classfile.rtda.heap.JvmObject;
 import java.util.Arrays;
 
 /**
+ * l
+ *
  * @author 项三六
  * @time 2019/3/16 19:35
  * @comment
  */
 
-public class LocalVars {
+public class Slots {
 
     private Slot[] vars;
 
-    public LocalVars(Slot[] vars) {
+    public Slots(Slot[] vars) {
         this.vars = vars;
     }
 
-    public static LocalVars newLocalVars(int maxLocals) {
+    public Slots(int size) {
+        this.vars = new Slot[size];
+    }
+
+    public static Slots newLocalVars(int maxLocals) {
         if (maxLocals > 0) {
-            return new LocalVars(new Slot[maxLocals]);
+            return new Slots(new Slot[maxLocals]);
         }
         return null;
     }
 
     public void setInt(int index, int val) {
         this.vars[index] = new Slot();
-        this.vars[index].num32 = val;
+        this.vars[index].setNum32(val);
     }
 
     public void setFloat(int index, float val) {
         this.vars[index] = new Slot();
-        this.vars[index].num32 = Float.floatToIntBits(val);
+        this.vars[index].setNum32(Float.floatToIntBits(val));
     }
 
     public void setLong(int index, long val) {
         this.vars[index] = new Slot();
-        this.vars[index].num64 = val;
+        this.vars[index].setNum64(val);
     }
 
     public void setDouble(int index, double val) {
@@ -46,27 +52,27 @@ public class LocalVars {
 
     public void setRef(int index, JvmObject ref) {
         this.vars[index] = new Slot();
-        this.vars[index].ref = ref;
+        this.vars[index].setRef(ref);
     }
 
     public int getInt(int index) {
-        return this.vars[index].num32;
+        return this.vars[index].getNum32();
     }
 
     public float getFloat(int index) {
-        return Float.intBitsToFloat(this.vars[index].num32);
+        return Float.intBitsToFloat(this.vars[index].getNum32());
     }
 
     public long getLong(int index) {
-        return this.vars[index].num64;
+        return this.vars[index].getNum64();
     }
 
     public double getDouble(int index) {
-        return Double.longBitsToDouble(this.vars[index].num64);
+        return Double.longBitsToDouble(this.vars[index].getNum64());
     }
 
     public JvmObject getRef(int index) {
-        return this.vars[index].ref;
+        return this.vars[index].getRef();
     }
 
     @Override

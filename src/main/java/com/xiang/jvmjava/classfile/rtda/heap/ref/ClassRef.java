@@ -1,7 +1,7 @@
-package com.xiang.jvmjava.classfile.rtda.heap;
+package com.xiang.jvmjava.classfile.rtda.heap.ref;
 
 import com.xiang.jvmjava.classfile.constantinfo.ConstantClassInfo;
-import com.xiang.jvmjava.classfile.rtda.heap.ref.SymRef;
+import com.xiang.jvmjava.classfile.rtda.heap.JvmConstantPool;
 
 /**
  * @author 项三六
