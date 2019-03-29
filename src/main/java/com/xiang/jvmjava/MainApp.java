@@ -2,6 +2,9 @@ package com.xiang.jvmjava;
 
 import com.xiang.jvmjava.classfile.ClassFile;
 import com.xiang.jvmjava.classfile.MemberInfo;
+import com.xiang.jvmjava.classfile.rtda.heap.ClassLoader;
+import com.xiang.jvmjava.classfile.rtda.heap.JvmClass;
+import com.xiang.jvmjava.classfile.rtda.heap.Method;
 import com.xiang.jvmjava.classpath.Classpath;
 import com.xiang.jvmjava.instruction.Interpreter;
 
@@ -30,16 +33,26 @@ public class MainApp {
     private static void run(Cmd cmd) {
         Classpath classpath = Classpath.parse(cmd);
         String className = cmd.getMainClass();
+        ClassLoader classLoader = new ClassLoader(classpath);
         try {
-            ClassFile classFile = loadClass(className, classpath);
-            MemberInfo memberInfo = getMainMethod(classFile);
-            if (memberInfo != null) {
-                Interpreter.interpret(memberInfo);
+            JvmClass mainClass = classLoader.loadClass(className);
+            Method mainMethod = mainClass.getMainMethod();
+            if (mainMethod != null) {
+                Interpreter.interpret(mainMethod);
             }
         } catch (IOException e) {
-            System.out.println("Could not find or load Class: " + className);
             e.printStackTrace();
         }
+//        try {
+//            ClassFile classFile = loadClass(className, classpath);
+//            MemberInfo memberInfo = getMainMethod(classFile);
+//            if (memberInfo != null) {
+//                Interpreter.interpret(memberInfo);
+//            }
+//        } catch (IOException e) {
+//            System.out.println("Could not find or load Class: " + className);
+//            e.printStackTrace();
+//        }
     }
 
     private static ClassFile loadClass(String className, Classpath classpath) throws IOException {
@@ -71,8 +84,6 @@ public class MainApp {
         for (MemberInfo field : classFile.getMethods()) {
             System.out.println(field.getName());
         }
-
-
     }
 
 }

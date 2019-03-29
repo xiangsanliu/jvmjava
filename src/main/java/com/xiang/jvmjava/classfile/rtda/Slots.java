@@ -24,6 +24,13 @@ public class Slots {
         this.vars = new Slot[size];
     }
 
+    public static Slots newSlots(int count) {
+        if (count > 0) {
+            return new Slots(new Slot[count]);
+        }
+        return null;
+    }
+
     public static Slots newLocalVars(int maxLocals) {
         if (maxLocals > 0) {
             return new Slots(new Slot[maxLocals]);

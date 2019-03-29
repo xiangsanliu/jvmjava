@@ -14,11 +14,7 @@ public class MethodRef extends MemberRef {
 
     private Method method;
 
-    public static MethodRef newMethodRef(JvmConstantPool constantPool, ConstantMethodRefInfo info) {
-        MethodRef ref = new MethodRef();
-        ref.setConstantPool(constantPool);
-        ref.copyMemberRefInfo(info);
-        return ref;
+    public MethodRef(JvmConstantPool constantPool, ConstantMethodRefInfo info) {
+        super(constantPool, info);
     }
-
 }

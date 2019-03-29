@@ -16,9 +16,9 @@ import java.io.IOException;
 @Setter
 public abstract class SymRef {
 
-    private JvmConstantPool constantPool;
+    protected JvmConstantPool constantPool;
 
-    private String className;
+    protected String className;
 
     private JvmClass clazz;
 
@@ -31,7 +31,7 @@ public abstract class SymRef {
 
     private void resolveClassRef() throws IOException {
         JvmClass d = this.constantPool.getClazz();
-        JvmClass c = clazz.getLoader().loadClass(this.className);
+        JvmClass c = d.getLoader().loadClass(this.className);
         if (!c.isAccessibleTo(d)) {
             throw new IllegalAccessError();
         }

@@ -3,6 +3,8 @@ package com.xiang.jvmjava.instruction.store;
 import com.xiang.jvmjava.classfile.rtda.Frame;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmObject;
 import com.xiang.jvmjava.instruction.base.Index8Instruction;
+import com.xiang.jvmjava.instruction.base.NoOperandsInstruction;
+import com.xiang.jvmjava.instruction.base.NoOperandsInstruction;
 
 /**
  * @author 项三六
@@ -25,7 +27,7 @@ public class AStore {
         }
     }
 
-    public static class AStore0 extends Index8Instruction {
+    public static class AStore0 extends NoOperandsInstruction {
 
         @Override
         public void execute(Frame frame) {
@@ -33,7 +35,7 @@ public class AStore {
         }
     }
 
-    public static class AStore1 extends Index8Instruction {
+    public static class AStore1 extends NoOperandsInstruction {
 
         @Override
         public void execute(Frame frame) {
@@ -41,7 +43,7 @@ public class AStore {
         }
     }
 
-    public static class AStore2 extends Index8Instruction {
+    public static class AStore2 extends NoOperandsInstruction {
 
         @Override
         public void execute(Frame frame) {
@@ -49,7 +51,7 @@ public class AStore {
         }
     }
 
-    public static class AStore3 extends Index8Instruction {
+    public static class AStore3 extends NoOperandsInstruction {
 
         @Override
         public void execute(Frame frame) {

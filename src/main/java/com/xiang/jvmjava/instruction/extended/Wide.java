@@ -7,6 +7,8 @@ import com.xiang.jvmjava.instruction.load.*;
 import com.xiang.jvmjava.instruction.math.IInc;
 import com.xiang.jvmjava.instruction.store.*;
 
+import java.io.IOException;
+
 /**
  * @author 项三六
  * @time 2019/3/22 15:55
@@ -15,7 +17,7 @@ import com.xiang.jvmjava.instruction.store.*;
 
 public class Wide extends Instruction {
 
-    Instruction modifiedInstruction;
+    private Instruction modifiedInstruction;
 
     @Override
     public void fetchOperands(BytecodeReader reader) {
@@ -60,7 +62,7 @@ public class Wide extends Instruction {
     }
 
     @Override
-    public void execute(Frame frame) {
+    public void execute(Frame frame) throws IOException {
         modifiedInstruction.execute(frame);
     }
 }

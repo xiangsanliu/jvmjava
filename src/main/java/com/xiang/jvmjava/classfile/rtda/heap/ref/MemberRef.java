@@ -1,9 +1,9 @@
 package com.xiang.jvmjava.classfile.rtda.heap.ref;
 
 import com.xiang.jvmjava.classfile.constantinfo.ConstantMemberRefInfo;
+import com.xiang.jvmjava.classfile.rtda.heap.JvmConstantPool;
 import com.xiang.jvmjava.util.Pair;
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * @author 项三六
@@ -12,20 +12,23 @@ import lombok.Setter;
  */
 
 @Getter
-@Setter
 public class MemberRef extends SymRef {
 
-    private String name;
+    protected String name;
 
-    private String descriptor;
+    protected String descriptor;
 
-    void copyMemberRefInfo(ConstantMemberRefInfo info) {
-        this.setClassName(info.className());
-        Pair<String, String> pair = info.nameAndDescriptor();
-        this.setName(pair.getKey());
-        this.setDescriptor(pair.getValue());
+    MemberRef(JvmConstantPool constantPool, ConstantMemberRefInfo info) {
+        this.constantPool = constantPool;
+        this.copyMemberRefInfo(info);
     }
 
+    private void copyMemberRefInfo(ConstantMemberRefInfo info) {
+        this.setClassName(info.className());
+        Pair<String, String> pair = info.nameAndDescriptor();
+        this.name = pair.getKey();
+        this.descriptor = pair.getValue();
+    }
 
 
 }

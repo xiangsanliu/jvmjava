@@ -30,29 +30,29 @@ public class OperandStack {
 
     public void pushInt(int val) {
         this.slots[this.size] = new Slot();
-        this.slots[this.size++].num32 = val;
+        this.slots[this.size++].setNum32(val);
     }
 
     public int popInt() {
-        return this.slots[--this.size].num32;
+        return this.slots[--this.size].getNum32();
     }
 
     public void pushFloat(float val) {
         this.slots[this.size] = new Slot();
-        this.slots[this.size++].num32 = Float.floatToIntBits(val);
+        this.slots[this.size++].setNum32(Float.floatToIntBits(val));
     }
 
     public float popFloat() {
-        return Float.intBitsToFloat(this.slots[--this.size].num32);
+        return Float.intBitsToFloat(this.slots[--this.size].getNum32());
     }
 
     public void pushLong(long val) {
         this.slots[this.size] = new Slot();
-        this.slots[this.size++].num64 = val;
+        this.slots[this.size++].setNum64(val);
     }
 
     public long popLong() {
-        return this.slots[--this.size].num64;
+        return this.slots[--this.size].getNum64();
     }
 
     public void pushDouble(double val) {
@@ -64,14 +64,16 @@ public class OperandStack {
     }
 
     public void pushRef(JvmObject ref) {
+
         this.slots[this.size] = new Slot();
-        this.slots[this.size++].ref = ref;
+        this.slots[this.size++].setRef(ref);
     }
 
     public JvmObject popRef() {
+
         this.size--;
-        JvmObject ref = this.slots[this.size].ref;
-        this.slots[this.size].ref = null;
+        JvmObject ref = this.slots[this.size].getRef();
+        this.slots[this.size].setRef(null);
         return ref;
     }
 

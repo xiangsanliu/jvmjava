@@ -20,7 +20,7 @@ public class Method extends ClassMember {
 
     private byte[] code;
 
-    public Method[] newMethods(JvmClass clazz, MemberInfo[] memberInfos) {
+    static Method[] newMethods(JvmClass clazz, MemberInfo[] memberInfos) {
         Method[] methods = new Method[memberInfos.length];
         for (int i = 0; i < memberInfos.length; i++) {
             methods[i] = new Method();

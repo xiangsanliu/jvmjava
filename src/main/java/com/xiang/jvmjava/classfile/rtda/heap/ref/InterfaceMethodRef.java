@@ -14,11 +14,7 @@ public class InterfaceMethodRef extends MemberRef {
 
     private Method method;
 
-    public InterfaceMethodRef newInterfaceMethodRef(JvmConstantPool constantPool, ConstantInterfaceMethodRefInfo info) {
-        InterfaceMethodRef ref = new InterfaceMethodRef();
-        ref.setConstantPool(constantPool);
-        ref.copyMemberRefInfo(info);
-        return ref;
+    public InterfaceMethodRef(JvmConstantPool constantPool, ConstantInterfaceMethodRefInfo info) {
+        super(constantPool, info);
     }
-
 }

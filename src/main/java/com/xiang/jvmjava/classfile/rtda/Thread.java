@@ -1,5 +1,6 @@
 package com.xiang.jvmjava.classfile.rtda;
 
+import com.xiang.jvmjava.classfile.rtda.heap.Method;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -49,5 +50,11 @@ public class Thread {
     public Frame newFrame(int maxLocals, int maxStack) {
         return Frame.newFrame(this, maxLocals, maxStack);
     }
+
+    public Frame newFrame(Method method) {
+        return new Frame(this, method);
+    }
+
+
 
 }

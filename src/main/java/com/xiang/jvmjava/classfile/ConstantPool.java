@@ -4,6 +4,7 @@ import com.xiang.jvmjava.classfile.constantinfo.*;
 import com.xiang.jvmjava.error.InvalidConstantPoolIndexError;
 import com.xiang.jvmjava.util.Pair;
 import lombok.Getter;
+import lombok.ToString;
 
 /**
  * @author 项三六
@@ -11,6 +12,7 @@ import lombok.Getter;
  * @comment 常量池
  */
 
+@ToString
 public class ConstantPool {
 
     @Getter

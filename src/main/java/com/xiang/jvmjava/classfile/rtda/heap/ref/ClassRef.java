@@ -11,11 +11,9 @@ import com.xiang.jvmjava.classfile.rtda.heap.JvmConstantPool;
 
 public class ClassRef extends SymRef {
 
-    public static ClassRef newClassRef(JvmConstantPool constantPool, ConstantClassInfo info) {
-        ClassRef ref = new ClassRef();
-        ref.setConstantPool(constantPool);
-        ref.setClassName(info.getName());
-        return ref;
+    public ClassRef(JvmConstantPool constantPool, ConstantClassInfo info) {
+        this.constantPool = constantPool;
+        this.className = info.getName();
     }
 
 }

@@ -39,12 +39,15 @@ public class ClassLoader {
 
     private JvmClass loadNonArrayClass(String name) throws IOException {
         byte[] data = this.classpath.readClass(name);
-        return defineClass(data);
+        JvmClass clazz = defineClass(data);
+        link(clazz);
+        System.out.println(String.format("[Loaded %s]", name));
+        return clazz;
     }
 
     private JvmClass defineClass(byte[] data) throws IOException {
         ClassFile classFile = ClassFile.parse(data);
-        JvmClass clazz = JvmClass.newClass(classFile);
+        JvmClass clazz = new JvmClass(classFile, this);
         resolveSuperClass(clazz);
         resolveInterfaces(clazz);
         this.classMap.put(clazz.getName(), clazz);
@@ -71,7 +74,7 @@ public class ClassLoader {
 
     private void link(JvmClass clazz) {
 //        verify
-//        prepare
+        prepare(clazz);
     }
 
     private static void prepare(JvmClass clazz) {
@@ -137,7 +140,7 @@ public class ClassLoader {
                 case "D":
                     vars.setDouble(field.getSlotId(), (Double) constantPool.getConstant(index));
                 case "Ljava/lang/String":
-                    throw new UnsupportedOperationException("暂时先用这个错误顶着");
+                    // TODO
             }
         }
     }

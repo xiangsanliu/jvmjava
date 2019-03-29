@@ -1,6 +1,6 @@
 package com.xiang.jvmjava.classfile.rtda.heap.ref;
 
-import com.xiang.jvmjava.classfile.constantinfo.ConstantFieldRefInfo;
+import com.xiang.jvmjava.classfile.constantinfo.ConstantMemberRefInfo;
 import com.xiang.jvmjava.classfile.rtda.heap.Field;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmClass;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmConstantPool;
@@ -17,11 +17,8 @@ public class FieldRef extends MemberRef {
 
     private Field field;
 
-    public FieldRef newFieldRef(JvmConstantPool constantPool, ConstantFieldRefInfo info) {
-        FieldRef ref = new FieldRef();
-        ref.setConstantPool(constantPool);
-        ref.copyMemberRefInfo(info);
-        return ref;
+    public FieldRef(JvmConstantPool constantPool, ConstantMemberRefInfo info) {
+        super(constantPool, info);
     }
 
     public Field resolvedField() throws IOException {

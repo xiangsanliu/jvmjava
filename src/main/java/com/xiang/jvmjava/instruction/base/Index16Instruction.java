@@ -14,7 +14,7 @@ public abstract class Index16Instruction extends Instruction {
 
     @Getter
     @Setter
-    private int index;
+    protected int index;
 
     @Override
     public void fetchOperands(BytecodeReader reader) {

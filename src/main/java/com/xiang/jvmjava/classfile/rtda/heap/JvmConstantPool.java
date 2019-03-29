@@ -3,8 +3,11 @@ package com.xiang.jvmjava.classfile.rtda.heap;
 import com.xiang.jvmjava.classfile.ConstantInfo;
 import com.xiang.jvmjava.classfile.ConstantLiteralInfo;
 import com.xiang.jvmjava.classfile.ConstantPool;
-import com.xiang.jvmjava.classfile.constantinfo.ConstantDoubleInfo;
-import com.xiang.jvmjava.classfile.constantinfo.ConstantLongInfo;
+import com.xiang.jvmjava.classfile.constantinfo.*;
+import com.xiang.jvmjava.classfile.rtda.heap.ref.ClassRef;
+import com.xiang.jvmjava.classfile.rtda.heap.ref.FieldRef;
+import com.xiang.jvmjava.classfile.rtda.heap.ref.InterfaceMethodRef;
+import com.xiang.jvmjava.classfile.rtda.heap.ref.MethodRef;
 import lombok.Getter;
 
 /**
@@ -20,35 +23,36 @@ public class JvmConstantPool {
 
     private Object[] consts;
 
-    public JvmConstantPool(JvmClass clazz, Object[] consts) {
-        this.clazz = clazz;
-        this.consts = consts;
-    }
-
     public Object getConstant(int index) {
-        Object constant = this.consts[index];
-        if (constant != null) {
-            return constant;
-        }
-        return null;
+        return this.consts[index];
     }
 
-    public static JvmConstantPool newConstantPool(JvmClass clazz, ConstantPool constantPool) {
+    public JvmConstantPool(JvmClass clazz, ConstantPool constantPool) {
+        this.clazz = clazz;
+        this.consts = copyConsts(constantPool);
+    }
+
+    private Object[] copyConsts(ConstantPool constantPool) {
         int count = constantPool.getConstantInfos().length;
-        Object[] consts = new Constant[count];
-        JvmConstantPool jvmConstantPool = new JvmConstantPool(clazz, consts);
-        for (int i = 0; i < count; i++) {
-            ConstantInfo constantInfo = constantPool.getConstantInfos()[i];
-            if (constantInfo instanceof ConstantLiteralInfo) {
-                consts[i] = ((ConstantLiteralInfo) constantInfo).value();
-                if (constantInfo instanceof ConstantLongInfo || constantInfo instanceof ConstantDoubleInfo) {
+        Object[] consts = new Object[count];
+        for (int i = 1; i < count; i++) {
+            ConstantInfo info = constantPool.getConstantInfos()[i];
+            if (info instanceof ConstantLiteralInfo) {
+                consts[i] = ((ConstantLiteralInfo) info).value();
+                if (info instanceof ConstantLongInfo || info instanceof ConstantDoubleInfo) {
                     i++;
                 }
-            } else {
-
+            } else if (info instanceof ConstantClassInfo) {
+                consts[i] = new ClassRef(this, (ConstantClassInfo) info);
+            } else if (info instanceof ConstantFieldRefInfo) {
+                consts[i] = new FieldRef(this, (ConstantFieldRefInfo) info);
+            } else if (info instanceof ConstantMethodRefInfo) {
+                consts[i] = new MethodRef(this, (ConstantMethodRefInfo) info);
+            } else if (info instanceof ConstantInterfaceMethodRefInfo) {
+                consts[i] = new InterfaceMethodRef(this, (ConstantInterfaceMethodRefInfo) info);
             }
         }
-        return jvmConstantPool;
+        return consts;
     }
 
 }

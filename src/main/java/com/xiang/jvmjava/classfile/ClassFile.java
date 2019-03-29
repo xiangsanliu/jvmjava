@@ -3,6 +3,7 @@ package com.xiang.jvmjava.classfile;
 import com.sun.org.apache.bcel.internal.classfile.ClassFormatException;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * @author 项三六
@@ -12,6 +13,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@ToString
 public class ClassFile {
 
     private int minorVersion;
