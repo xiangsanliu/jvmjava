@@ -3,7 +3,6 @@ package com.xiang.jvmjava.classfile.rtda;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmObject;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 /**
  * @author 项三六
@@ -13,7 +12,6 @@ import lombok.ToString;
 
 @Setter
 @Getter
-@ToString
 public class Slot {
 
     private int num32;
@@ -22,4 +20,24 @@ public class Slot {
 
     private JvmObject ref;
 
+    public Slot() {
+        this.num32 = 0;
+        this.num64 = 0;
+        this.ref = null;
+    }
+
+    public Slot(Slot slot) {
+        this.num32 = slot.num32;
+        this.num64 = slot.num64;
+        this.ref = slot.ref;
+    }
+
+    @Override
+    public String toString() {
+        return "Slot @" + hashCode() + "{" +
+                "num32=" + num32 +
+                ", num64=" + num64 +
+                ", ref=" + ref +
+                '}';
+    }
 }

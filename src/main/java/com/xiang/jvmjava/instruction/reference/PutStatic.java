@@ -49,15 +49,20 @@ public class PutStatic extends Index16Instruction {
             case 'S':
             case 'I':
                 slots.setInt(slotId, stack.popInt());
+                break;
             case 'F':
                 slots.setFloat(slotId, stack.popFloat());
+                break;
             case 'J':
                 slots.setLong(slotId, stack.popLong());
+                break;
             case 'D':
                 slots.setDouble(slotId, stack.popDouble());
+                break;
             case 'L':
             case '[':
                 slots.setRef(slotId, stack.popRef());
+                break;
             default:
                 // todo
         }

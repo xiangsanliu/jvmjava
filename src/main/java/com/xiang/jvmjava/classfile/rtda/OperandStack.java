@@ -9,7 +9,6 @@ import java.util.Arrays;
  * @time 2019/3/16 18:56
  * @comment
  */
-
 public class OperandStack {
 
     private int size;
@@ -38,11 +37,13 @@ public class OperandStack {
     }
 
     public void pushFloat(float val) {
+        System.out.println("size: " + this.size);
         this.slots[this.size] = new Slot();
         this.slots[this.size++].setNum32(Float.floatToIntBits(val));
     }
 
     public float popFloat() {
+        System.out.println("size: " + this.size);
         return Float.intBitsToFloat(this.slots[--this.size].getNum32());
     }
 
@@ -64,13 +65,11 @@ public class OperandStack {
     }
 
     public void pushRef(JvmObject ref) {
-
         this.slots[this.size] = new Slot();
         this.slots[this.size++].setRef(ref);
     }
 
     public JvmObject popRef() {
-
         this.size--;
         JvmObject ref = this.slots[this.size].getRef();
         this.slots[this.size].setRef(null);

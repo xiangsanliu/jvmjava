@@ -27,8 +27,8 @@ public class DupX1 extends NoOperandsInstruction {
         OperandStack stack = frame.getOperandStack();
         Slot slot1 = stack.popSlot();
         Slot slot2 = stack.popSlot();
-        stack.pushSlot(slot1);
+        stack.pushSlot(new Slot(slot1));
         stack.pushSlot(slot2);
-        stack.pushSlot(slot1);
+        stack.pushSlot(new Slot(slot1));
     }
 }

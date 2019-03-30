@@ -22,6 +22,9 @@ public class Slots {
 
     public Slots(int size) {
         this.vars = new Slot[size];
+        for (int i = 0; i < size; i++) {
+            this.vars[i] = new Slot();
+        }
     }
 
     public static Slots newSlots(int count) {

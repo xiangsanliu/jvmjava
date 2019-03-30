@@ -10,7 +10,7 @@ import lombok.Getter;
  */
 
 @Getter
-public class ClassMember {
+public abstract class ClassMember {
 
     protected int accessFlags;
 
@@ -26,8 +26,7 @@ public class ClassMember {
         this.descriptor = info.getDescriptor();
     }
 
-    void copyAttributes(MemberInfo info) {
-    }
+    abstract void copyAttributes(MemberInfo info);
 
     public boolean isPublic() {
         return 0 != (this.accessFlags & AccessFlags.ACC_PUBLIC);

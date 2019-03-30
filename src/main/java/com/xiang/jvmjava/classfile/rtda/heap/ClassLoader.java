@@ -97,6 +97,7 @@ public class ClassLoader {
                 }
             }
         }
+        clazz.setInstanceSlotCount(slotId);
     }
 
     private static void calcStaticFieldSlotIds(JvmClass clazz) {
@@ -133,12 +134,16 @@ public class ClassLoader {
                 case "S":
                 case "I":
                     vars.setInt(field.getSlotId(), (Integer) constantPool.getConstant(index));
+                    break;
                 case "J":
                     vars.setLong(field.getSlotId(), (Long) constantPool.getConstant(index));
+                    break;
                 case "F":
                     vars.setFloat(field.getSlotId(), (Float) constantPool.getConstant(index));
+                    break;
                 case "D":
                     vars.setDouble(field.getSlotId(), (Double) constantPool.getConstant(index));
+                    break;
                 case "Ljava/lang/String":
                     // TODO
             }

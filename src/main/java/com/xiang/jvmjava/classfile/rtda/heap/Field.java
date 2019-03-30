@@ -1,6 +1,7 @@
 package com.xiang.jvmjava.classfile.rtda.heap;
 
 import com.xiang.jvmjava.classfile.MemberInfo;
+import com.xiang.jvmjava.classfile.attribute.ConstantValueAttribute;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -45,4 +46,11 @@ public class Field extends ClassMember {
         return 0 != (this.accessFlags & AccessFlags.ACC_ENUM);
     }
 
+    @Override
+    void copyAttributes(MemberInfo info) {
+        ConstantValueAttribute attr = info.getConstantValueAttribute();
+        if (attr != null) {
+            this.constantValueIndex = (int) Integer.toUnsignedLong(attr.getConstantValueIndex());
+        }
+    }
 }

@@ -31,6 +31,7 @@ public class Method extends ClassMember {
         return methods;
     }
 
+    @Override
     public void copyAttributes(MemberInfo memberInfo) {
         CodeAttribute attribute = memberInfo.getCodeAttribute();
         if (attribute != null) {

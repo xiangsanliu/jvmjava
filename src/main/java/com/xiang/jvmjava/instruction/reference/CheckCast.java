@@ -22,8 +22,8 @@ public class CheckCast extends Index16Instruction {
     public void execute(Frame frame) throws IOException {
         OperandStack stack = frame.getOperandStack();
         JvmObject ref = stack.popRef();
+        stack.pushRef(ref);
         if (ref == null) {
-            stack.pushInt(0);
             return;
         }
         JvmConstantPool constantPool = frame.getMethod().getClazz().getConstantPool();

@@ -41,15 +41,20 @@ public class GetStatic extends Index16Instruction {
             case 'S':
             case 'I':
                 stack.pushInt(slots.getInt(slotId));
+                break;
             case 'F':
                 stack.pushFloat(slots.getFloat(slotId));
+                break;
             case 'J':
                 stack.pushLong(slots.getLong(slotId));
+                break;
             case 'D':
                 stack.pushDouble(slots.getDouble(slotId));
+                break;
             case 'L':
             case '[':
                 stack.pushRef(slots.getRef(slotId));
+                break;
             default:
                 // todo
         }

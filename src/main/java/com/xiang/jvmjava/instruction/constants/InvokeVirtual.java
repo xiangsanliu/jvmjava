@@ -25,18 +25,24 @@ public class InvokeVirtual extends Index16Instruction {
             switch (methodRef.getDescriptor()) {
                 case "(Z)V":
                     System.out.println(stack.popInt() != 0);
+                    break;
                 case "(C)V":
                     System.out.println(stack.popInt());
+                    break;
                 case "(I)V":
                 case "(B)V":
                 case "(S)V":
                     System.out.println(stack.popInt());
+                    break;
                 case "(F)V":
                     System.out.println(stack.popFloat());
+                    break;
                 case "(J)V":
                     System.out.println(stack.popLong());
+                    break;
                 case "(D)V":
                     System.out.println(stack.popDouble());
+                    break;
                 default:
                     throw new Error("println: " + methodRef.getDescriptor());
 
