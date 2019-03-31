@@ -43,7 +43,7 @@ public class Thread {
         return this.stack.pop();
     }
 
-    public Frame currentFrame() {
+    public Frame topFrame() {
         return this.stack.top();
     }
 

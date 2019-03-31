@@ -15,20 +15,23 @@ public class OperandStack {
 
     private Slot[] slots;
 
-    private OperandStack(Slot[] slots) {
-        this.slots = slots;
+    private OperandStack(int maxStack) {
+        Slot[] slots = new Slot[maxStack];
+        for (int i = 0; i < maxStack; i++) {
+            slots[i] = new Slot();
+        }
         this.size = 0;
+        this.slots = slots;
     }
 
     static OperandStack newOperandStack(int maxStack) {
         if (maxStack > 0) {
-            return new OperandStack(new Slot[maxStack]);
+            return new OperandStack(maxStack);
         }
         return null;
     }
 
     public void pushInt(int val) {
-        this.slots[this.size] = new Slot();
         this.slots[this.size++].setNum32(val);
     }
 
@@ -37,22 +40,20 @@ public class OperandStack {
     }
 
     public void pushFloat(float val) {
-        System.out.println("size: " + this.size);
-        this.slots[this.size] = new Slot();
         this.slots[this.size++].setNum32(Float.floatToIntBits(val));
     }
 
     public float popFloat() {
-        System.out.println("size: " + this.size);
         return Float.intBitsToFloat(this.slots[--this.size].getNum32());
     }
 
     public void pushLong(long val) {
-        this.slots[this.size] = new Slot();
         this.slots[this.size++].setNum64(val);
+        this.size++;
     }
 
     public long popLong() {
+        this.size--;
         return this.slots[--this.size].getNum64();
     }
 
@@ -65,7 +66,6 @@ public class OperandStack {
     }
 
     public void pushRef(JvmObject ref) {
-        this.slots[this.size] = new Slot();
         this.slots[this.size++].setRef(ref);
     }
 
@@ -82,6 +82,10 @@ public class OperandStack {
 
     public Slot popSlot() {
         return this.slots[--this.size];
+    }
+
+    public JvmObject getRefFromTop(int n) {
+        return this.slots[this.size - 1 - n].getRef();
     }
 
     @Override

@@ -1,7 +1,9 @@
 package com.xiang.jvmjava.classfile.rtda.heap.ref;
 
 import com.xiang.jvmjava.classfile.constantinfo.ConstantMemberRefInfo;
+import com.xiang.jvmjava.classfile.rtda.heap.JvmClass;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmConstantPool;
+import com.xiang.jvmjava.classfile.rtda.heap.Method;
 import com.xiang.jvmjava.util.Pair;
 import lombok.Getter;
 
@@ -28,6 +30,23 @@ public class MemberRef extends SymRef {
         Pair<String, String> pair = info.nameAndDescriptor();
         this.name = pair.getKey();
         this.descriptor = pair.getValue();
+    }
+
+    // 从接口中查找方法
+    Method lookupMethodInInterfaces(JvmClass[] inters, String name, String descriptor) {
+        for (JvmClass inter : inters) {
+            for (Method method : inter.getMethods()) {
+                if (method.getName().equals(name) && method.getDescriptor().equals(descriptor)) {
+                    return method;
+                }
+            }
+            // 从父接口查找方法
+            Method method = lookupMethodInInterfaces(inter.getInterfaces(), name, descriptor);
+            if (method != null) {
+                return method;
+            }
+        }
+        return null;
     }
 
 

@@ -28,7 +28,7 @@ public abstract class AttributeInfo {
         String attrName = constantPool.getUtf8(attrNameIndex);
         int attrLen = reader.readUint32();
         AttributeInfo attributeInfo = newAttributeInfo(attrName, attrLen, constantPool);
-        Objects.requireNonNull(attributeInfo).readInfo(reader);
+        attributeInfo.readInfo(reader);
         return attributeInfo;
     }
 
@@ -45,7 +45,7 @@ public abstract class AttributeInfo {
             case "LineNumberTable":
                 return new LineNumberTableAttribute();
             case "LocalVariableTable":
-                return null;
+                return new LocalVariableTableAttribute();
             case "SourceFile":
                 return new SourceFileAttribute(constantPool);
             case "Synthetic":

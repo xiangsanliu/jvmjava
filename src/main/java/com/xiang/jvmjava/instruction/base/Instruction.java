@@ -1,12 +1,16 @@
 package com.xiang.jvmjava.instruction.base;
 
 import com.xiang.jvmjava.classfile.rtda.Frame;
+import com.xiang.jvmjava.classfile.rtda.Slot;
+import com.xiang.jvmjava.classfile.rtda.Thread;
+import com.xiang.jvmjava.classfile.rtda.heap.Method;
 import com.xiang.jvmjava.instruction.BytecodeReader;
 import com.xiang.jvmjava.instruction.cmp.*;
 import com.xiang.jvmjava.instruction.constants.*;
 import com.xiang.jvmjava.instruction.control.Goto;
 import com.xiang.jvmjava.instruction.control.LookupSwitch;
 import com.xiang.jvmjava.instruction.control.TableSwitch;
+import com.xiang.jvmjava.instruction.control.retrun.*;
 import com.xiang.jvmjava.instruction.conversions.D2X;
 import com.xiang.jvmjava.instruction.conversions.F2X;
 import com.xiang.jvmjava.instruction.conversions.I2X;
@@ -41,6 +45,29 @@ public abstract class Instruction {
     public static void branch(Frame frame, int offset) {
         int pc = frame.getThread().getPc();
         frame.setNextPC(pc + offset);
+    }
+
+    // 新建栈帧，把参数放入栈帧
+    protected void invokeMethod(Frame invokerFrame, Method method) {
+        Thread thread = invokerFrame.getThread();
+        Frame newFrame = thread.newFrame(method);
+        thread.pushFrame(newFrame);
+        int argSlotCount = method.getArgSlotCount();
+        if (argSlotCount > 0) {
+            for (int i = argSlotCount - 1; i >= 0; i--) {
+                Slot slot = invokerFrame.getOperandStack().popSlot();
+                newFrame.getLocalVars().setSlot(i, slot);
+            }
+        }
+        if (method.isNative()) {
+            if (method.getName().equals("registerNatives")) {
+                thread.popFrame();
+            } else {
+                String msg = String.format("native method: %s.%s %s\n",
+                        method.getClass().getName(), method.getName(), method.getDescriptor());
+                throw new Error(msg);
+            }
+        }
     }
 
     public static Instruction newInstruction(int opcode) {
@@ -389,18 +416,18 @@ public abstract class Instruction {
                 return new TableSwitch();
             case 0xab:
                 return new LookupSwitch();
-            // case 0xac:
-            // 	return ireturn
-            // case 0xad:
-            // 	return lreturn
-            // case 0xae:
-            // 	return freturn
-            // case 0xaf:
-            // 	return dreturn
-            // case 0xb0:
-            // 	return areturn
-            // case 0xb1:
-            // 	return _return
+            case 0xac:
+                return new IReturn();
+            case 0xad:
+                return new LReturn();
+            case 0xae:
+                return new FReturn();
+            case 0xaf:
+                return new DRetrun();
+            case 0xb0:
+                return new ARetrun();
+            case 0xb1:
+                return new Retrun();
             case 0xb2:
                 return new GetStatic();
             case 0xb3:

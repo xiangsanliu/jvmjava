@@ -40,6 +40,10 @@ public abstract class ClassMember {
         return 0 != (this.accessFlags & AccessFlags.ACC_PROTECTED);
     }
 
+    public boolean isAbstract() {
+        return 0 != (this.accessFlags & AccessFlags.ACC_ABSTRACT);
+    }
+
     public boolean isStatic() {
         return 0 != (this.accessFlags & AccessFlags.ACC_STATIC);
     }
@@ -52,6 +56,7 @@ public abstract class ClassMember {
         return 0 != (this.accessFlags & AccessFlags.ACC_SYNTHETIC);
     }
 
+    // 当前类成员对于类D是否是可访问的
     public boolean isAccessibleTo(JvmClass d) {
         if (this.isPublic()) {
             return true;

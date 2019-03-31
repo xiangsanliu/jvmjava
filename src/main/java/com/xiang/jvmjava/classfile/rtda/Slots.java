@@ -65,6 +65,11 @@ public class Slots {
         this.vars[index].setRef(ref);
     }
 
+    public void setSlot(int index, Slot slot) {
+        this.vars[index] = slot;
+    }
+
+
     public int getInt(int index) {
         return this.vars[index].getNum32();
     }
@@ -84,6 +89,7 @@ public class Slots {
     public JvmObject getRef(int index) {
         return this.vars[index].getRef();
     }
+
 
     @Override
     public String toString() {

@@ -55,9 +55,4 @@ public class Classpath {
         this.extClasspath = Entry.newEntry(extLibPath);
     }
 
-    public static void main(String[] args) {
-        new Classpath().parseBootAndExtClasspath();
-    }
-
-
 }

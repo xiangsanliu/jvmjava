@@ -1,12 +1,10 @@
-package com.xiang.jvmjava.instruction.constants;
+package com.xiang.jvmjava.instruction.reference;
 
 import com.xiang.jvmjava.classfile.rtda.Frame;
 import com.xiang.jvmjava.classfile.rtda.OperandStack;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmConstantPool;
 import com.xiang.jvmjava.classfile.rtda.heap.ref.MethodRef;
 import com.xiang.jvmjava.instruction.base.Index16Instruction;
-
-import java.io.IOException;
 
 /**
  * @author 项三六
@@ -27,7 +25,7 @@ public class InvokeVirtual extends Index16Instruction {
                     System.out.println(stack.popInt() != 0);
                     break;
                 case "(C)V":
-                    System.out.println(stack.popInt());
+                    System.out.println(String.format("%c", stack.popInt()));
                     break;
                 case "(I)V":
                 case "(B)V":
@@ -47,6 +45,7 @@ public class InvokeVirtual extends Index16Instruction {
                     throw new Error("println: " + methodRef.getDescriptor());
 
             }
+            stack.popRef();
         }
     }
 }

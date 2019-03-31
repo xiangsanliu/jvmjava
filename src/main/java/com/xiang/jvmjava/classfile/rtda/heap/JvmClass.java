@@ -71,7 +71,7 @@ public class JvmClass {
         return new JvmObject(this);
     }
 
-    String getPackageName() {
+    public String getPackageName() {
         int i = this.name.lastIndexOf('/');
         if (i >= 0) {
             return this.name.substring(0, i);
@@ -79,13 +79,17 @@ public class JvmClass {
         return "";
     }
 
-    boolean isSubClassOf(JvmClass other) {
+    public boolean isSubClassOf(JvmClass other) {
         for (JvmClass c = this.superClass; c != null; c = c.getSuperClass()) {
             if (c == other) {
                 return true;
             }
         }
         return false;
+    }
+
+    public boolean isSuperClassOf(JvmClass other) {
+        return other.isSuperClassOf(this);
     }
 
     boolean isAssignableFrom(JvmClass other) {

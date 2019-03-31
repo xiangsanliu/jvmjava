@@ -20,6 +20,12 @@ public class Method extends ClassMember {
 
     private byte[] code;
 
+    private int argSlotCount;
+
+    public Method() {
+        this.argSlotCount = 0;
+    }
+
     static Method[] newMethods(JvmClass clazz, MemberInfo[] memberInfos) {
         Method[] methods = new Method[memberInfos.length];
         for (int i = 0; i < memberInfos.length; i++) {
@@ -27,6 +33,7 @@ public class Method extends ClassMember {
             methods[i].clazz = clazz;
             methods[i].copyMemberInfo(memberInfos[i]);
             methods[i].copyAttributes(memberInfos[i]);
+            methods[i].calcArgSlotCount();
         }
         return methods;
     }
@@ -56,5 +63,19 @@ public class Method extends ClassMember {
     public boolean isStrict() {
         return 0 != (this.accessFlags & AccessFlags.ACC_STRICT);
     }
+
+    private void calcArgSlotCount() {
+        MethodDescriptor parsedDescriptor = MethodDescriptorParser.parse(this.descriptor);
+        parsedDescriptor.getParameterTypes().forEach(e -> {
+            this.argSlotCount++;
+            if (e.equals("J") || e.equals("D")) {
+                this.argSlotCount++;
+            }
+        });
+        if (this.isStatic()) {
+            this.argSlotCount++;
+        }
+    }
+
 
 }
