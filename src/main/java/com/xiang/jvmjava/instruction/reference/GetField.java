@@ -24,7 +24,6 @@ public class GetField extends Index16Instruction {
         JvmConstantPool constantPool = frame.getMethod().getClazz().getConstantPool();
         FieldRef fieldRef = (FieldRef) constantPool.getConstant(this.index);
         Field field = fieldRef.resolvedField();
-        // todo: init class
         if (field.isStatic()) {
             throw new IncompatibleClassChangeError();
         }

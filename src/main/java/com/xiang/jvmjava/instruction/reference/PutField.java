@@ -24,7 +24,6 @@ public class PutField extends Index16Instruction {
         FieldRef fieldRef = (FieldRef) constantPool.getConstant(this.index);
         Field field = fieldRef.resolvedField();
         JvmClass clazz = field.getClazz();
-        // todo: init class
         if (field.isStatic()) {
             throw new IncompatibleClassChangeError();
         }
