@@ -1,6 +1,6 @@
 package com.xiang.jvmjava.classfile.rtda;
 
-import java.util.EmptyStackException;
+import java.util.Stack;
 
 /**
  * @author 项三六
@@ -12,45 +12,31 @@ public class JvmStack {
 
     private int maxSize;
 
-    private int size;
+    private Stack<Frame> stack;
 
-    private Frame top;
-
-    private JvmStack(int maxSize) {
+    JvmStack(int maxSize) {
         this.maxSize = maxSize;
+        this.stack = new Stack<>();
     }
 
-    public static JvmStack newStack(int maxSize) {
-        return new JvmStack(maxSize);
-    }
 
-    public void push(Frame frame) {
-        if (this.size >= this.maxSize) {
+    void push(Frame frame) {
+        if (this.stack.size() >= this.maxSize) {
             throw new StackOverflowError();
         }
-        if (this.top != null) {
-            frame.setLower(this.top);
-        }
-        this.top = frame;
-        this.size++;
+        stack.push(frame);
     }
 
-    public Frame pop() {
-        if (this.top == null) {
-            throw new EmptyStackException();
-        }
-        Frame frame = this.top;
-        this.top = frame.getLower();
-        frame.setLower(null);
-        this.size--;
-        return frame;
+    Frame pop() {
+        return this.stack.pop();
     }
 
-    public Frame top() {
-        if (this.top == null) {
-            throw new EmptyStackException();
-        }
-        return this.top;
+    Frame top() {
+        return this.stack.peek();
+    }
+
+    boolean isEmpty() {
+        return this.stack.isEmpty();
     }
 
 }

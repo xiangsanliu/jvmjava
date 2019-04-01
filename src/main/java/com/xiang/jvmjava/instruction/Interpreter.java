@@ -26,7 +26,7 @@ public class Interpreter {
         Frame frame = thread.newFrame(maxLocals, maxStack);
         thread.pushFrame(frame);
         try {
-            loop(thread, bytecode);
+            loop(thread, true);
         } catch (UnsupportedOperationException e) {
             e.printStackTrace();
             System.out.println(frame.getOperandStack());
@@ -36,26 +36,36 @@ public class Interpreter {
         }
     }
 
-    public static void interpret(Method method) throws IOException {
+    public static void interpret(Method method, boolean log) throws IOException {
         Thread thread = Thread.newThread();
         Frame frame = thread.newFrame(method);
         thread.pushFrame(frame);
-        loop(thread, method.getCode());
+        loop(thread, log);
     }
 
-    public static void loop(Thread thread, byte[] bytecode) throws IOException {
-        Frame frame = thread.popFrame();
+    private static void loop(Thread thread, boolean log) throws IOException {
         BytecodeReader reader = new BytecodeReader();
-        while (true) {
+        while (!thread.isStackEmpty()) {
+            Frame frame = thread.currentFrame();
             int pc = frame.getNextPC();
             thread.setPc(pc);
-            reader.reset(bytecode, pc);
+            reader.reset(frame.getMethod().getCode(), pc);
             Instruction instruction = Instruction.newInstruction(reader.readUint8());
             instruction.fetchOperands(reader);
             frame.setNextPC(reader.getPc());
-            System.out.println(String.format("pc: %2d inst:%s", pc, instruction.toString()));
+            if (log) {
+                logInstruction(frame, instruction);
+            }
             instruction.execute(frame);
         }
+    }
+
+    private static void logInstruction(Frame frame, Instruction instruction) {
+        Method method = frame.getMethod();
+        String className = method.getClazz().getName();
+        String methodName = method.getName();
+        int pc = frame.getThread().getPc();
+        System.out.println(String.format("%s.%s() #%2d %s", className, methodName, pc, instruction));
     }
 
 }

@@ -42,6 +42,8 @@ public class JvmClass {
 
     private Slots staticVars;
 
+    private boolean initStarted;
+
     public JvmClass(ClassFile classFile, ClassLoader classLoader) {
         this.loader = classLoader;
         this.accessFlags = classFile.getAccessFlags();
@@ -53,11 +55,19 @@ public class JvmClass {
         this.methods = Method.newMethods(this, classFile.getMethods());
     }
 
+    public void startInit() {
+        this.initStarted = true;
+    }
+
     public Method getMainMethod() {
         return this.getStaticMethod("main", "([Ljava/lang/String;)V");
     }
 
-    public Method getStaticMethod(String name, String descriptor) {
+    public Method getClinitMethod() {
+        return this.getStaticMethod("<clinit>", "()V");
+    }
+
+    private Method getStaticMethod(String name, String descriptor) {
         for (Method method : this.methods) {
             if (method.isStatic() && name.equals(method.getName()) &&
                     descriptor.equals(method.getDescriptor())) {
@@ -103,7 +113,7 @@ public class JvmClass {
         }
     }
 
-    private boolean isImplements(JvmClass inter) {
+    public boolean isImplements(JvmClass inter) {
         for (JvmClass c = this; c != null; c = c.getSuperClass()) {
             for (JvmClass i : c.getInterfaces()) {
                 if (i == inter || i.isSubInterfaceOf(inter)) {

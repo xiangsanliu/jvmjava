@@ -13,7 +13,7 @@ import java.io.IOException;
 /**
  * @author 项三六
  * @time 2019/3/29 16:10
- * @comment
+ * @comment 调用私有方法、构造方法等不需要动态绑定的方法
  */
 
 public class InvokeSpecial extends Index16Instruction {
@@ -26,7 +26,7 @@ public class InvokeSpecial extends Index16Instruction {
         JvmClass resolvedClass = methodRef.resolvedClass();
         Method resolvedMethod = methodRef.resolvedMethod();
         // 构造方法不能由其他类调用
-        if (resolvedClass.getName().equals("<init>") && resolvedMethod.getClazz() != resolvedClass) {
+        if (resolvedMethod.getName().equals("<init>") && resolvedMethod.getClazz() != resolvedClass) {
             throw new NoSuchMethodError();
         }
         if (resolvedMethod.isStatic()) {
@@ -37,6 +37,7 @@ public class InvokeSpecial extends Index16Instruction {
         if (ref == null) {
             throw new NullPointerException();
         }
+        // protect方法只能被声明该方法的类或子类调用
         if (resolvedMethod.isProtected() &&
                 resolvedMethod.getClazz().isSuperClassOf(currentClass) &&
                 !resolvedMethod.getClazz().getPackageName().equals(currentClass.getPackageName()) &&

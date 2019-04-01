@@ -32,12 +32,6 @@ public class Frame {
     @Getter
     private int nextPC;
 
-    private Frame(Slots localVars, OperandStack operandStack, Thread thread) {
-        this.localVars = localVars;
-        this.operandStack = operandStack;
-        this.thread = thread;
-    }
-
     public Frame(Thread thread, Method method) {
         this.thread = thread;
         this.method = method;
@@ -45,13 +39,19 @@ public class Frame {
         this.operandStack = OperandStack.newOperandStack(method.getMaxStack());
     }
 
+    public void revertNextPC() {
+        this.nextPC = this.thread.getPc();
+    }
+
 
     static Frame newFrame(Thread thread, int maxLocals, int maxStack) {
         return new Frame(Slots.newLocalVars(maxLocals), OperandStack.newOperandStack(maxStack), thread);
     }
 
-    public static Frame newFrame(Thread thread, Method method) {
-        return new Frame(thread, method);
+    private Frame(Slots localVars, OperandStack operandStack, Thread thread) {
+        this.localVars = localVars;
+        this.operandStack = operandStack;
+        this.thread = thread;
     }
 
 

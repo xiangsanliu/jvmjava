@@ -4,6 +4,8 @@ import com.xiang.jvmjava.classfile.rtda.heap.Method;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Stack;
+
 /**
  * @author 项三六
  * @time 2019/3/16 18:56
@@ -25,10 +27,10 @@ public class Thread {
     @Setter
     private int pc;
 
-    private JvmStack stack;
+    private Stack<Frame> stack;
 
     private Thread(int maxSize) {
-        this.stack = JvmStack.newStack(maxSize);
+        this.stack = new Stack<>();
     }
 
     public static Thread newThread() {
@@ -44,7 +46,11 @@ public class Thread {
     }
 
     public Frame topFrame() {
-        return this.stack.top();
+        return this.stack.peek();
+    }
+
+    public Frame currentFrame() {
+        return this.stack.peek();
     }
 
     public Frame newFrame(int maxLocals, int maxStack) {
@@ -55,6 +61,12 @@ public class Thread {
         return new Frame(this, method);
     }
 
+    public boolean isStackEmpty() {
+        return this.stack.isEmpty();
+    }
 
-
+    @Override
+    public String toString() {
+        return this.stack.toString();
+    }
 }

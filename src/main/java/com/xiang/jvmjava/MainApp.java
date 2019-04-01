@@ -38,7 +38,7 @@ public class MainApp {
             JvmClass mainClass = classLoader.loadClass(className);
             Method mainMethod = mainClass.getMainMethod();
             if (mainMethod != null) {
-                Interpreter.interpret(mainMethod);
+                Interpreter.interpret(mainMethod, true);
             }
         } catch (IOException e) {
             e.printStackTrace();

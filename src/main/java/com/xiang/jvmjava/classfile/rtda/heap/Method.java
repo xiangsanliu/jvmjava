@@ -72,7 +72,7 @@ public class Method extends ClassMember {
                 this.argSlotCount++;
             }
         });
-        if (this.isStatic()) {
+        if (!this.isStatic()) {
             this.argSlotCount++;
         }
     }

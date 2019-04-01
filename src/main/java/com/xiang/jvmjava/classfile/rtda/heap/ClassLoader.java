@@ -63,13 +63,11 @@ public class ClassLoader {
     private void resolveInterfaces(JvmClass clazz) throws IOException {
         String[] interfaceNames = clazz.getInterfaceNames();
         int count = interfaceNames.length;
-        if (count > 0) {
-            JvmClass[] interfaces = new JvmClass[count];
-            for (int i = 0; i < count; i++) {
-                interfaces[i] = clazz.getLoader().loadClass(interfaceNames[i]);
-            }
-            clazz.setInterfaces(interfaces);
+        JvmClass[] interfaces = new JvmClass[count];
+        for (int i = 0; i < count; i++) {
+            interfaces[i] = clazz.getLoader().loadClass(interfaceNames[i]);
         }
+        clazz.setInterfaces(interfaces);
     }
 
     private void link(JvmClass clazz) {

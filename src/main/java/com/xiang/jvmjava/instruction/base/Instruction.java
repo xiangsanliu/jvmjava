@@ -3,6 +3,7 @@ package com.xiang.jvmjava.instruction.base;
 import com.xiang.jvmjava.classfile.rtda.Frame;
 import com.xiang.jvmjava.classfile.rtda.Slot;
 import com.xiang.jvmjava.classfile.rtda.Thread;
+import com.xiang.jvmjava.classfile.rtda.heap.JvmClass;
 import com.xiang.jvmjava.classfile.rtda.heap.Method;
 import com.xiang.jvmjava.instruction.BytecodeReader;
 import com.xiang.jvmjava.instruction.cmp.*;
@@ -66,6 +67,30 @@ public abstract class Instruction {
                 String msg = String.format("native method: %s.%s %s\n",
                         method.getClass().getName(), method.getName(), method.getDescriptor());
                 throw new Error(msg);
+            }
+        }
+    }
+
+    protected void initClass(Thread thread, JvmClass clazz) {
+        clazz.startInit();
+        scheduleClinit(thread, clazz);
+        initSuperClass(thread, clazz);
+    }
+
+    private void scheduleClinit(Thread thread, JvmClass clazz) {
+        Method clinit = clazz.getClinitMethod();
+        if (clinit != null) {
+            // exec <clinit>
+            Frame newFrame = thread.newFrame(clinit);
+            thread.pushFrame(newFrame);
+        }
+    }
+
+    private void initSuperClass(Thread thread, JvmClass clazz) {
+        if (!clazz.isInterface()) {
+            JvmClass superClazz = clazz.getSuperClass();
+            if (superClazz != null && !superClazz.isInitStarted()) {
+                initClass(thread, superClazz);
             }
         }
     }
@@ -440,10 +465,10 @@ public abstract class Instruction {
                 return new InvokeVirtual();
             case 0xb7:
                 return new InvokeSpecial();
-            // case 0xb8:
-            // 	return &INVOKE_STATIC{}
-            // case 0xb9:
-            // 	return &INVOKE_INTERFACE{}
+            case 0xb8:
+                return new InvokeStatic();
+            case 0xb9:
+                return new InvokeInterface();
             // case 0xba:
             // 	return &INVOKE_DYNAMIC{}
             case 0xbb:

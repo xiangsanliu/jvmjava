@@ -23,7 +23,11 @@ public class New extends Index16Instruction {
         JvmConstantPool constantPool = frame.getMethod().getClazz().getConstantPool();
         ClassRef classRef = (ClassRef) constantPool.getConstant(this.index);
         JvmClass clazz = classRef.resolvedClass();
-        // todo: init class
+        if (!clazz.isInitStarted()) {
+            frame.revertNextPC();
+            initClass(frame.getThread(), clazz);
+            return;
+        }
         if (clazz.isInterface() || clazz.isAbstract()) {
             throw new InstantiationError();
         }
