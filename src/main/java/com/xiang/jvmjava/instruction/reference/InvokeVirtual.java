@@ -56,7 +56,7 @@ public class InvokeVirtual extends Index16Instruction {
                 System.out.println(stack.popInt() != 0);
                 break;
             case "(C)V":
-                System.out.println(String.format("%c", stack.popInt()));
+                System.out.printf("%c\n", stack.popInt());
                 break;
             case "(I)V":
             case "(B)V":

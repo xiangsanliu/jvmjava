@@ -44,7 +44,7 @@ public class ClassLoader {
         JvmClass clazz = defineClass(data);
         link(clazz);
         if (Cmd.log) {
-            System.out.println(String.format("[Loaded %s]", name));
+            System.out.printf("[Loaded %s]\n", name);
         }
         return clazz;
     }
