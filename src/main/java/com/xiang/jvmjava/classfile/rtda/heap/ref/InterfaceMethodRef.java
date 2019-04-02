@@ -3,7 +3,7 @@ package com.xiang.jvmjava.classfile.rtda.heap.ref;
 import com.xiang.jvmjava.classfile.constantinfo.ConstantInterfaceMethodRefInfo;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmClass;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmConstantPool;
-import com.xiang.jvmjava.classfile.rtda.heap.Method;
+import com.xiang.jvmjava.classfile.rtda.heap.member.Method;
 
 import java.io.IOException;
 

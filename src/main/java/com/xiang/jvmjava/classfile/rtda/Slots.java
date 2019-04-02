@@ -16,29 +16,11 @@ public class Slots {
 
     private Slot[] vars;
 
-    public Slots(Slot[] vars) {
-        this.vars = vars;
-    }
-
     public Slots(int size) {
         this.vars = new Slot[size];
         for (int i = 0; i < size; i++) {
             this.vars[i] = new Slot();
         }
-    }
-
-    public static Slots newSlots(int count) {
-        if (count > 0) {
-            return new Slots(new Slot[count]);
-        }
-        return null;
-    }
-
-    public static Slots newLocalVars(int maxLocals) {
-        if (maxLocals > 0) {
-            return new Slots(new Slot[maxLocals]);
-        }
-        return null;
     }
 
     public void setInt(int index, int val) {

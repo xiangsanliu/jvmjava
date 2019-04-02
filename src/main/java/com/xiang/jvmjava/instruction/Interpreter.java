@@ -1,10 +1,8 @@
 package com.xiang.jvmjava.instruction;
 
-import com.xiang.jvmjava.classfile.MemberInfo;
-import com.xiang.jvmjava.classfile.attribute.CodeAttribute;
 import com.xiang.jvmjava.classfile.rtda.Frame;
 import com.xiang.jvmjava.classfile.rtda.Thread;
-import com.xiang.jvmjava.classfile.rtda.heap.Method;
+import com.xiang.jvmjava.classfile.rtda.heap.member.Method;
 import com.xiang.jvmjava.instruction.base.Instruction;
 
 import java.io.IOException;
@@ -17,23 +15,7 @@ import java.io.IOException;
 
 public class Interpreter {
 
-    public static void interpret(MemberInfo memberInfo) {
-        CodeAttribute codeAttr = memberInfo.getCodeAttribute();
-        int maxLocals = codeAttr.getMaxLocals();
-        int maxStack = codeAttr.getMaxStack();
-        Thread thread = new Thread();
-        Frame frame = thread.newFrame(maxLocals, maxStack);
-        thread.pushFrame(frame);
-        try {
-            loop(thread, true);
-        } catch (UnsupportedOperationException e) {
-            e.printStackTrace();
-            System.out.println(frame.getOperandStack());
-            System.out.println(frame.getLocalVars());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+
 
     public static void interpret(Method method, boolean log) throws IOException {
         Thread thread = new Thread();

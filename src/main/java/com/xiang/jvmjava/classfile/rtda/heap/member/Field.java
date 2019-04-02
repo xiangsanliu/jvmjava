@@ -1,7 +1,9 @@
-package com.xiang.jvmjava.classfile.rtda.heap;
+package com.xiang.jvmjava.classfile.rtda.heap.member;
 
 import com.xiang.jvmjava.classfile.MemberInfo;
 import com.xiang.jvmjava.classfile.attribute.ConstantValueAttribute;
+import com.xiang.jvmjava.classfile.rtda.heap.AccessFlags;
+import com.xiang.jvmjava.classfile.rtda.heap.JvmClass;
 import lombok.Getter;
 import lombok.Setter;
 

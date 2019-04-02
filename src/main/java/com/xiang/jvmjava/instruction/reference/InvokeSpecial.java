@@ -4,7 +4,7 @@ import com.xiang.jvmjava.classfile.rtda.Frame;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmClass;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmConstantPool;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmObject;
-import com.xiang.jvmjava.classfile.rtda.heap.Method;
+import com.xiang.jvmjava.classfile.rtda.heap.member.Method;
 import com.xiang.jvmjava.classfile.rtda.heap.ref.MethodRef;
 import com.xiang.jvmjava.instruction.base.Index16Instruction;
 

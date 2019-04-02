@@ -3,7 +3,7 @@ package com.xiang.jvmjava.classfile.rtda.heap.ref;
 import com.xiang.jvmjava.classfile.constantinfo.ConstantMemberRefInfo;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmClass;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmConstantPool;
-import com.xiang.jvmjava.classfile.rtda.heap.Method;
+import com.xiang.jvmjava.classfile.rtda.heap.member.Method;
 import com.xiang.jvmjava.util.Pair;
 import lombok.Getter;
 

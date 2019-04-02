@@ -18,7 +18,7 @@ public class JvmObject {
 
     public JvmObject(JvmClass clazz) {
         this.clazz = clazz;
-        this.fields = Slots.newSlots(clazz.getInstanceSlotCount());
+        this.fields = new Slots(clazz.getInstanceSlotCount());
     }
 
     public boolean isInstantOf(JvmClass clazz) {

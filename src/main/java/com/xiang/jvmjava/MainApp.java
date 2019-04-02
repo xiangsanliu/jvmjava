@@ -4,7 +4,7 @@ import com.xiang.jvmjava.classfile.ClassFile;
 import com.xiang.jvmjava.classfile.MemberInfo;
 import com.xiang.jvmjava.classfile.rtda.heap.ClassLoader;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmClass;
-import com.xiang.jvmjava.classfile.rtda.heap.Method;
+import com.xiang.jvmjava.classfile.rtda.heap.member.Method;
 import com.xiang.jvmjava.classpath.Classpath;
 import com.xiang.jvmjava.instruction.Interpreter;
 

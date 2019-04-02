@@ -2,7 +2,7 @@ package com.xiang.jvmjava.classfile.rtda;
 
 import com.xiang.jvmjava.classfile.rtda.heap.JvmObject;
 
-import java.util.Arrays;
+import java.util.Stack;
 
 /**
  * @author 项三六
@@ -11,53 +11,52 @@ import java.util.Arrays;
  */
 public class OperandStack {
 
-    private int size;
+    private int maxStack;
 
-    private Slot[] slots;
+    private Stack<Slot> slots;
 
-    private OperandStack(int maxStack) {
-        Slot[] slots = new Slot[maxStack];
-        for (int i = 0; i < maxStack; i++) {
-            slots[i] = new Slot();
-        }
-        this.size = 0;
-        this.slots = slots;
-    }
-
-    static OperandStack newOperandStack(int maxStack) {
-        if (maxStack > 0) {
-            return new OperandStack(maxStack);
-        }
-        return null;
+    public OperandStack(int maxStack) {
+        this.maxStack = maxStack;
+        this.slots = new Stack<>();
     }
 
     public void pushInt(int val) {
-        this.slots[this.size++].setNum32(val);
+        checkStackSize();
+        Slot slot = new Slot();
+        slot.setNum32(val);
+        this.slots.push(slot);
     }
 
     public int popInt() {
-        return this.slots[--this.size].getNum32();
+        return this.slots.pop().getNum32();
     }
 
     public void pushFloat(float val) {
-        this.slots[this.size++].setNum32(Float.floatToIntBits(val));
+        checkStackSize();
+        Slot slot = new Slot();
+        slot.setNum32(Float.floatToIntBits(val));
+        this.slots.push(slot);
     }
 
     public float popFloat() {
-        return Float.intBitsToFloat(this.slots[--this.size].getNum32());
+        return Float.intBitsToFloat(this.slots.pop().getNum32());
     }
 
     public void pushLong(long val) {
-        this.slots[this.size++].setNum64(val);
-        this.size++;
+        checkStackSize();
+        Slot slot = new Slot();
+        slot.setNum64(val);
+        this.slots.push(slot);
+        this.slots.push(null);
     }
 
     public long popLong() {
-        this.size--;
-        return this.slots[--this.size].getNum64();
+        this.slots.pop();
+        return this.slots.pop().getNum64();
     }
 
     public void pushDouble(double val) {
+        checkStackSize();
         this.pushLong(Double.doubleToLongBits(val));
     }
 
@@ -66,30 +65,37 @@ public class OperandStack {
     }
 
     public void pushRef(JvmObject ref) {
-        this.slots[this.size++].setRef(ref);
+        checkStackSize();
+        Slot slot = new Slot();
+        slot.setRef(ref);
+        this.slots.push(slot);
     }
 
     public JvmObject popRef() {
-        this.size--;
-        JvmObject ref = this.slots[this.size].getRef();
-        this.slots[this.size].setRef(null);
-        return ref;
+        return this.slots.pop().getRef();
     }
 
     public void pushSlot(Slot slot) {
-        this.slots[this.size++] = slot;
+        checkStackSize();
+        this.slots.push(slot);
     }
 
     public Slot popSlot() {
-        return this.slots[--this.size];
+        return this.slots.pop();
     }
 
     public JvmObject getRefFromTop(int n) {
-        return this.slots[this.size - 1 - n].getRef();
+        return this.slots.get(this.slots.size() - 1 - n).getRef();
     }
 
     @Override
     public String toString() {
-        return Arrays.toString(slots);
+        return slots.toString();
+    }
+
+    private void checkStackSize() {
+        if (this.slots.size() > this.maxStack) {
+            throw new StackOverflowError();
+        }
     }
 }

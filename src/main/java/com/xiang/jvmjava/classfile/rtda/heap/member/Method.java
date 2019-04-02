@@ -1,7 +1,9 @@
-package com.xiang.jvmjava.classfile.rtda.heap;
+package com.xiang.jvmjava.classfile.rtda.heap.member;
 
 import com.xiang.jvmjava.classfile.MemberInfo;
 import com.xiang.jvmjava.classfile.attribute.CodeAttribute;
+import com.xiang.jvmjava.classfile.rtda.heap.AccessFlags;
+import com.xiang.jvmjava.classfile.rtda.heap.JvmClass;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,7 +28,7 @@ public class Method extends ClassMember {
         this.argSlotCount = 0;
     }
 
-    static Method[] newMethods(JvmClass clazz, MemberInfo[] memberInfos) {
+    public static Method[] newMethods(JvmClass clazz, MemberInfo[] memberInfos) {
         Method[] methods = new Method[memberInfos.length];
         for (int i = 0; i < memberInfos.length; i++) {
             methods[i] = new Method();

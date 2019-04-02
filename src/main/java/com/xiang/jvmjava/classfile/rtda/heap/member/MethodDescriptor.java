@@ -1,4 +1,4 @@
-package com.xiang.jvmjava.classfile.rtda.heap;
+package com.xiang.jvmjava.classfile.rtda.heap.member;
 
 import lombok.Getter;
 import lombok.Setter;

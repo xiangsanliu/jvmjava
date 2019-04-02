@@ -14,7 +14,7 @@ import java.io.IOException;
  */
 @Getter
 @Setter
-public abstract class SymRef {
+public class SymRef {
 
     protected JvmConstantPool constantPool;
 

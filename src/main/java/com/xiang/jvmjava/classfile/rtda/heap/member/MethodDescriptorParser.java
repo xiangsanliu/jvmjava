@@ -1,4 +1,4 @@
-package com.xiang.jvmjava.classfile.rtda.heap;
+package com.xiang.jvmjava.classfile.rtda.heap.member;
 
 /**
  * @author 项三六
@@ -6,7 +6,7 @@ package com.xiang.jvmjava.classfile.rtda.heap;
  * @comment 解析方法描述（解析参数列表）
  */
 
-public class MethodDescriptorParser {
+class MethodDescriptorParser {
 
     private String raw;
 

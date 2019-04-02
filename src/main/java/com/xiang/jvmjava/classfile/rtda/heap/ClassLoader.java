@@ -2,6 +2,7 @@ package com.xiang.jvmjava.classfile.rtda.heap;
 
 import com.xiang.jvmjava.classfile.ClassFile;
 import com.xiang.jvmjava.classfile.rtda.Slots;
+import com.xiang.jvmjava.classfile.rtda.heap.member.Field;
 import com.xiang.jvmjava.classpath.Classpath;
 import lombok.Getter;
 import lombok.Setter;

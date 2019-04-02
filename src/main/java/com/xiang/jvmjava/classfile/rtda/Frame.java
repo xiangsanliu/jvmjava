@@ -1,6 +1,6 @@
 package com.xiang.jvmjava.classfile.rtda;
 
-import com.xiang.jvmjava.classfile.rtda.heap.Method;
+import com.xiang.jvmjava.classfile.rtda.heap.member.Method;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -35,20 +35,15 @@ public class Frame {
     public Frame(Thread thread, Method method) {
         this.thread = thread;
         this.method = method;
-        this.localVars = Slots.newLocalVars(method.getMaxLocals());
-        this.operandStack = OperandStack.newOperandStack(method.getMaxStack());
+        this.localVars = new Slots(method.getMaxLocals());
+        this.operandStack = new OperandStack(method.getMaxStack());
     }
 
     public void revertNextPC() {
         this.nextPC = this.thread.getPc();
     }
 
-
-    static Frame newFrame(Thread thread, int maxLocals, int maxStack) {
-        return new Frame(Slots.newLocalVars(maxLocals), OperandStack.newOperandStack(maxStack), thread);
-    }
-
-    private Frame(Slots localVars, OperandStack operandStack, Thread thread) {
+    public Frame(Slots localVars, OperandStack operandStack, Thread thread) {
         this.localVars = localVars;
         this.operandStack = operandStack;
         this.thread = thread;

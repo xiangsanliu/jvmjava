@@ -3,10 +3,10 @@ package com.xiang.jvmjava.instruction.reference;
 import com.xiang.jvmjava.classfile.rtda.Frame;
 import com.xiang.jvmjava.classfile.rtda.OperandStack;
 import com.xiang.jvmjava.classfile.rtda.Slots;
-import com.xiang.jvmjava.classfile.rtda.heap.Field;
+import com.xiang.jvmjava.classfile.rtda.heap.member.Field;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmClass;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmConstantPool;
-import com.xiang.jvmjava.classfile.rtda.heap.Method;
+import com.xiang.jvmjava.classfile.rtda.heap.member.Method;
 import com.xiang.jvmjava.classfile.rtda.heap.ref.FieldRef;
 import com.xiang.jvmjava.instruction.base.Index16Instruction;
 
