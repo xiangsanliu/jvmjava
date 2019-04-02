@@ -146,8 +146,8 @@ public class ClassLoader {
                 case "D":
                     vars.setDouble(field.getSlotId(), (Double) constantPool.getConstant(index));
                     break;
-                case "Ljava/lang/String":
-                    // TODO
+                case "Ljava/lang/String;":
+                    throw new Error("todo");
             }
         }
     }

@@ -29,7 +29,7 @@ public class DUP extends NoOperandsInstruction {
         stack.pushSlot(slot);
         stack.pushSlot(new Slot(slot));  
         // In function new Slot(slot) we generate a new object and duplicate all member from old object to the new one. 
-        // This is also called "Deep Copy".
+        // This is also called "Shallow Copy".
     }
 }
 ```
