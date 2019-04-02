@@ -29,15 +29,21 @@ public class Thread {
 
     private Stack<Frame> stack;
 
+    private int maxSize;
+
+    public Thread() {
+        this(1024);
+    }
+
     private Thread(int maxSize) {
+        this.maxSize = maxSize;
         this.stack = new Stack<>();
     }
 
-    public static Thread newThread() {
-        return new Thread(1024);
-    }
-
     public void pushFrame(Frame frame) {
+        if (this.stack.size() > this.maxSize) {
+            throw new StackOverflowError();
+        }
         this.stack.push(frame);
     }
 

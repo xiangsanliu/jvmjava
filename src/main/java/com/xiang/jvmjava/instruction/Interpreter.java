@@ -21,8 +21,7 @@ public class Interpreter {
         CodeAttribute codeAttr = memberInfo.getCodeAttribute();
         int maxLocals = codeAttr.getMaxLocals();
         int maxStack = codeAttr.getMaxStack();
-        byte[] bytecode = codeAttr.getCode();
-        Thread thread = Thread.newThread();
+        Thread thread = new Thread();
         Frame frame = thread.newFrame(maxLocals, maxStack);
         thread.pushFrame(frame);
         try {
@@ -37,7 +36,7 @@ public class Interpreter {
     }
 
     public static void interpret(Method method, boolean log) throws IOException {
-        Thread thread = Thread.newThread();
+        Thread thread = new Thread();
         Frame frame = thread.newFrame(method);
         thread.pushFrame(frame);
         loop(thread, log);
