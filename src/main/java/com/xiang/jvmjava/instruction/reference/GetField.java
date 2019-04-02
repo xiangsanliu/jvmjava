@@ -59,7 +59,7 @@ public class GetField extends Index16Instruction {
                 stack.pushRef(slots.getRef(slotId));
                 break;
             default:
-                // todo
+                throw new Error("todo");
         }
     }
 }

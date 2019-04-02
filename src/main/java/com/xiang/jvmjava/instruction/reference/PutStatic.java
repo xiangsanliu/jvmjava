@@ -68,7 +68,7 @@ public class PutStatic extends Index16Instruction {
                 slots.setRef(slotId, stack.popRef());
                 break;
             default:
-                // todo
+                throw new Error("todo");
         }
     }
 }

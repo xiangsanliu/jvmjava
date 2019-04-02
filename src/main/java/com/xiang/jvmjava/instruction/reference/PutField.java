@@ -86,7 +86,7 @@ public class PutField extends Index16Instruction {
                 ref.getFields().setRef(slotId, r);
                 break;
             default:
-                // todo
+                throw new Error("todo");
         }
     }
 }

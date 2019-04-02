@@ -26,11 +26,11 @@ public class LDC extends Index8Instruction {
         } else if (val instanceof Float) {
             stack.pushFloat((Float) val);
         } else if (val instanceof String) {
-            // todo
+            throw new Error("todo");
         } else if (val instanceof ClassRef) {
-            // todo
+            throw new Error("todo");
         } else {
-            // todo
+            throw new Error("todo");
         }
     }
 }
