@@ -1,5 +1,6 @@
 package com.xiang.jvmjava.instruction;
 
+import com.xiang.jvmjava.Cmd;
 import com.xiang.jvmjava.classfile.rtda.Frame;
 import com.xiang.jvmjava.classfile.rtda.Thread;
 import com.xiang.jvmjava.classfile.rtda.heap.member.Method;
@@ -16,25 +17,24 @@ import java.io.IOException;
 public class Interpreter {
 
 
-
-    public static void interpret(Method method, boolean log) throws IOException {
+    public static void interpret(Method method) throws IOException {
         Thread thread = new Thread();
         Frame frame = thread.newFrame(method);
         thread.pushFrame(frame);
-        loop(thread, log);
+        loop(thread);
     }
 
-    private static void loop(Thread thread, boolean log) throws IOException {
+    private static void loop(Thread thread) throws IOException {
         BytecodeReader reader = new BytecodeReader();
         while (!thread.isStackEmpty()) {
             Frame frame = thread.currentFrame();
             int pc = frame.getNextPC();
             thread.setPc(pc);
             reader.reset(frame.getMethod().getCode(), pc);
-            Instruction instruction = Instruction.newInstruction(reader.readUint8());
+            Instruction instruction = InstructionFactory.newInstruction(reader.readUint8());
             instruction.fetchOperands(reader);
             frame.setNextPC(reader.getPc());
-            if (log) {
+            if (Cmd.log) {
                 logInstruction(frame, instruction);
             }
             instruction.execute(frame);

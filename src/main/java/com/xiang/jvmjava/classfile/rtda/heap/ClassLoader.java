@@ -1,5 +1,6 @@
 package com.xiang.jvmjava.classfile.rtda.heap;
 
+import com.xiang.jvmjava.Cmd;
 import com.xiang.jvmjava.classfile.ClassFile;
 import com.xiang.jvmjava.classfile.rtda.Slots;
 import com.xiang.jvmjava.classfile.rtda.heap.member.Field;
@@ -42,7 +43,9 @@ public class ClassLoader {
         byte[] data = this.classpath.readClass(name);
         JvmClass clazz = defineClass(data);
         link(clazz);
-        System.out.println(String.format("[Loaded %s]", name));
+        if (Cmd.log) {
+            System.out.println(String.format("[Loaded %s]", name));
+        }
         return clazz;
     }
 

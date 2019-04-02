@@ -23,6 +23,8 @@ public class Cmd {
 
     private boolean version;
 
+    public static boolean log;
+
     private Options options;
 
     private Cmd() {
@@ -30,6 +32,7 @@ public class Cmd {
         this.options.addOption("cp", "classpath", true, "Specify classpath");
         this.options.addOption("v", "version", false, "Show version");
         this.options.addOption("h", "help", false, "Help");
+        this.options.addOption("l", "log", false, "Show log");
     }
 
     void printHelp() {
@@ -46,6 +49,9 @@ public class Cmd {
         CommandLine commandLine;
         try {
             commandLine = parser.parse(cmd.getOptions(), args);
+            if (commandLine.hasOption("l")) {
+                Cmd.log = true;
+            }
             if (commandLine.hasOption("v")) {
                 cmd.setVersion(true);
                 return cmd;
