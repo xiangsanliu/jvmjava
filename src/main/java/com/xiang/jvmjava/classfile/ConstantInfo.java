@@ -33,7 +33,7 @@ public abstract class ConstantInfo {
     static ConstantInfo readConstantInfo(ClassReader reader, ConstantPool constantPool) {
         int tag = reader.readUint8();
         ConstantInfo constantInfo = newConstantInfo(tag, constantPool);
-        Objects.requireNonNull(constantInfo).readInfo(reader);
+        constantInfo.readInfo(reader);
         return constantInfo;
     }
 
@@ -62,11 +62,11 @@ public abstract class ConstantInfo {
             case ConstantNameAndType:
                 return new ConstantNameAndTypeInfo();
             case ConstantMethodType:
-                return null;
+                return new ConstantMethodTypeInfo();
             case ConstantMethodHandle:
-                return null;
+                return new ConstantMethodHandleInfo();
             case ConstantInvokeDynamic:
-                return null;
+                return new ConstantInvokeDynamicInfo();
             default:
                 throw new ClassFormatException("constant pool tag");
         }
