@@ -4,7 +4,12 @@ Reference to [jvm-go](https://github.com/zxh0/jvmgo-book ).
 
 ### Problems And Solutions
 #### Pointer and reference
-For there is no pointer like C++ in Java, only reference can we use to simulate pointer. But when it comes to some instruction like dup(Duplicate the top operand stack value), if we simply duplicate the reference, problems would occur.
+#### Deep copy or Shallow copy
+Parameter passing in Java always means reference passing (except for the primary types such as int, short ...). But attention must be paid when facing situations that need value passing.
+<br/>
+e.g.
+<br/>
+To implement instruction like dup(Duplicate the top operand stack value), if we simply duplicate the reference, problems would occur.
 ```java
 public class DUP extends NoOperandsInstruction {
 
@@ -17,7 +22,19 @@ public class DUP extends NoOperandsInstruction {
     }
 }
 ```
-If we do something to the top element of the stack, the second top of the stack would do the same, since they refer to the same Object.
+If we do something to the top element of the stack, the second top element of the stack would do the same, since they refer to the same Object.
+<br>
+e.g.
+```java
+public class Test {
+    public void test() {
+        Slot slot1 = stack.pop();
+        slot1.setRef(null);
+        Slot slot2 = stack.pop();
+        slot2.getRef().doSomething();           // throw NullPointerException.
+    }
+}
+```
 So the following code would be right:
 ```java
 public class DUP extends NoOperandsInstruction {
