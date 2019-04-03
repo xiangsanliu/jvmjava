@@ -36,6 +36,9 @@ public class ClassLoader {
         if (clazz != null) {
             return clazz;
         }
+        if (name.charAt(0) == '[') {
+            return loadArrayClass(name);
+        }
         return loadNonArrayClass(name);
     }
 
@@ -43,6 +46,23 @@ public class ClassLoader {
         byte[] data = this.classpath.readClass(name);
         JvmClass clazz = defineClass(data);
         link(clazz);
+        if (Cmd.log) {
+            System.out.printf("[Loaded %s]\n", name);
+        }
+        return clazz;
+    }
+
+    private JvmClass loadArrayClass(String name) throws IOException {
+        JvmClass clazz = new JvmClass();
+        clazz.setAccessFlags(AccessFlags.ACC_PUBLIC);
+        clazz.setName(name);
+        clazz.setLoader(this);
+        clazz.setInitStarted(true);
+        clazz.setSuperClass(this.loadClass("java/lang/Object"));
+        clazz.setInterfaces(new JvmClass[]{
+                this.loadClass("java/lang/Cloneable"),
+                this.loadClass("java/io/Serializable")});
+        this.classMap.put("name", clazz);
         if (Cmd.log) {
             System.out.printf("[Loaded %s]\n", name);
         }

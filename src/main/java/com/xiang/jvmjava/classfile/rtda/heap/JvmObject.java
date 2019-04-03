@@ -2,16 +2,22 @@
 package com.xiang.jvmjava.classfile.rtda.heap;
 
 import com.xiang.jvmjava.classfile.rtda.Slots;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * @author 项三六
  * @time 2019/3/23 16:50
  * @comment
  */
+@NoArgsConstructor
 public class JvmObject {
 
+    @Getter
     private JvmClass clazz;
 
+    @Setter
     private Object data;
 
     public JvmObject(JvmClass clazz) {
@@ -27,18 +33,56 @@ public class JvmObject {
         return clazz.isAssignableFrom(this.clazz);
     }
 
-    public Byte[] getBytes() {
-        return (Byte[]) this.data;
+    public byte[] getBytes() {
+        return (byte[]) this.data;
     }
 
-    public Short[] getShorts() {
-        return (Short[]) this.data;
+    public short[] getShorts() {
+        return (short[]) this.data;
     }
 
-    public Integer[] getIntegers() {
-        return (Integer[]) this.data;
+    public int[] getInts() {
+        return (int[]) this.data;
     }
 
+    public long[] getLongs() {
+        return (long[]) this.data;
+    }
 
+    public char[] getChars() {
+        return (char[]) this.data;
+    }
+
+    public float[] getFloats() {
+        return (float[]) this.data;
+    }
+
+    public double[] getDoubles() {
+        return (double[]) this.data;
+    }
+
+    public JvmObject[] getRefs() {
+        return (JvmObject[]) this.data;
+    }
+
+    public int getArrayLength() {
+        if (this.data instanceof byte[]) {
+            return getBytes().length;
+        } else if (this.data instanceof short[]) {
+            return getShorts().length;
+        } else if (this.data instanceof int[]) {
+            return getInts().length;
+        } else if (this.data instanceof long[]) {
+            return getLongs().length;
+        } else if (this.data instanceof char[]) {
+            return getChars().length;
+        } else if (this.data instanceof float[]) {
+            return getFloats().length;
+        } else if (this.data instanceof double[]) {
+            return getDoubles().length;
+        } else {
+            return getRefs().length;
+        }
+    }
 
 }

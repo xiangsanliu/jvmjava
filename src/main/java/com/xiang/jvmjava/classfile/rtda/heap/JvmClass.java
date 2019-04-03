@@ -5,7 +5,12 @@ import com.xiang.jvmjava.classfile.rtda.Slots;
 import com.xiang.jvmjava.classfile.rtda.heap.member.Field;
 import com.xiang.jvmjava.classfile.rtda.heap.member.Method;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -16,6 +21,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class JvmClass {
 
     private int accessFlags;
@@ -45,6 +51,20 @@ public class JvmClass {
     private Slots staticVars;
 
     private boolean initStarted;
+
+    private static Map<String, String> primitiveTypes = new HashMap<>();
+
+    static {
+        primitiveTypes.put("void", "V");
+        primitiveTypes.put("boolean", "Z");
+        primitiveTypes.put("byte", "B");
+        primitiveTypes.put("short", "S");
+        primitiveTypes.put("int", "I");
+        primitiveTypes.put("long", "J");
+        primitiveTypes.put("char", "C");
+        primitiveTypes.put("float", "F");
+        primitiveTypes.put("double", "D");
+    }
 
     public JvmClass(ClassFile classFile, ClassLoader classLoader) {
         this.loader = classLoader;
@@ -81,6 +101,88 @@ public class JvmClass {
 
     public JvmObject newObject() {
         return new JvmObject(this);
+    }
+
+    private JvmObject newObject(Object data) {
+        JvmObject object = new JvmObject(this);
+        object.setData(data);
+        return object;
+    }
+
+    public JvmObject newArray(int count) {
+        if (!isArray()) {
+            throw new Error("Not array class: " + this.name);
+        }
+        switch (this.name) {
+            case "[Z":
+            case "[B":
+                return newObject(new byte[count]);
+            case "[C":
+            case "[S":
+                return newObject(new short[count]);
+            case "[I":
+                return newObject(new int[count]);
+            case "[J":
+                return newObject(new long[count]);
+            case "[F":
+                return newObject(new float[count]);
+            case "[D":
+                return newObject(new double[count]);
+            default:
+                JvmObject[] objects = new JvmObject[count];
+                for (int i = 0; i < count; i++) {
+                    objects[i] = new JvmObject();
+                }
+                return newObject(objects);
+        }
+    }
+
+    public JvmClass getElementClass() throws IOException {
+        String name = getElementClassName(this.name);
+        return this.loader.loadClass(name);
+    }
+
+    public JvmClass getArrayClass() throws IOException {
+        return this.loader.loadClass(getArrayClassName(this.name));
+    }
+
+    private String getArrayClassName(String className) {
+        return "[" + toDescriptor(className);
+    }
+
+    private String getElementClassName(String name) {
+        if (name.charAt(0) == '[') {
+            String descriptor = name.substring(1);
+            return toClassName(descriptor);
+        }
+        throw new Error("Not array: " + name);
+    }
+
+    private String toClassName(String descriptor) {
+        if (descriptor.charAt(0) == '[') {
+            return descriptor;
+        }
+        if (descriptor.charAt(0) == 'L') {
+            return descriptor.substring(1, descriptor.length() - 1);
+        }
+        for (Map.Entry<String, String> entry : primitiveTypes.entrySet()) {
+            if (entry.getValue().equals(descriptor)) {
+                return entry.getKey();
+            }
+        }
+        throw new Error("Invalid descriptor: " + descriptor);
+    }
+
+
+    private String toDescriptor(String className) {
+        if (className.charAt(0) == '[') {
+            return className;
+        }
+        String name = primitiveTypes.get(className);
+        if (name != null) {
+            return name;
+        }
+        return "L" + className + ";";
     }
 
     public String getPackageName() {
@@ -171,5 +273,8 @@ public class JvmClass {
         return 0 != (this.accessFlags & AccessFlags.ACC_ENUM);
     }
 
+    private boolean isArray() {
+        return this.name.charAt(0) == '[';
+    }
 
 }
