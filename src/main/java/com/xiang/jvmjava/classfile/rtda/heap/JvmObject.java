@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.IOException;
+
 /**
  * @author 项三六
  * @time 2019/3/23 16:50
@@ -29,7 +31,7 @@ public class JvmObject {
         return (Slots) this.data;
     }
 
-    public boolean isInstantOf(JvmClass clazz) {
+    public boolean isInstantOf(JvmClass clazz) throws IOException {
         return clazz.isAssignableFrom(this.clazz);
     }
 

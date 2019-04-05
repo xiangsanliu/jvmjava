@@ -13,6 +13,22 @@ import com.xiang.jvmjava.instruction.base.NoOperandsInstruction;
 
 public class XAStore {
 
+    public static class IAStore extends NoOperandsInstruction {
+
+        @Override
+        public void execute(Frame frame) {
+            OperandStack stack = frame.getOperandStack();
+            int val = stack.popInt();
+            int index = stack.popInt();
+            JvmObject arrayRef = stack.popRef();
+
+            checkNoNull(arrayRef);
+            int[] ints = arrayRef.getInts();
+            checkIndex(ints.length, index);
+            ints[index] = val;
+        }
+    }
+
     public static class AAStore extends NoOperandsInstruction {
 
         @Override
@@ -28,7 +44,6 @@ public class XAStore {
             refs[index] = ref;
         }
     }
-
 
     public static class BAStore extends NoOperandsInstruction {
 

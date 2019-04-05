@@ -206,14 +206,40 @@ public class JvmClass {
         return other.isSuperClassOf(this);
     }
 
-    boolean isAssignableFrom(JvmClass other) {
-        if (other == this) {
+    boolean isAssignableFrom(JvmClass other) throws IOException {
+        JvmClass t = this;
+        if (other == t) {
             return true;
         }
-        if (!this.isInterface()) {
-            return other.isSubClassOf(this);
+        if (!other.isArray()) {
+            if (!other.isInterface()) {
+                // s 是 class
+                if (!t.isInterface()) {
+                    // t 不是接口
+                    return other.isSubClassOf(t);
+                } else {
+                    // t 是接口
+                    return other.isImplements(t);
+                }
+            } else {
+                if (!t.isInterface()) {
+                    return t.isJ1Object();
+                } else {
+                    return t.isSuperClassOf(other);
+                }
+            }
         } else {
-            return other.isImplements(other);
+            if (!t.isArray()) {
+                if (!t.isInterface()) {
+                    return t.isJ1Object();
+                } else {
+                    return t.isJlCloneable() || t.isJioSerializable();
+                }
+            } else {
+                JvmClass se = other.getElementClass();
+                JvmClass te = t.getElementClass();
+                return se == te || te.isAssignableFrom(se);
+            }
         }
     }
 
@@ -235,6 +261,18 @@ public class JvmClass {
             }
         }
         return false;
+    }
+
+    private boolean isJ1Object() {
+        return "java/lang/Object".equals(this.name);
+    }
+
+    private boolean isJlCloneable() {
+        return "java/lang/Cloneable".equals(this.name);
+    }
+
+    private boolean isJioSerializable() {
+        return "java/io/Serializable".equals(this.name);
     }
 
     public boolean isAccessibleTo(JvmClass other) {

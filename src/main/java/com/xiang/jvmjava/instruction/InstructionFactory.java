@@ -126,22 +126,22 @@ class InstructionFactory {
                 return new ALoad.ALoad2();
             case 0x2d:
                 return new ALoad.ALoad3();
-            // case 0x2e:
-            // 	return iaload
-            // case 0x2f:
-            // 	return laload
-            // case 0x30:
-            // 	return faload
-            // case 0x31:
-            // 	return daload
-            // case 0x32:
-            // 	return aaload
-            // case 0x33:
-            // 	return baload
-            // case 0x34:
-            // 	return caload
-            // case 0x35:
-            // 	return saload
+             case 0x2e:
+             	return new XALoad.IALoad();
+             case 0x2f:
+             	return new XALoad.LALoad();
+             case 0x30:
+             	return new XALoad.FALoad();
+             case 0x31:
+             	return new XALoad.DALoad();
+             case 0x32:
+             	return new XALoad.AALoad();
+             case 0x33:
+             	return new XALoad.BALoad();
+             case 0x34:
+             	return new XALoad.CALoad();
+             case 0x35:
+             	return new XALoad.SALoad();
             case 0x36:
                 return new IStore.IStoreI();
             case 0x37:
@@ -192,22 +192,22 @@ class InstructionFactory {
                 return new AStore.AStore2();
             case 0x4e:
                 return new AStore.AStore3();
-            // case 0x4f:
-            // 	return iastore
-            // case 0x50:
-            // 	return lastore
-            // case 0x51:
-            // 	return fastore
-            // case 0x52:
-            // 	return dastore
-            // case 0x53:
-            // 	return aastore
-            // case 0x54:
-            // 	return bastore
-            // case 0x55:
-            // 	return castore
-            // case 0x56:
-            // 	return sastore
+            case 0x4f:
+                return new XAStore.IAStore();
+            case 0x50:
+                return new XAStore.LAStore();
+            case 0x51:
+                return new XAStore.FAStore();
+            case 0x52:
+                return new XAStore.DAStore();
+            case 0x53:
+                return new XAStore.AAStore();
+            case 0x54:
+                return new XAStore.BAStore();
+            case 0x55:
+                return new XAStore.CAStore();
+            case 0x56:
+                return new XAStore.SAStore();
             case 0x57:
                 return new POP();
             case 0x58:
@@ -410,14 +410,14 @@ class InstructionFactory {
             // 	return &INVOKE_DYNAMIC{}
             case 0xbb:
                 return new New();
-            // case 0xbc:
-            // 	return &NEW_ARRAY{}
-            // case 0xbd:
-            // 	return &ANEW_ARRAY{}
-            // case 0xbe:
-            // 	return arraylength
-            // case 0xbf:
-            // 	return athrow
+            case 0xbc:
+                return new NewArray();
+            case 0xbd:
+                return new ANewArray();
+            case 0xbe:
+                return new ArrayLength();
+            case 0xbf:
+                // 	return athrow
             case 0xc0:
                 return new CheckCast();
             case 0xc1:
@@ -428,8 +428,8 @@ class InstructionFactory {
             // 	return monitorexit
             case 0xc4:
                 return new Wide();
-            // case 0xc5:
-            // 	return &MULTI_ANEW_ARRAY{}
+            case 0xc5:
+                return new MultiANewArray();
             case 0xc6:
                 return new IfNull();
             case 0xc7:
@@ -442,6 +442,7 @@ class InstructionFactory {
             // case 0xfe: impdep1
             // case 0xff: impdep2
             default:
+                System.out.println(Integer.toHexString(opcode));
                 throw new UnsupportedOperationException();
         }
     }
