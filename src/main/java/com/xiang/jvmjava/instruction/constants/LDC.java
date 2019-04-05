@@ -3,6 +3,7 @@ package com.xiang.jvmjava.instruction.constants;
 import com.xiang.jvmjava.classfile.rtda.Frame;
 import com.xiang.jvmjava.classfile.rtda.OperandStack;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmConstantPool;
+import com.xiang.jvmjava.classfile.rtda.heap.StringPool;
 import com.xiang.jvmjava.classfile.rtda.heap.ref.ClassRef;
 import com.xiang.jvmjava.instruction.base.Index8Instruction;
 
@@ -17,7 +18,7 @@ import java.io.IOException;
 public class LDC extends Index8Instruction {
 
     @Override
-    public void execute(Frame frame) {
+    public void execute(Frame frame) throws IOException {
         OperandStack stack = frame.getOperandStack();
         JvmConstantPool constantPool = frame.getMethod().getClazz().getConstantPool();
         Object val = constantPool.getConstant(this.index);
@@ -26,7 +27,7 @@ public class LDC extends Index8Instruction {
         } else if (val instanceof Float) {
             stack.pushFloat((Float) val);
         } else if (val instanceof String) {
-            throw new Error("todo");
+            stack.pushRef(StringPool.getJvmString(frame.getMethod().getClazz().getLoader(), (String) val));
         } else if (val instanceof ClassRef) {
             throw new Error("todo");
         } else {

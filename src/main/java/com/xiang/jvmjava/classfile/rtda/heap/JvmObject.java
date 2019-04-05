@@ -2,6 +2,7 @@
 package com.xiang.jvmjava.classfile.rtda.heap;
 
 import com.xiang.jvmjava.classfile.rtda.Slots;
+import com.xiang.jvmjava.classfile.rtda.heap.member.Field;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,6 +26,11 @@ public class JvmObject {
     public JvmObject(JvmClass clazz) {
         this.clazz = clazz;
         this.data = new Slots(clazz.getInstanceSlotCount());
+    }
+
+    public JvmObject(JvmClass clazz, Object data) {
+        this.clazz = clazz;
+        this.data = data;
     }
 
     public Slots getFields() {
@@ -86,5 +92,18 @@ public class JvmObject {
             return getRefs().length;
         }
     }
+
+    void setRefVar(String name, String descriptor, JvmObject ref) {
+        Field field = this.clazz.getField(name, descriptor, false);
+        Slots slots = (Slots) this.data;
+        slots.setRef(field.getSlotId(), ref);
+    }
+
+    JvmObject getRefVar(String name, String descriptor) {
+        Field field = this.clazz.getField(name, descriptor, false);
+        Slots slots = (Slots) this.data;
+        return slots.getRef(field.getSlotId());
+    }
+
 
 }

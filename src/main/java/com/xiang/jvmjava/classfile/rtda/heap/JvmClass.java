@@ -81,6 +81,17 @@ public class JvmClass {
         this.initStarted = true;
     }
 
+    Field getField(String name, String descriptor, boolean isStatic) {
+        for (JvmClass c = this; c != null; c = c.getSuperClass()) {
+            for (Field field : this.fields) {
+                if (field.isStatic() == isStatic && field.getName().equals(name) && field.getDescriptor().equals(descriptor)) {
+                    return field;
+                }
+            }
+        }
+        return null;
+    }
+
     public Method getMainMethod() {
         return this.getStaticMethod("main", "([Ljava/lang/String;)V");
     }

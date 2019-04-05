@@ -94,12 +94,12 @@ public class ClassLoader {
         clazz.setInterfaces(interfaces);
     }
 
-    private void link(JvmClass clazz) {
+    private void link(JvmClass clazz) throws IOException {
 //        verify
         prepare(clazz);
     }
 
-    private static void prepare(JvmClass clazz) {
+    private static void prepare(JvmClass clazz) throws IOException {
         calcInstanceFieldSlotIds(clazz);
         calcStaticFieldSlotIds(clazz);
         allocAndInitStaticVars(clazz);
@@ -135,7 +135,7 @@ public class ClassLoader {
         clazz.setStaticSlotCount(slotId);
     }
 
-    private static void allocAndInitStaticVars(JvmClass clazz) {
+    private static void allocAndInitStaticVars(JvmClass clazz) throws IOException {
         clazz.setStaticVars(new Slots(clazz.getStaticSlotCount()));
         for (Field field : clazz.getFields()) {
             if (field.isStatic() && field.isFinal()) {
@@ -144,7 +144,7 @@ public class ClassLoader {
         }
     }
 
-    private static void initStaticFinalVar(JvmClass clazz, Field field) {
+    private static void initStaticFinalVar(JvmClass clazz, Field field) throws IOException {
         Slots vars = clazz.getStaticVars();
         JvmConstantPool constantPool = clazz.getConstantPool();
         int index = field.getConstantValueIndex();
@@ -167,7 +167,9 @@ public class ClassLoader {
                     vars.setDouble(field.getSlotId(), (Double) constantPool.getConstant(index));
                     break;
                 case "Ljava/lang/String;":
-                    throw new Error("todo");
+                    String str = (String) constantPool.getConstant(index);
+                    JvmObject jvmStr = StringPool.getJvmString(clazz.getLoader(), str);
+                    vars.setRef(field.getSlotId(), jvmStr);
             }
         }
     }

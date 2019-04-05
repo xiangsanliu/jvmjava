@@ -27,6 +27,8 @@ public class Cmd {
 
     private Options options;
 
+    private String[] args;
+
     private Cmd() {
         this.options = new Options();
         this.options.addOption("cp", "classpath", true, "Specify classpath");
@@ -45,6 +47,7 @@ public class Cmd {
 
     static Cmd parseCmd(String[] args) {
         Cmd cmd = new Cmd();
+        cmd.setArgs(args);
         CommandLineParser parser = new DefaultParser();
         CommandLine commandLine;
         try {

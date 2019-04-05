@@ -5,6 +5,7 @@ import com.xiang.jvmjava.classfile.rtda.OperandStack;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmClass;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmConstantPool;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmObject;
+import com.xiang.jvmjava.classfile.rtda.heap.StringPool;
 import com.xiang.jvmjava.classfile.rtda.heap.member.Method;
 import com.xiang.jvmjava.classfile.rtda.heap.ref.MethodRef;
 import com.xiang.jvmjava.instruction.base.Index16Instruction;
@@ -71,6 +72,10 @@ public class InvokeVirtual extends Index16Instruction {
                 break;
             case "(D)V":
                 System.out.println(stack.popDouble());
+                break;
+            case "(Ljava/lang/String;)V":
+                JvmObject jvmStr = stack.popRef();
+                System.out.println(StringPool.jvmStrToString(jvmStr));
                 break;
             default:
                 throw new Error("println: " + descriptor);

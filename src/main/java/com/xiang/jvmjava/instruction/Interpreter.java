@@ -3,6 +3,10 @@ package com.xiang.jvmjava.instruction;
 import com.xiang.jvmjava.Cmd;
 import com.xiang.jvmjava.classfile.rtda.Frame;
 import com.xiang.jvmjava.classfile.rtda.Thread;
+import com.xiang.jvmjava.classfile.rtda.heap.ClassLoader;
+import com.xiang.jvmjava.classfile.rtda.heap.JvmClass;
+import com.xiang.jvmjava.classfile.rtda.heap.JvmObject;
+import com.xiang.jvmjava.classfile.rtda.heap.StringPool;
 import com.xiang.jvmjava.classfile.rtda.heap.member.Method;
 import com.xiang.jvmjava.instruction.base.Instruction;
 
@@ -16,11 +20,11 @@ import java.io.IOException;
 
 public class Interpreter {
 
-
-    public static void interpret(Method method) throws IOException {
+    public static void interpret(Method method, String[] args) throws IOException {
         Thread thread = new Thread();
         Frame frame = thread.newFrame(method);
         thread.pushFrame(frame);
+        frame.getLocalVars().setRef(0, createArgsArray(method.getClazz().getLoader(), args));
         loop(thread);
     }
 
@@ -47,6 +51,16 @@ public class Interpreter {
         String methodName = method.getName();
         int pc = frame.getThread().getPc();
         System.out.printf("%s.%s() #%2d %s\n", className, methodName, pc, instruction);
+    }
+
+    private static JvmObject createArgsArray(ClassLoader loader, String[] args) throws IOException {
+        JvmClass stringClass = loader.loadClass("java/lang/String");
+        JvmObject argsArray = stringClass.getArrayClass().newArray(args.length);
+        JvmObject[] jvmArgs = argsArray.getRefs();
+        for (int i = 0; i < args.length; i++) {
+            jvmArgs[i] = StringPool.getJvmString(loader, args[i]);
+        }
+        return argsArray;
     }
 
 }
