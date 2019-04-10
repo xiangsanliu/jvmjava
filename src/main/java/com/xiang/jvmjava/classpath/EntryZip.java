@@ -15,12 +15,12 @@ import java.util.zip.ZipInputStream;
  * @comment
  */
 
-public class EntryZip extends Entry {
+class EntryZip extends Entry {
 
     private String absPath;
 
 
-    public EntryZip(String absPath) {
+    EntryZip(String absPath) {
         this.absPath = absPath;
     }
 
@@ -37,4 +37,8 @@ public class EntryZip extends Entry {
         return null;
     }
 
+    @Override
+    public String toString() {
+        return this.absPath;
+    }
 }

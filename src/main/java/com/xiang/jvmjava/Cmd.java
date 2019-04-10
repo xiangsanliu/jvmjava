@@ -23,7 +23,9 @@ public class Cmd {
 
     private boolean version;
 
-    public static boolean log;
+    public static boolean logInstruction;
+
+    public static boolean logClassLoader;
 
     private Options options;
 
@@ -34,7 +36,8 @@ public class Cmd {
         this.options.addOption("cp", "classpath", true, "Specify classpath");
         this.options.addOption("v", "version", false, "Show version");
         this.options.addOption("h", "help", false, "Help");
-        this.options.addOption("l", "log", false, "Show log");
+        this.options.addOption("li", "logInstruction", false, "Show logInstruction");
+        this.options.addOption("lc", "logClassLoader", false, "Show logInstruction");
     }
 
     void printHelp() {
@@ -52,8 +55,11 @@ public class Cmd {
         CommandLine commandLine;
         try {
             commandLine = parser.parse(cmd.getOptions(), args);
-            if (commandLine.hasOption("l")) {
-                Cmd.log = true;
+            if (commandLine.hasOption("li")) {
+                Cmd.logInstruction = true;
+            }
+            if (commandLine.hasOption("lc")) {
+                Cmd.logClassLoader = true;
             }
             if (commandLine.hasOption("v")) {
                 cmd.setVersion(true);

@@ -5,6 +5,8 @@ import com.xiang.jvmjava.classfile.ClassFile;
 import com.xiang.jvmjava.classfile.rtda.Slots;
 import com.xiang.jvmjava.classfile.rtda.heap.member.Field;
 import com.xiang.jvmjava.classpath.Classpath;
+import com.xiang.jvmjava.classpath.Entry;
+import com.xiang.jvmjava.util.Pair;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -43,11 +45,11 @@ public class ClassLoader {
     }
 
     private JvmClass loadNonArrayClass(String name) throws IOException {
-        byte[] data = this.classpath.readClass(name);
-        JvmClass clazz = defineClass(data);
+        Pair<Entry, byte[]> result= this.classpath.readClass(name);
+        JvmClass clazz = defineClass(result.getValue());
         link(clazz);
-        if (Cmd.log) {
-            System.out.printf("[Loaded %s]\n", name);
+        if (Cmd.logClassLoader) {
+            System.out.printf("[Loaded '%s' from '%s']\n", name, result.getKey());
         }
         return clazz;
     }
@@ -63,8 +65,8 @@ public class ClassLoader {
                 this.loadClass("java/lang/Cloneable"),
                 this.loadClass("java/io/Serializable")});
         this.classMap.put("name", clazz);
-        if (Cmd.log) {
-            System.out.printf("[Loaded %s]\n", name);
+        if (Cmd.logClassLoader) {
+            System.out.printf("[Loaded '%s' ]\n", name);
         }
         return clazz;
     }

@@ -1,6 +1,7 @@
 package com.xiang.jvmjava.classpath;
 
 import com.xiang.jvmjava.Cmd;
+import com.xiang.jvmjava.util.Pair;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -27,17 +28,17 @@ public class Classpath {
         return classpath;
     }
 
-    public byte[] readClass(String className) throws IOException {
+    public Pair<Entry, byte[]> readClass(String className) throws IOException {
         className = StringUtils.replaceChars(className, '.', '/') + ".class";
         byte[] data = this.bootClasspath.readClass(className);
         if (data != null) {
-            return data;
+            return new Pair<>(bootClasspath, data);
         }
         data = this.extClasspath.readClass(className);
         if (data != null) {
-            return data;
+            return new Pair<>(extClasspath, data);
         }
-        return userClasspath.readClass(className);
+        return new Pair<>(userClasspath, userClasspath.readClass(className));
     }
 
     private void parseUserClasspath(String classpath) {

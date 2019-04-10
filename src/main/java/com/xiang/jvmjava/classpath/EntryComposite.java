@@ -13,6 +13,8 @@ import java.util.List;
 
 class EntryComposite extends Entry {
 
+    private String path;
+
     List<Entry> entries;
 
     EntryComposite() {
@@ -28,9 +30,15 @@ class EntryComposite extends Entry {
         for (Entry entry : entries) {
             byte[] data = entry.readClass(className);
             if (data != null) {
+                this.path = entry.toString();
                 return data;
             }
         }
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return this.path;
     }
 }

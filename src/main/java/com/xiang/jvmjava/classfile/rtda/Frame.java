@@ -13,10 +13,6 @@ import lombok.Setter;
 public class Frame {
 
     @Getter
-    @Setter
-    private Frame lower;
-
-    @Getter
     private Slots localVars;
 
     @Getter

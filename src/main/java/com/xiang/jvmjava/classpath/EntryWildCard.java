@@ -11,10 +11,9 @@ import java.util.Objects;
  * @comment
  */
 
-public class EntryWildCard extends EntryComposite {
+class EntryWildCard extends EntryComposite {
 
-
-    public EntryWildCard(String path) {
+    EntryWildCard(String path) {
         String baseDir = path.substring(0, path.length() - 1);
         List<Entry> entries = new ArrayList<>();
         File dir = new File(baseDir);

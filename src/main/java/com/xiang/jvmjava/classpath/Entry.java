@@ -11,7 +11,7 @@ import java.io.IOException;
  * @comment
  */
 
-abstract class Entry {
+public abstract class Entry {
 
     abstract byte[] readClass(String className) throws IOException;
 

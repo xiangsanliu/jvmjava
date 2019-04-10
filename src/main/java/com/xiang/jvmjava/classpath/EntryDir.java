@@ -15,7 +15,7 @@ public class EntryDir extends Entry {
 
     private String absDir;
 
-    public EntryDir(String absDir) {
+    EntryDir(String absDir) {
         this.absDir = absDir;
     }
 
@@ -23,5 +23,10 @@ public class EntryDir extends Entry {
     byte[] readClass(String className) throws IOException {
         String fileName = this.absDir + className;
         return FileUtils.readFileToByteArray(new File(fileName));
+    }
+
+    @Override
+    public String toString() {
+        return this.absDir;
     }
 }

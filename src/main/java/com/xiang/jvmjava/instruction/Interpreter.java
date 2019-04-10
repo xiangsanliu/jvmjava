@@ -38,7 +38,7 @@ public class Interpreter {
             Instruction instruction = InstructionFactory.newInstruction(reader.readUint8());
             instruction.fetchOperands(reader);
             frame.setNextPC(reader.getPc());
-            if (Cmd.log) {
+            if (Cmd.logInstruction) {
                 logInstruction(frame, instruction);
             }
             instruction.execute(frame);
@@ -50,7 +50,7 @@ public class Interpreter {
         String className = method.getClazz().getName();
         String methodName = method.getName();
         int pc = frame.getThread().getPc();
-        System.out.printf("%s.%s() #%2d %s\n", className, methodName, pc, instruction);
+        System.out.printf("%s.%s() #pc: %2d %s\n", className, methodName, pc, instruction);
     }
 
     private static JvmObject createArgsArray(ClassLoader loader, String[] args) throws IOException {
