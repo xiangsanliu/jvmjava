@@ -18,6 +18,7 @@ import com.xiang.jvmjava.instruction.extended.Wide;
 import com.xiang.jvmjava.instruction.load.*;
 import com.xiang.jvmjava.instruction.math.*;
 import com.xiang.jvmjava.instruction.reference.*;
+import com.xiang.jvmjava.instruction.reserved.InvokeNative;
 import com.xiang.jvmjava.instruction.stack.POP;
 import com.xiang.jvmjava.instruction.stack.POP2;
 import com.xiang.jvmjava.instruction.stack.Swap;
@@ -126,22 +127,22 @@ class InstructionFactory {
                 return new ALoad.ALoad2();
             case 0x2d:
                 return new ALoad.ALoad3();
-             case 0x2e:
-             	return new XALoad.IALoad();
-             case 0x2f:
-             	return new XALoad.LALoad();
-             case 0x30:
-             	return new XALoad.FALoad();
-             case 0x31:
-             	return new XALoad.DALoad();
-             case 0x32:
-             	return new XALoad.AALoad();
-             case 0x33:
-             	return new XALoad.BALoad();
-             case 0x34:
-             	return new XALoad.CALoad();
-             case 0x35:
-             	return new XALoad.SALoad();
+            case 0x2e:
+                return new XALoad.IALoad();
+            case 0x2f:
+                return new XALoad.LALoad();
+            case 0x30:
+                return new XALoad.FALoad();
+            case 0x31:
+                return new XALoad.DALoad();
+            case 0x32:
+                return new XALoad.AALoad();
+            case 0x33:
+                return new XALoad.BALoad();
+            case 0x34:
+                return new XALoad.CALoad();
+            case 0x35:
+                return new XALoad.SALoad();
             case 0x36:
                 return new IStore.IStoreI();
             case 0x37:
@@ -439,7 +440,8 @@ class InstructionFactory {
             // case 0xc9:
             // 	return &JSR_W{}
             // case 0xca: breakpoint
-            // case 0xfe: impdep1
+            case 0xfe:
+                return new InvokeNative();
             // case 0xff: impdep2
             default:
                 System.out.println(Integer.toHexString(opcode));

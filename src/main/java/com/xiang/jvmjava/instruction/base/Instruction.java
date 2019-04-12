@@ -38,15 +38,6 @@ public abstract class Instruction {
                 newFrame.getLocalVars().setSlot(i, slot);
             }
         }
-        if (method.isNative()) {
-            if (method.getName().equals("registerNatives")) {
-                thread.popFrame();
-            } else {
-                String msg = String.format("native method: %s.%s %s\n",
-                        method.getClass().getName(), method.getName(), method.getDescriptor());
-                throw new Error(msg);
-            }
-        }
     }
 
     protected void initClass(Thread thread, JvmClass clazz) {

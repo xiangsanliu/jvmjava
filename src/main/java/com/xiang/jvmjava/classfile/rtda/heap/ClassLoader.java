@@ -28,10 +28,13 @@ public class ClassLoader {
 
     private Map<String, JvmClass> classMap;
 
-    public ClassLoader(Classpath classpath) {
+    public ClassLoader(Classpath classpath) throws IOException {
         this.classpath = classpath;
         this.classMap = new HashMap<>();
+        this.loadBasicClasses();
+        this.loadPrimitiveClasses();
     }
+
 
     public JvmClass loadClass(String name) throws IOException {
         JvmClass clazz = this.classMap.get(name);
@@ -45,7 +48,7 @@ public class ClassLoader {
     }
 
     private JvmClass loadNonArrayClass(String name) throws IOException {
-        Pair<Entry, byte[]> result= this.classpath.readClass(name);
+        Pair<Entry, byte[]> result = this.classpath.readClass(name);
         JvmClass clazz = defineClass(result.getValue());
         link(clazz);
         if (Cmd.logClassLoader) {
@@ -176,5 +179,31 @@ public class ClassLoader {
         }
     }
 
+    private void loadBasicClasses() throws IOException {
+        JvmClass jvmClass = this.loadClass("java/lang/Class");
+        for (Map.Entry<String, JvmClass> entry : this.classMap.entrySet()) {
+            if (entry.getValue().getJvmClass() == null) {
+                entry.getValue().setJvmClass(jvmClass.newObject());
+                entry.getValue().getJvmClass().setExtra(entry.getValue());
+            }
+        }
+    }
+
+    private void loadPrimitiveClasses() {
+        for (Map.Entry<String, String> entry : JvmClass.primitiveTypes.entrySet()) {
+            this.loadPrimitiveClass(entry.getKey());
+        }
+    }
+
+    private void loadPrimitiveClass(String className) {
+        JvmClass clazz = new JvmClass();
+        clazz.setAccessFlags(AccessFlags.ACC_PUBLIC);
+        clazz.setName(className);
+        clazz.setLoader(this);
+        clazz.setInitStarted(true);
+        clazz.setJvmClass(this.classMap.get("java/lang/Class").newObject());
+        clazz.getJvmClass().setExtra(clazz);
+        this.classMap.put(className, clazz);
+    }
 
 }

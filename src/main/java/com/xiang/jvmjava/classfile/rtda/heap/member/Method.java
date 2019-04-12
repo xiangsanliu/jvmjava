@@ -7,6 +7,8 @@ import com.xiang.jvmjava.classfile.rtda.heap.JvmClass;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 /**
  * @author 项三六
  * @time 2019/3/23 20:18
@@ -24,18 +26,22 @@ public class Method extends ClassMember {
 
     private int argSlotCount;
 
-    public Method() {
+    public Method(JvmClass clazz, MemberInfo info) {
         this.argSlotCount = 0;
+        this.clazz = clazz;
+        this.copyMemberInfo(info);
+        this.copyAttributes(info);
+        MethodDescriptor md = MethodDescriptorParser.parse(this.descriptor);
+        this.calcArgSlotCount(md.getParameterTypes());
+        if (this.isNative()) {
+            this.injectCodeAttribute(md.getReturnType());
+        }
     }
 
     public static Method[] newMethods(JvmClass clazz, MemberInfo[] memberInfos) {
         Method[] methods = new Method[memberInfos.length];
         for (int i = 0; i < memberInfos.length; i++) {
-            methods[i] = new Method();
-            methods[i].clazz = clazz;
-            methods[i].copyMemberInfo(memberInfos[i]);
-            methods[i].copyAttributes(memberInfos[i]);
-            methods[i].calcArgSlotCount();
+            methods[i] = new Method(clazz, memberInfos[i]);
         }
         return methods;
     }
@@ -66,9 +72,8 @@ public class Method extends ClassMember {
         return 0 != (this.accessFlags & AccessFlags.ACC_STRICT);
     }
 
-    private void calcArgSlotCount() {
-        MethodDescriptor parsedDescriptor = MethodDescriptorParser.parse(this.descriptor);
-        parsedDescriptor.getParameterTypes().forEach(e -> {
+    private void calcArgSlotCount(List<String> types) {
+        types.forEach(e -> {
             this.argSlotCount++;
             if (e.equals("J") || e.equals("D")) {
                 this.argSlotCount++;
@@ -76,6 +81,31 @@ public class Method extends ClassMember {
         });
         if (!this.isStatic()) {
             this.argSlotCount++;
+        }
+    }
+
+    private void injectCodeAttribute(String type) {
+        this.maxStack = 4;
+        this.maxLocals = this.argSlotCount;
+        switch (type.charAt(0)) {
+            case 'V':
+                this.code = new byte[]{-2, -79};
+                break;
+            case 'L':
+            case '[':
+                this.code = new byte[]{-2, -80};
+                break;
+            case 'D':
+                this.code = new byte[]{-2, -81};
+                break;
+            case 'F':
+                this.code = new byte[]{-2, -82};
+                break;
+            case 'J':
+                this.code = new byte[]{-2, -83};
+                break;
+            default:
+                this.code = new byte[]{-2, -84};
         }
     }
 

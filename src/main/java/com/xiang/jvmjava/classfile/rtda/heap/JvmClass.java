@@ -52,7 +52,9 @@ public class JvmClass {
 
     private boolean initStarted;
 
-    private static Map<String, String> primitiveTypes = new HashMap<>();
+    private JvmObject jvmClass;
+
+    public static Map<String, String> primitiveTypes = new HashMap<>();
 
     static {
         primitiveTypes.put("void", "V");

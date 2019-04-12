@@ -23,6 +23,10 @@ public class JvmObject {
     @Setter
     private Object data;
 
+    @Setter
+    @Getter
+    private Object extra;
+
     public JvmObject(JvmClass clazz) {
         this.clazz = clazz;
         this.data = new Slots(clazz.getInstanceSlotCount());

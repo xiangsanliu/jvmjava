@@ -15,7 +15,7 @@ import java.io.IOException;
  */
 
 public class MainApp {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Cmd cmd = Cmd.parseCmd(args);
         if (cmd.isHelp()) {
             cmd.printHelp();
@@ -27,7 +27,7 @@ public class MainApp {
 
     }
 
-    private static void run(Cmd cmd) {
+    private static void run(Cmd cmd) throws IOException {
         Classpath classpath = Classpath.parse(cmd);
         String className = cmd.getMainClass();
         ClassLoader classLoader = new ClassLoader(classpath);
