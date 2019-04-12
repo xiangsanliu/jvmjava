@@ -5,8 +5,6 @@ import com.xiang.jvmjava.classfile.rtda.heap.JvmClass;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmConstantPool;
 import com.xiang.jvmjava.classfile.rtda.heap.member.Method;
 
-import java.io.IOException;
-
 /**
  * @author 项三六
  * @time 2019/3/24 20:10
@@ -21,14 +19,14 @@ public class MethodRef extends MemberRef {
         super(constantPool, info);
     }
 
-    public Method resolvedMethod() throws IOException {
+    public Method resolvedMethod() {
         if (this.method == null) {
             this.resolveMethodRef();
         }
         return this.method;
     }
 
-    private void resolveMethodRef() throws IOException {
+    private void resolveMethodRef() {
         JvmClass c = this.resolvedClass();
         if (c.isInterface()) {
             throw new IncompatibleClassChangeError();

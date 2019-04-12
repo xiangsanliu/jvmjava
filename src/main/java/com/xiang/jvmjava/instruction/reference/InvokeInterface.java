@@ -32,7 +32,7 @@ public class InvokeInterface extends Instruction {
     }
 
     @Override
-    public void execute(Frame frame) throws IOException {
+    public void execute(Frame frame) {
         JvmConstantPool constantPool = frame.getMethod().getClazz().getConstantPool();
         InterfaceMethodRef methodRef = (InterfaceMethodRef) constantPool.getConstant(this.index);
         Method resolvedMethod = methodRef.resolvedInterfaceMethod();

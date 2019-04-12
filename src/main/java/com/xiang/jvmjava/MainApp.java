@@ -6,8 +6,6 @@ import com.xiang.jvmjava.classfile.rtda.heap.member.Method;
 import com.xiang.jvmjava.classpath.Classpath;
 import com.xiang.jvmjava.instruction.Interpreter;
 
-import java.io.IOException;
-
 /**
  * @author 项三六
  * @time 2019/3/15 10:49
@@ -15,7 +13,8 @@ import java.io.IOException;
  */
 
 public class MainApp {
-    public static void main(String[] args) throws IOException {
+
+    public static void main(String[] args) {
         Cmd cmd = Cmd.parseCmd(args);
         if (cmd.isHelp()) {
             cmd.printHelp();
@@ -24,21 +23,16 @@ public class MainApp {
         } else {
             run(cmd);
         }
-
     }
 
-    private static void run(Cmd cmd) throws IOException {
+    private static void run(Cmd cmd) {
         Classpath classpath = Classpath.parse(cmd);
         String className = cmd.getMainClass();
         ClassLoader classLoader = new ClassLoader(classpath);
-        try {
-            JvmClass mainClass = classLoader.loadClass(className);
-            Method mainMethod = mainClass.getMainMethod();
-            if (mainMethod != null) {
-                Interpreter.interpret(mainMethod, cmd.getArgs());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        JvmClass mainClass = classLoader.loadClass(className);
+        Method mainMethod = mainClass.getMainMethod();
+        if (mainMethod != null) {
+            Interpreter.interpret(mainMethod, cmd.getArgs());
         }
     }
 

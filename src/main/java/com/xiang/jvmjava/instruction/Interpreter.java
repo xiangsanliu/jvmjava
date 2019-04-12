@@ -20,7 +20,7 @@ import java.io.IOException;
 
 public class Interpreter {
 
-    public static void interpret(Method method, String[] args) throws IOException {
+    public static void interpret(Method method, String[] args) {
         Thread thread = new Thread();
         Frame frame = thread.newFrame(method);
         thread.pushFrame(frame);
@@ -28,7 +28,7 @@ public class Interpreter {
         loop(thread);
     }
 
-    private static void loop(Thread thread) throws IOException {
+    private static void loop(Thread thread) {
         BytecodeReader reader = new BytecodeReader();
         while (!thread.isStackEmpty()) {
             Frame frame = thread.currentFrame();
@@ -53,7 +53,7 @@ public class Interpreter {
         System.out.printf("%s.%s() #pc: %2d %s\n", className, methodName, pc, instruction);
     }
 
-    private static JvmObject createArgsArray(ClassLoader loader, String[] args) throws IOException {
+    private static JvmObject createArgsArray(ClassLoader loader, String[] args) {
         JvmClass stringClass = loader.loadClass("java/lang/String");
         JvmObject argsArray = stringClass.getArrayClass().newArray(args.length);
         JvmObject[] jvmArgs = argsArray.getRefs();

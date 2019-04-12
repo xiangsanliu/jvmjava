@@ -19,7 +19,7 @@ import java.io.IOException;
 public class PutField extends Index16Instruction {
 
     @Override
-    public void execute(Frame frame) throws IOException {
+    public void execute(Frame frame) {
         Method currentMethod = frame.getMethod();
         JvmClass currentClass = currentMethod.getClazz();
         JvmConstantPool constantPool = currentClass.getConstantPool();
@@ -30,7 +30,7 @@ public class PutField extends Index16Instruction {
             throw new IncompatibleClassChangeError();
         }
         if (field.isFinal()) {
-            if (currentClass != clazz || !"<clinit>".equals(currentMethod.getName())) {
+            if (currentClass != field.getClazz() || !"<init>".equals(currentMethod.getName())) {
                 throw new IllegalAccessError();
             }
         }

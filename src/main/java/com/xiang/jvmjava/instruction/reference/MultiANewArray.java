@@ -31,7 +31,7 @@ public class MultiANewArray extends Instruction {
     }
 
     @Override
-    public void execute(Frame frame) throws IOException {
+    public void execute(Frame frame) {
         JvmConstantPool constantPool = frame.getMethod().getClazz().getConstantPool();
         ClassRef classRef = (ClassRef) constantPool.getConstant(this.index);
         JvmClass arrayClass = classRef.resolvedClass();
@@ -53,7 +53,7 @@ public class MultiANewArray extends Instruction {
         return counts;
     }
 
-    private JvmObject newMultiArray(int[] counts, JvmClass arrayClass) throws IOException {
+    private JvmObject newMultiArray(int[] counts, JvmClass arrayClass) {
         int count = (int) Integer.toUnsignedLong(counts[0]);
         JvmObject array = arrayClass.newArray(count);
         if (counts.length > 1) {

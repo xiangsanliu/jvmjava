@@ -34,10 +34,18 @@ public class Slot {
 
     @Override
     public String toString() {
-        return "Slot @" + hashCode() + "{" +
-                "num32=" + num32 +
-                ", num64=" + num64 +
-                ", ref=" + ref +
-                '}';
+        if (ref != null) {
+            return "Slot @" + hashCode() + "{" +
+                    "num32=" + num32 +
+                    ", num64=" + num64 +
+                    ", ref=" + ref.getClazz().getName() +
+                    '}';
+        } else {
+            return "Slot @" + hashCode() + "{" +
+                    "num32=" + num32 +
+                    ", num64=" + num64 +
+                    ", ref=" + ref +
+                    '}';
+        }
     }
 }

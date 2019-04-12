@@ -10,8 +10,6 @@ import com.xiang.jvmjava.classfile.rtda.heap.member.Method;
 import com.xiang.jvmjava.classfile.rtda.heap.ref.MethodRef;
 import com.xiang.jvmjava.instruction.base.Index16Instruction;
 
-import java.io.IOException;
-
 /**
  * @author 项三六
  * @time 2019/3/29 16:11
@@ -21,7 +19,7 @@ import java.io.IOException;
 public class InvokeVirtual extends Index16Instruction {
 
     @Override
-    public void execute(Frame frame) throws IOException {
+    public void execute(Frame frame) {
         JvmClass currentClass = frame.getMethod().getClazz();
         JvmConstantPool constantPool = currentClass.getConstantPool();
         MethodRef methodRef = (MethodRef) constantPool.getConstant(this.index);

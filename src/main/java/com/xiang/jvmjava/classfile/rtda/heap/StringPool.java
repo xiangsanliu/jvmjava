@@ -1,6 +1,5 @@
 package com.xiang.jvmjava.classfile.rtda.heap;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,7 +17,7 @@ public class StringPool {
         internedStrings = new HashMap<>();
     }
 
-    public static JvmObject getJvmString(ClassLoader loader, String str) throws IOException {
+    public static JvmObject getJvmString(ClassLoader loader, String str) {
         JvmObject internedString = internedStrings.get(str);
         if (internedString != null) {
             return internedString;

@@ -62,7 +62,7 @@ public class Wide extends Instruction {
     }
 
     @Override
-    public void execute(Frame frame) throws IOException {
+    public void execute(Frame frame) {
         modifiedInstruction.execute(frame);
     }
 }

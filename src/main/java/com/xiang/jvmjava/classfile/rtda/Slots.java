@@ -72,6 +72,9 @@ public class Slots {
         return this.vars[index].getRef();
     }
 
+    public JvmObject getThis() {
+        return this.getRef(0);
+    }
 
     @Override
     public String toString() {

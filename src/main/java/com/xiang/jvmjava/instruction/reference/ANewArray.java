@@ -19,7 +19,7 @@ import java.io.IOException;
 public class ANewArray extends Index16Instruction {
 
     @Override
-    public void execute(Frame frame) throws IOException {
+    public void execute(Frame frame) {
         JvmConstantPool constantPool = frame.getMethod().getClazz().getConstantPool();
         ClassRef classRef = (ClassRef) constantPool.getConstant(this.index);
         JvmClass elementClass = classRef.resolvedClass();

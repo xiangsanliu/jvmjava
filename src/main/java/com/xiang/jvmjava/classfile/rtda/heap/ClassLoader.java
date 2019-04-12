@@ -28,7 +28,7 @@ public class ClassLoader {
 
     private Map<String, JvmClass> classMap;
 
-    public ClassLoader(Classpath classpath) throws IOException {
+    public ClassLoader(Classpath classpath) {
         this.classpath = classpath;
         this.classMap = new HashMap<>();
         this.loadBasicClasses();
@@ -36,19 +36,32 @@ public class ClassLoader {
     }
 
 
-    public JvmClass loadClass(String name) throws IOException {
+    public JvmClass loadClass(String name) {
         JvmClass clazz = this.classMap.get(name);
         if (clazz != null) {
             return clazz;
         }
         if (name.charAt(0) == '[') {
-            return loadArrayClass(name);
+            clazz = loadArrayClass(name);
+        } else {
+            clazz = loadNonArrayClass(name);
         }
-        return loadNonArrayClass(name);
+        JvmClass classClass = this.classMap.get("java/lang/Class");
+        if (classClass != null) {
+            clazz.setJvmClass(classClass.newObject());
+            clazz.getJvmClass().setExtra(clazz);
+        }
+        return clazz;
     }
 
-    private JvmClass loadNonArrayClass(String name) throws IOException {
-        Pair<Entry, byte[]> result = this.classpath.readClass(name);
+    private JvmClass loadNonArrayClass(String name) {
+        Pair<Entry, byte[]> result;
+        try {
+            result = this.classpath.readClass(name);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new Error("java.lang.ClassNotFoundException: " + name);
+        }
         JvmClass clazz = defineClass(result.getValue());
         link(clazz);
         if (Cmd.logClassLoader) {
@@ -57,7 +70,7 @@ public class ClassLoader {
         return clazz;
     }
 
-    private JvmClass loadArrayClass(String name) throws IOException {
+    private JvmClass loadArrayClass(String name) {
         JvmClass clazz = new JvmClass();
         clazz.setAccessFlags(AccessFlags.ACC_PUBLIC);
         clazz.setName(name);
@@ -74,7 +87,7 @@ public class ClassLoader {
         return clazz;
     }
 
-    private JvmClass defineClass(byte[] data) throws IOException {
+    private JvmClass defineClass(byte[] data) {
         ClassFile classFile = ClassFile.parse(data);
         JvmClass clazz = new JvmClass(classFile, this);
         resolveSuperClass(clazz);
@@ -83,13 +96,13 @@ public class ClassLoader {
         return clazz;
     }
 
-    private void resolveSuperClass(JvmClass clazz) throws IOException {
+    private void resolveSuperClass(JvmClass clazz) {
         if (!"java/lang/Object".equals(clazz.getName())) {
             clazz.setSuperClass(clazz.getLoader().loadClass(clazz.getSuperClassName()));
         }
     }
 
-    private void resolveInterfaces(JvmClass clazz) throws IOException {
+    private void resolveInterfaces(JvmClass clazz) {
         String[] interfaceNames = clazz.getInterfaceNames();
         int count = interfaceNames.length;
         JvmClass[] interfaces = new JvmClass[count];
@@ -99,12 +112,12 @@ public class ClassLoader {
         clazz.setInterfaces(interfaces);
     }
 
-    private void link(JvmClass clazz) throws IOException {
+    private void link(JvmClass clazz) {
 //        verify
         prepare(clazz);
     }
 
-    private static void prepare(JvmClass clazz) throws IOException {
+    private static void prepare(JvmClass clazz) {
         calcInstanceFieldSlotIds(clazz);
         calcStaticFieldSlotIds(clazz);
         allocAndInitStaticVars(clazz);
@@ -131,6 +144,7 @@ public class ClassLoader {
         int slotId = 0;
         for (Field field : clazz.getFields()) {
             if (field.isStatic()) {
+                field.setSlotId(slotId);
                 slotId++;
                 if (field.isLongOrDouble()) {
                     slotId++;
@@ -140,7 +154,7 @@ public class ClassLoader {
         clazz.setStaticSlotCount(slotId);
     }
 
-    private static void allocAndInitStaticVars(JvmClass clazz) throws IOException {
+    private static void allocAndInitStaticVars(JvmClass clazz) {
         clazz.setStaticVars(new Slots(clazz.getStaticSlotCount()));
         for (Field field : clazz.getFields()) {
             if (field.isStatic() && field.isFinal()) {
@@ -149,7 +163,7 @@ public class ClassLoader {
         }
     }
 
-    private static void initStaticFinalVar(JvmClass clazz, Field field) throws IOException {
+    private static void initStaticFinalVar(JvmClass clazz, Field field) {
         Slots vars = clazz.getStaticVars();
         JvmConstantPool constantPool = clazz.getConstantPool();
         int index = field.getConstantValueIndex();
@@ -179,7 +193,7 @@ public class ClassLoader {
         }
     }
 
-    private void loadBasicClasses() throws IOException {
+    private void loadBasicClasses() {
         JvmClass jvmClass = this.loadClass("java/lang/Class");
         for (Map.Entry<String, JvmClass> entry : this.classMap.entrySet()) {
             if (entry.getValue().getJvmClass() == null) {

@@ -75,6 +75,18 @@ public class OperandStack {
         return this.slots.pop().getRef();
     }
 
+    public void pushBoolean(boolean val) {
+        if (val) {
+            this.pushInt(1);
+        } else {
+            this.pushInt(0);
+        }
+    }
+
+    public boolean popBoolean() {
+        return this.popInt() == 1;
+    }
+
     public void pushSlot(Slot slot) {
         checkStackSize();
         this.slots.push(slot);

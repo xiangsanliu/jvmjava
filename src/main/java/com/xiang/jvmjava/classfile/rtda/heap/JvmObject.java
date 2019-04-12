@@ -7,25 +7,30 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.io.IOException;
-
 /**
  * @author 项三六
  * @time 2019/3/23 16:50
  * @comment
  */
+@Getter
+@Setter
 @NoArgsConstructor
 public class JvmObject {
 
-    @Getter
     private JvmClass clazz;
 
-    @Setter
     private Object data;
 
-    @Setter
-    @Getter
     private Object extra;
+
+    private static void registerNatives() {
+        com.xiang.jvmjava.jvmnative.java.lang.Object.init();
+    }
+
+    static {
+        registerNatives();
+    }
+
 
     public JvmObject(JvmClass clazz) {
         this.clazz = clazz;
@@ -41,7 +46,7 @@ public class JvmObject {
         return (Slots) this.data;
     }
 
-    public boolean isInstantOf(JvmClass clazz) throws IOException {
+    public boolean isInstantOf(JvmClass clazz) {
         return clazz.isAssignableFrom(this.clazz);
     }
 
@@ -109,5 +114,13 @@ public class JvmObject {
         return slots.getRef(field.getSlotId());
     }
 
+    @Override
+    public JvmObject clone() throws CloneNotSupportedException {
+        return (JvmObject) super.clone();
+    }
 
+    @Override
+    public String toString() {
+        return this.getClazz().getName();
+    }
 }

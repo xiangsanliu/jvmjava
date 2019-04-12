@@ -26,7 +26,7 @@ public class NewArray extends Instruction {
     }
 
     @Override
-    public void execute(Frame frame) throws IOException {
+    public void execute(Frame frame) {
         OperandStack stack = frame.getOperandStack();
         int count = stack.popInt();
         if (count < 0) {
@@ -37,7 +37,7 @@ public class NewArray extends Instruction {
         stack.pushRef(array);
     }
 
-    private JvmClass getPrimitiveArrayClass(ClassLoader loader) throws IOException {
+    private JvmClass getPrimitiveArrayClass(ClassLoader loader) {
         switch (aType) {
             case 4:
                 return loader.loadClass("[Z");

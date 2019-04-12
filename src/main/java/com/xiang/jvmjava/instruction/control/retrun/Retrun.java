@@ -14,7 +14,7 @@ import java.io.IOException;
 public class Retrun extends NoOperandsInstruction {
 
     @Override
-    public void execute(Frame frame) throws IOException {
+    public void execute(Frame frame) {
         frame.getThread().popFrame();
     }
 }

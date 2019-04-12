@@ -21,7 +21,7 @@ import java.io.IOException;
 public class PutStatic extends Index16Instruction {
 
     @Override
-    public void execute(Frame frame) throws IOException {
+    public void execute(Frame frame) {
         Method currentMethod = frame.getMethod();
         JvmClass currentClass = currentMethod.getClazz();
         JvmConstantPool constantPool = currentClass.getConstantPool();

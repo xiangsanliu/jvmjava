@@ -19,7 +19,7 @@ import java.io.IOException;
 public class CheckCast extends Index16Instruction {
 
     @Override
-    public void execute(Frame frame) throws IOException {
+    public void execute(Frame frame) {
         OperandStack stack = frame.getOperandStack();
         JvmObject ref = stack.popRef();
         stack.pushRef(ref);

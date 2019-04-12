@@ -21,14 +21,14 @@ public class FieldRef extends MemberRef {
         super(constantPool, info);
     }
 
-    public Field resolvedField() throws IOException {
+    public Field resolvedField() {
         if (this.field == null) {
             resolveFieldRef();
         }
         return this.field;
     }
 
-    private void resolveFieldRef() throws IOException {
+    private void resolveFieldRef() {
         JvmClass d = this.getConstantPool().getClazz();
         JvmClass c = this.resolvedClass();
         this.field = lookupField(c, this.getName(), this.getDescriptor());

@@ -21,14 +21,14 @@ public class InterfaceMethodRef extends MemberRef {
         super(constantPool, info);
     }
 
-    public Method resolvedInterfaceMethod() throws IOException {
+    public Method resolvedInterfaceMethod() {
         if (this.method == null) {
             this.resolveInterfaceMethodRef();
         }
         return this.method;
     }
 
-    private void resolveInterfaceMethodRef() throws IOException {
+    private void resolveInterfaceMethodRef() {
         JvmClass c = this.resolvedClass();
         if (!c.isInterface()) {
             throw new IncompatibleClassChangeError();

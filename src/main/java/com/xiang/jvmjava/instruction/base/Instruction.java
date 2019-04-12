@@ -7,8 +7,6 @@ import com.xiang.jvmjava.classfile.rtda.heap.JvmClass;
 import com.xiang.jvmjava.classfile.rtda.heap.member.Method;
 import com.xiang.jvmjava.instruction.BytecodeReader;
 
-import java.io.IOException;
-
 /**
  * @author 项三六
  * @time 2019/3/17 17:44
@@ -19,7 +17,7 @@ public abstract class Instruction {
 
     public abstract void fetchOperands(BytecodeReader reader);
 
-    public abstract void execute(Frame frame) throws IOException;
+    public abstract void execute(Frame frame);
 
     public static void branch(Frame frame, int offset) {
         int pc = frame.getThread().getPc();

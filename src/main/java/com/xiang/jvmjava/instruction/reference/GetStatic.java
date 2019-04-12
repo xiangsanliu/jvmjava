@@ -3,13 +3,11 @@ package com.xiang.jvmjava.instruction.reference;
 import com.xiang.jvmjava.classfile.rtda.Frame;
 import com.xiang.jvmjava.classfile.rtda.OperandStack;
 import com.xiang.jvmjava.classfile.rtda.Slots;
-import com.xiang.jvmjava.classfile.rtda.heap.member.Field;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmClass;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmConstantPool;
+import com.xiang.jvmjava.classfile.rtda.heap.member.Field;
 import com.xiang.jvmjava.classfile.rtda.heap.ref.FieldRef;
 import com.xiang.jvmjava.instruction.base.Index16Instruction;
-
-import java.io.IOException;
 
 /**
  * @author 项三六
@@ -20,7 +18,7 @@ import java.io.IOException;
 public class GetStatic extends Index16Instruction {
 
     @Override
-    public void execute(Frame frame) throws IOException {
+    public void execute(Frame frame) {
         JvmConstantPool constantPool = frame.getMethod().getClazz().getConstantPool();
         FieldRef fieldRef = (FieldRef) constantPool.getConstant(this.index);
         Field field = fieldRef.resolvedField();

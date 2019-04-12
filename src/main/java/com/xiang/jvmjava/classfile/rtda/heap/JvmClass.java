@@ -5,10 +5,8 @@ import com.xiang.jvmjava.classfile.rtda.Slots;
 import com.xiang.jvmjava.classfile.rtda.heap.member.Field;
 import com.xiang.jvmjava.classfile.rtda.heap.member.Method;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,7 +19,6 @@ import java.util.Map;
 
 @Getter
 @Setter
-@NoArgsConstructor
 public class JvmClass {
 
     private int accessFlags;
@@ -56,6 +53,11 @@ public class JvmClass {
 
     public static Map<String, String> primitiveTypes = new HashMap<>();
 
+    private static void registerNatives() {
+        com.xiang.jvmjava.jvmnative.java.lang.Class.init();
+    }
+
+
     static {
         primitiveTypes.put("void", "V");
         primitiveTypes.put("boolean", "Z");
@@ -66,6 +68,11 @@ public class JvmClass {
         primitiveTypes.put("char", "C");
         primitiveTypes.put("float", "F");
         primitiveTypes.put("double", "D");
+        registerNatives();
+    }
+
+    public JvmClass() {
+        this.methods = new Method[0];
     }
 
     public JvmClass(ClassFile classFile, ClassLoader classLoader) {
@@ -131,6 +138,7 @@ public class JvmClass {
             case "[B":
                 return newObject(new byte[count]);
             case "[C":
+                return newObject(new char[count]);
             case "[S":
                 return newObject(new short[count]);
             case "[I":
@@ -150,12 +158,12 @@ public class JvmClass {
         }
     }
 
-    public JvmClass getElementClass() throws IOException {
+    public JvmClass getElementClass() {
         String name = getElementClassName(this.name);
         return this.loader.loadClass(name);
     }
 
-    public JvmClass getArrayClass() throws IOException {
+    public JvmClass getArrayClass() {
         return this.loader.loadClass(getArrayClassName(this.name));
     }
 
@@ -186,7 +194,6 @@ public class JvmClass {
         throw new Error("Invalid descriptor: " + descriptor);
     }
 
-
     private String toDescriptor(String className) {
         if (className.charAt(0) == '[') {
             return className;
@@ -206,6 +213,10 @@ public class JvmClass {
         return "";
     }
 
+    public String getClassName() {
+        return this.getName().replaceAll("/", ".");
+    }
+
     public boolean isSubClassOf(JvmClass other) {
         for (JvmClass c = this.superClass; c != null; c = c.getSuperClass()) {
             if (c == other) {
@@ -219,7 +230,7 @@ public class JvmClass {
         return other.isSuperClassOf(this);
     }
 
-    boolean isAssignableFrom(JvmClass other) throws IOException {
+    boolean isAssignableFrom(JvmClass other) {
         JvmClass t = this;
         if (other == t) {
             return true;

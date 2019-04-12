@@ -22,14 +22,14 @@ public class SymRef {
 
     private JvmClass clazz;
 
-    public JvmClass resolvedClass() throws IOException {
+    public JvmClass resolvedClass() {
         if (this.clazz == null) {
             this.resolveClassRef();
         }
         return this.clazz;
     }
 
-    private void resolveClassRef() throws IOException {
+    private void resolveClassRef() {
         JvmClass d = this.constantPool.getClazz();
         JvmClass c = d.getLoader().loadClass(this.className);
         if (!c.isAccessibleTo(d)) {

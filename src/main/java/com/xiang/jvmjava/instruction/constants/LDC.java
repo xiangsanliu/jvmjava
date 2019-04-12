@@ -18,7 +18,7 @@ import java.io.IOException;
 public class LDC extends Index8Instruction {
 
     @Override
-    public void execute(Frame frame) throws IOException {
+    public void execute(Frame frame) {
         OperandStack stack = frame.getOperandStack();
         JvmConstantPool constantPool = frame.getMethod().getClazz().getConstantPool();
         Object val = constantPool.getConstant(this.index);
@@ -29,7 +29,7 @@ public class LDC extends Index8Instruction {
         } else if (val instanceof String) {
             stack.pushRef(StringPool.getJvmString(frame.getMethod().getClazz().getLoader(), (String) val));
         } else if (val instanceof ClassRef) {
-            throw new Error("todo");
+            stack.pushRef(((ClassRef) val).resolvedClass().getJvmClass());
         } else {
             throw new Error("todo");
         }

@@ -18,7 +18,7 @@ import java.io.IOException;
 public class InvokeStatic extends Index16Instruction {
 
     @Override
-    public void execute(Frame frame) throws IOException {
+    public void execute(Frame frame) {
         JvmConstantPool constantPool = frame.getMethod().getClazz().getConstantPool();
         MethodRef methodRef = (MethodRef) constantPool.getConstant(this.index);
         Method resolvedMethod = methodRef.resolvedMethod();

@@ -19,7 +19,7 @@ import java.io.IOException;
 public class InvokeSpecial extends Index16Instruction {
 
     @Override
-    public void execute(Frame frame) throws IOException {
+    public void execute(Frame frame) {
         JvmClass currentClass = frame.getMethod().getClazz();
         JvmConstantPool constantPool = currentClass.getConstantPool();
         MethodRef methodRef = (MethodRef) constantPool.getConstant(this.index);

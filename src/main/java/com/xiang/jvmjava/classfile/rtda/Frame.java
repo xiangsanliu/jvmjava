@@ -45,5 +45,4 @@ public class Frame {
         this.thread = thread;
     }
 
-
 }

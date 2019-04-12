@@ -20,7 +20,7 @@ import java.io.IOException;
 public class GetField extends Index16Instruction {
 
     @Override
-    public void execute(Frame frame) throws IOException {
+    public void execute(Frame frame) {
         JvmConstantPool constantPool = frame.getMethod().getClazz().getConstantPool();
         FieldRef fieldRef = (FieldRef) constantPool.getConstant(this.index);
         Field field = fieldRef.resolvedField();
