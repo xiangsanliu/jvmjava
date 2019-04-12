@@ -53,10 +53,6 @@ public class JvmClass {
 
     public static Map<String, String> primitiveTypes = new HashMap<>();
 
-    private static void registerNatives() {
-        com.xiang.jvmjava.jvmnative.java.lang.Class.init();
-    }
-
 
     static {
         primitiveTypes.put("void", "V");
@@ -68,7 +64,6 @@ public class JvmClass {
         primitiveTypes.put("char", "C");
         primitiveTypes.put("float", "F");
         primitiveTypes.put("double", "D");
-        registerNatives();
     }
 
     public JvmClass() {
@@ -227,7 +222,7 @@ public class JvmClass {
     }
 
     public boolean isSuperClassOf(JvmClass other) {
-        return other.isSuperClassOf(this);
+        return other.isSubClassOf(this);
     }
 
     boolean isAssignableFrom(JvmClass other) {
@@ -335,8 +330,15 @@ public class JvmClass {
         return 0 != (this.accessFlags & AccessFlags.ACC_ENUM);
     }
 
-    private boolean isArray() {
+    public boolean isArray() {
         return this.name.charAt(0) == '[';
     }
 
+    public boolean isPrimitive() {
+        return primitiveTypes.containsKey(this.name);
+    }
+
+    public boolean equals(JvmClass other) {
+        return this.name.equals(other.getName());
+    }
 }

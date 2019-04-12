@@ -15,7 +15,7 @@ import java.util.function.Function;
 
 public class Object {
 
-    private static final String classStr = "java/lang/Object";
+    private static final java.lang.String classStr = "java/lang/Object";
 
     private static Function<Frame, Void> getClass = frame -> {
         JvmObject self = frame.getLocalVars().getThis();
@@ -36,11 +36,7 @@ public class Object {
         if (!self.getClazz().isImplements(cloneable)) {
             throw new Error("java.lang.CloneNotSupportedException");
         }
-        try {
-            frame.getOperandStack().pushRef(self.clone());
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
+        frame.getOperandStack().pushRef(self.jvmClone());
         return null;
     };
 
@@ -51,8 +47,9 @@ public class Object {
         return null;
     };
 
-    public static void init() {
+    public static void registerNatives() {
         Registry.register(classStr, "registerNatives", "()V", registerNatives);
     }
+
 
 }

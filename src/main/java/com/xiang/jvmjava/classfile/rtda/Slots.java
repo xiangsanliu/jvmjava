@@ -80,4 +80,10 @@ public class Slots {
     public String toString() {
         return Arrays.toString(vars);
     }
+
+    public Slots jvmClone() {
+        Slots clone = new Slots(this.vars.length);
+        System.arraycopy(this.vars, 0, clone.vars, 0, this.vars.length);
+        return clone;
+    }
 }

@@ -25,13 +25,22 @@ public class StringPool {
         JvmObject chars = new JvmObject(loader.loadClass("[C"), str.toCharArray());
         JvmObject jvmStr = loader.loadClass("java/lang/String").newObject();
         jvmStr.setRefVar("value", "[C", chars);
-        internedStrings.put("str", jvmStr);
+        internedStrings.put(str, jvmStr);
         return jvmStr;
     }
 
     public static String jvmStrToString(JvmObject jvmStr) {
         JvmObject chars = jvmStr.getRefVar("value", "[C");
         return new String(chars.getChars());
+    }
+
+    public static JvmObject internString(JvmObject jvmStr) {
+        String str = jvmStrToString(jvmStr);
+        if (internedStrings.containsKey(str)) {
+            return internedStrings.get(str);
+        }
+        internedStrings.put(str, jvmStr);
+        return jvmStr;
     }
 
 }

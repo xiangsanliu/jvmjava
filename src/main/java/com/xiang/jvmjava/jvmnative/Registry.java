@@ -32,4 +32,14 @@ public class Registry {
         }
         return null;
     }
+
+    static {
+        com.xiang.jvmjava.jvmnative.java.lang.Class.registerNatives();
+        com.xiang.jvmjava.jvmnative.java.lang.Object.registerNatives();
+        com.xiang.jvmjava.jvmnative.java.lang.System.registerNatives();
+        com.xiang.jvmjava.jvmnative.java.lang.String.registerNatives();
+        com.xiang.jvmjava.jvmnative.java.lang.Double.registerNatives();
+        com.xiang.jvmjava.jvmnative.java.lang.Float.registerNatives();
+    }
+
 }

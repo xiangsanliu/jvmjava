@@ -6,6 +6,7 @@ import com.xiang.jvmjava.classfile.rtda.heap.member.Field;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * @author 项三六
@@ -22,15 +23,6 @@ public class JvmObject {
     private Object data;
 
     private Object extra;
-
-    private static void registerNatives() {
-        com.xiang.jvmjava.jvmnative.java.lang.Object.init();
-    }
-
-    static {
-        registerNatives();
-    }
-
 
     public JvmObject(JvmClass clazz) {
         this.clazz = clazz;
@@ -114,9 +106,30 @@ public class JvmObject {
         return slots.getRef(field.getSlotId());
     }
 
-    @Override
-    public JvmObject clone() throws CloneNotSupportedException {
-        return (JvmObject) super.clone();
+    public JvmObject jvmClone() {
+        JvmObject clone = new JvmObject();
+        clone.setClazz(this.clazz);
+        if (this.data instanceof byte[]) {
+            clone.setData(ArrayUtils.clone(getBytes()));
+        } else if (this.data instanceof short[]) {
+            clone.setData(ArrayUtils.clone(getShorts()));
+        } else if (this.data instanceof int[]) {
+            clone.setData(ArrayUtils.clone(getInts()));
+        } else if (this.data instanceof long[]) {
+            clone.setData(ArrayUtils.clone(getLongs()));
+        } else if (this.data instanceof char[]) {
+            clone.setData(ArrayUtils.clone(getShorts()));
+        } else if (this.data instanceof float[]) {
+            clone.setData(ArrayUtils.clone(getFloats()));
+        } else if (this.data instanceof double[]) {
+            clone.setData(ArrayUtils.clone(getDoubles()));
+        } else if (this.data instanceof JvmObject[]) {
+            clone.setData(ArrayUtils.clone(getRefs()));
+        } else {
+            Slots slots = (Slots) this.data;
+            clone.setData(slots.jvmClone());
+        }
+        return clone;
     }
 
     @Override
