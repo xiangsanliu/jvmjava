@@ -100,6 +100,10 @@ public class OperandStack {
         return this.slots.get(this.slots.size() - 1 - n).getRef();
     }
 
+    public void clear() {
+        this.slots.clear();
+    }
+
     @Override
     public String toString() {
         return slots.toString();

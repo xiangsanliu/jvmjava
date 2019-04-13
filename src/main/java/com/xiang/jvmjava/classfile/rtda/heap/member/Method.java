@@ -2,7 +2,9 @@ package com.xiang.jvmjava.classfile.rtda.heap.member;
 
 import com.xiang.jvmjava.classfile.MemberInfo;
 import com.xiang.jvmjava.classfile.attribute.CodeAttribute;
+import com.xiang.jvmjava.classfile.attribute.LineNumberTableAttribute;
 import com.xiang.jvmjava.classfile.rtda.heap.AccessFlags;
+import com.xiang.jvmjava.classfile.rtda.heap.ExceptionTable;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmClass;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,6 +25,10 @@ public class Method extends ClassMember {
     private int maxLocals;
 
     private byte[] code;
+
+    private ExceptionTable exceptionTable;
+
+    private LineNumberTableAttribute lineNumberTable;
 
     private int argSlotCount;
 
@@ -53,7 +59,27 @@ public class Method extends ClassMember {
             this.maxStack = attribute.getMaxStack();
             this.maxLocals = attribute.getMaxLocals();
             this.code = attribute.getCode();
+            this.lineNumberTable = attribute.getLineNumberTableAttribute();
+            this.exceptionTable = new ExceptionTable(attribute.getExceptionTable(), this.getClazz().getConstantPool());
         }
+    }
+
+    public int findExceptionHandlerPC(JvmClass exClass, int pc) {
+        ExceptionTable.ExceptionHandler handler = exceptionTable.findExceptionHandler(exClass, pc);
+        if (handler != null) {
+            return handler.getHandlerPC();
+        }
+        return -1;
+    }
+
+    public int getLineNumber(int pc) {
+        if (this.isNative()) {
+            return -2;
+        }
+        if (this.lineNumberTable == null) {
+            return -1;
+        }
+        return this.lineNumberTable.getLineNumber(pc);
     }
 
     public boolean isBridge() {

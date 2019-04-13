@@ -33,11 +33,11 @@ public class Interpreter {
         while (!thread.isStackEmpty()) {
             Frame frame = thread.currentFrame();
             int pc = frame.getNextPC();
-            thread.setPc(pc);
+            thread.setPC(pc);
             reader.reset(frame.getMethod().getCode(), pc);
             Instruction instruction = InstructionFactory.newInstruction(reader.readUint8());
             instruction.fetchOperands(reader);
-            frame.setNextPC(reader.getPc());
+            frame.setNextPC(reader.getPC());
             if (Cmd.logInstruction) {
                 logInstruction(frame, instruction);
             }
@@ -49,7 +49,7 @@ public class Interpreter {
         Method method = frame.getMethod();
         String className = method.getClazz().getName();
         String methodName = method.getName();
-        int pc = frame.getThread().getPc();
+        int pc = frame.getThread().getPC();
         System.out.printf("%s.%s() #pc: %2d %s\n", className, methodName, pc, instruction);
     }
 

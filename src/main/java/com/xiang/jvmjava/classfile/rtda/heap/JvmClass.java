@@ -1,6 +1,7 @@
 package com.xiang.jvmjava.classfile.rtda.heap;
 
 import com.xiang.jvmjava.classfile.ClassFile;
+import com.xiang.jvmjava.classfile.attribute.SourceFileAttribute;
 import com.xiang.jvmjava.classfile.rtda.Slots;
 import com.xiang.jvmjava.classfile.rtda.heap.member.Field;
 import com.xiang.jvmjava.classfile.rtda.heap.member.Method;
@@ -35,6 +36,8 @@ public class JvmClass {
 
     private Method[] methods;
 
+    private String sourceFile;
+
     private ClassLoader loader;
 
     private JvmClass superClass;
@@ -52,7 +55,6 @@ public class JvmClass {
     private JvmObject jvmClass;
 
     public static Map<String, String> primitiveTypes = new HashMap<>();
-
 
     static {
         primitiveTypes.put("void", "V");
@@ -79,6 +81,7 @@ public class JvmClass {
         this.constantPool = new JvmConstantPool(this, classFile.getConstantPool());
         this.fields = Field.newFields(this, classFile.getFields());
         this.methods = Method.newMethods(this, classFile.getMethods());
+        this.sourceFile = genSourceFile(classFile);
     }
 
     public void startInit() {
@@ -87,7 +90,7 @@ public class JvmClass {
 
     Field getField(String name, String descriptor, boolean isStatic) {
         for (JvmClass c = this; c != null; c = c.getSuperClass()) {
-            for (Field field : this.fields) {
+            for (Field field : c.fields) {
                 if (field.isStatic() == isStatic && field.getName().equals(name) && field.getDescriptor().equals(descriptor)) {
                     return field;
                 }
@@ -292,6 +295,14 @@ public class JvmClass {
 
     private boolean isJioSerializable() {
         return "java/io/Serializable".equals(this.name);
+    }
+
+    private String genSourceFile(ClassFile classFile) {
+        SourceFileAttribute attribute = classFile.getSourceFileAttribute();
+        if (attribute != null) {
+            return attribute.getFileName();
+        }
+        return "Unknown";
     }
 
     public boolean isAccessibleTo(JvmClass other) {

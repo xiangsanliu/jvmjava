@@ -14,7 +14,6 @@ public class BytecodeReader {
 
     private ByteBuffer code;
 
-    @Getter
     private int pc;
 
     public void reset(byte[] code, int pc) {
@@ -64,5 +63,7 @@ public class BytecodeReader {
         }
     }
 
-
+    public int getPC() {
+        return pc;
+    }
 }

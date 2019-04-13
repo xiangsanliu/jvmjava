@@ -40,6 +40,7 @@ public class Registry {
         com.xiang.jvmjava.jvmnative.java.lang.String.registerNatives();
         com.xiang.jvmjava.jvmnative.java.lang.Double.registerNatives();
         com.xiang.jvmjava.jvmnative.java.lang.Float.registerNatives();
+        com.xiang.jvmjava.jvmnative.java.lang.Throwable.registerNatives();
     }
 
 }

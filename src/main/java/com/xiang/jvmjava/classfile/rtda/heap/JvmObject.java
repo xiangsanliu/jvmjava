@@ -100,7 +100,7 @@ public class JvmObject {
         slots.setRef(field.getSlotId(), ref);
     }
 
-    JvmObject getRefVar(String name, String descriptor) {
+    public JvmObject getRefVar(String name, String descriptor) {
         Field field = this.clazz.getField(name, descriptor, false);
         Slots slots = (Slots) this.data;
         return slots.getRef(field.getSlotId());

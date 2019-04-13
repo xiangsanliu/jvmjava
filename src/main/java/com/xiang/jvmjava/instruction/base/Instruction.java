@@ -20,7 +20,7 @@ public abstract class Instruction {
     public abstract void execute(Frame frame);
 
     public static void branch(Frame frame, int offset) {
-        int pc = frame.getThread().getPc();
+        int pc = frame.getThread().getPC();
         frame.setNextPC(pc + offset);
     }
 

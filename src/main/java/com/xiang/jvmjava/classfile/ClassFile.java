@@ -1,6 +1,7 @@
 package com.xiang.jvmjava.classfile;
 
 import com.sun.org.apache.bcel.internal.classfile.ClassFormatException;
+import com.xiang.jvmjava.classfile.attribute.SourceFileAttribute;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -100,6 +101,15 @@ public class ClassFile {
             interfaceNames[i] = this.constantPool.getClassName(this.interfaces[i]);
         }
         return interfaceNames;
+    }
+
+    public SourceFileAttribute getSourceFileAttribute() {
+        for (AttributeInfo info : this.attributes) {
+            if (info instanceof SourceFileAttribute) {
+                return (SourceFileAttribute) info;
+            }
+        }
+        return null;
     }
 
 }

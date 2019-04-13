@@ -21,7 +21,7 @@ public class LocalVariableTableAttribute extends AttributeInfo {
         this.localVariableTable = new LocalVariableTableEntry[len];
         for (int i = 0; i < len; i++) {
             this.localVariableTable[i] = new LocalVariableTableEntry();
-            this.localVariableTable[i].setStartPc(reader.readUint16());
+            this.localVariableTable[i].setStartPC(reader.readUint16());
             this.localVariableTable[i].setLength(reader.readUint16());
             this.localVariableTable[i].setNameIndex(reader.readUint16());
             this.localVariableTable[i].setDescriptorIndex(reader.readUint16());
@@ -32,7 +32,7 @@ public class LocalVariableTableAttribute extends AttributeInfo {
     @Getter
     @Setter
     private class LocalVariableTableEntry {
-        private int startPc;
+        private int startPC;
         private int length;
         private int nameIndex;
         private int descriptorIndex;

@@ -22,6 +22,7 @@ public class LineNumberTableAttribute extends AttributeInfo {
         private int startPC;
 
         private int lineNumber;
+
     }
 
     @Override
@@ -33,5 +34,15 @@ public class LineNumberTableAttribute extends AttributeInfo {
             this.lineNumberTable[i].setStartPC(reader.readUint16());
             this.lineNumberTable[i].setLineNumber(reader.readUint16());
         }
+    }
+
+    public int getLineNumber(int pc) {
+        for (int i = this.lineNumberTable.length - 1; i >= 0; i--) {
+            LineNumberTableEntry entry = this.lineNumberTable[i];
+            if (pc >= entry.startPC) {
+                return entry.lineNumber;
+            }
+        }
+        return -1;
     }
 }

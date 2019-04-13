@@ -1,9 +1,11 @@
 package com.xiang.jvmjava.classfile.rtda;
 
 import com.xiang.jvmjava.classfile.rtda.heap.member.Method;
-import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.ArrayUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 /**
@@ -23,8 +25,6 @@ JVM
 
 public class Thread {
 
-    @Getter
-    @Setter
     private int pc;
 
     private Stack<Frame> stack;
@@ -63,8 +63,24 @@ public class Thread {
         return new Frame(this, method);
     }
 
+    public List<Frame> getFrames(int skip) {
+        return this.stack.subList(0, this.stack.size()-skip);
+    }
+
     public boolean isStackEmpty() {
         return this.stack.isEmpty();
+    }
+
+    public void clearStack() {
+        stack.clear();
+    }
+
+    public void setPC(int pc) {
+        this.pc = pc;
+    }
+
+    public int getPC() {
+        return this.pc;
     }
 
     @Override

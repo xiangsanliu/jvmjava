@@ -36,7 +36,7 @@ public class Frame {
     }
 
     public void revertNextPC() {
-        this.nextPC = this.thread.getPc();
+        this.nextPC = this.thread.getPC();
     }
 
     public Frame(Slots localVars, OperandStack operandStack, Thread thread) {

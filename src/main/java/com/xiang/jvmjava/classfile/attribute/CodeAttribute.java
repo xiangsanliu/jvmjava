@@ -37,7 +37,7 @@ public class CodeAttribute extends AttributeInfo {
 
     @Getter
     @Setter
-    private class ExceptionTableEntry {
+    public static class ExceptionTableEntry {
 
         private int startPC;
 
@@ -57,6 +57,15 @@ public class CodeAttribute extends AttributeInfo {
         this.code = reader.readBytes(codeLength);
         this.exceptionTable = readExceptionTables(reader);
         this.attributes = readAttributes(reader, constantPool);
+    }
+
+    public LineNumberTableAttribute getLineNumberTableAttribute() {
+        for (AttributeInfo info : this.attributes) {
+            if (info instanceof LineNumberTableAttribute) {
+                return (LineNumberTableAttribute) info;
+            }
+        }
+        return null;
     }
 
     private ExceptionTableEntry[] readExceptionTables(ClassReader reader) {
