@@ -3,6 +3,7 @@ package com.xiang.jvmjava.classfile.rtda.heap;
 import com.xiang.jvmjava.classfile.attribute.CodeAttribute;
 import com.xiang.jvmjava.classfile.rtda.heap.ref.ClassRef;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * @author 项三六
@@ -14,6 +15,10 @@ import lombok.Getter;
 public class ExceptionTable {
 
     private ExceptionHandler[] handlers;
+
+    public ExceptionTable() {
+        this.handlers = new ExceptionHandler[0];
+    }
 
     public ExceptionTable(CodeAttribute.ExceptionTableEntry[] entries, JvmConstantPool constantPool) {
         this.handlers = new ExceptionHandler[entries.length];

@@ -50,6 +50,7 @@ public class Method extends ClassMember {
         this.clazz = new JvmClass();
         this.clazz.setName("~shim");
         this.code = new byte[]{-79};
+        this.exceptionTable = new ExceptionTable();
     }
 
     public static Method[] newMethods(JvmClass clazz, MemberInfo[] memberInfos) {
@@ -70,6 +71,7 @@ public class Method extends ClassMember {
             this.lineNumberTable = attribute.getLineNumberTableAttribute();
             this.exceptionTable = new ExceptionTable(attribute.getExceptionTable(), this.getClazz().getConstantPool());
         }
+        this.exceptionTable = new ExceptionTable();
     }
 
     public int findExceptionHandlerPC(JvmClass exClass, int pc) {

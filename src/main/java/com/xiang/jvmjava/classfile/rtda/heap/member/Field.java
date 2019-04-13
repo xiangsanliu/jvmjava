@@ -32,6 +32,10 @@ public class Field extends ClassMember {
         return fields;
     }
 
+    public JvmClass getType() {
+        return clazz.getLoader().loadClass(JvmClass.toClassName(descriptor));
+    }
+
     public boolean isLongOrDouble() {
         return "J".equals(this.descriptor) || "D".equals(this.descriptor);
     }

@@ -8,8 +8,7 @@ import com.xiang.jvmjava.classfile.rtda.heap.member.Method;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -115,6 +114,20 @@ public class JvmClass {
         return getMethod(name, descriptor, true);
     }
 
+    public Method getConstructor(String descriptor) {
+        return getInstanceMethod("<init>", descriptor);
+    }
+
+    public List<Field> getPublicFields(boolean publicOnly) {
+        List<Field> result = new ArrayList<>();
+        Arrays.asList(fields).forEach(field -> {
+            if (field.isPublic() || !publicOnly) {
+                result.add(field);
+            }
+        });
+        return result;
+    }
+
     public JvmObject newObject() {
         return new JvmObject(this);
     }
@@ -182,7 +195,7 @@ public class JvmClass {
         return null;
     }
 
-    private String toClassName(String descriptor) {
+    public static String toClassName(String descriptor) {
         if (descriptor.charAt(0) == '[') {
             return descriptor;
         }
