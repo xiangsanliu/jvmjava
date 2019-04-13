@@ -1,9 +1,14 @@
 package com.xiang.jvmjava.jvmnative.java.lang;
 
 import com.xiang.jvmjava.classfile.rtda.Frame;
+import com.xiang.jvmjava.classfile.rtda.OperandStack;
 import com.xiang.jvmjava.classfile.rtda.Slots;
+import com.xiang.jvmjava.classfile.rtda.Thread;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmClass;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmObject;
+import com.xiang.jvmjava.classfile.rtda.heap.StringPool;
+import com.xiang.jvmjava.classfile.rtda.heap.member.Method;
+import com.xiang.jvmjava.instruction.base.Instruction;
 import com.xiang.jvmjava.jvmnative.Registry;
 
 import java.util.function.Function;
@@ -16,7 +21,7 @@ import java.util.function.Function;
 
 public class System {
 
-    private static final java.lang.String classStr = "java/lang/System";
+    private static final java.lang.String CLASS_STR = "java/lang/System";
 
     private static Function<Frame, Void> arraycopy = frame -> {
         Slots vars = frame.getLocalVars();
@@ -40,13 +45,40 @@ public class System {
         return null;
     };
 
+    private static Function<Frame, Void> initProperties = frame -> {
+        Slots vars = frame.getLocalVars();
+        JvmObject props = vars.getRef(0);
+        OperandStack stack = frame.getOperandStack();
+        stack.pushRef(props);
+        Method setPropMethod = props.getClazz().getInstanceMethod("setProperty",
+                "(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/Object;");
+        Thread thread = frame.getThread();
+        java.lang.System.getProperties().forEach((key, val) -> {
+            JvmObject jvmKey = StringPool.getJvmString(frame.getMethod().getClazz().getLoader(), (java.lang.String) key);
+            JvmObject jvmVal = StringPool.getJvmString(frame.getMethod().getClazz().getLoader(), (java.lang.String) val);
+            OperandStack ops = new OperandStack(3);
+            ops.pushRef(props);
+            ops.pushRef(jvmKey);
+            ops.pushRef(jvmVal);
+            Frame shimFrame = new Frame(thread, ops);
+            thread.pushFrame(shimFrame);
+            Instruction.invokeMethod(shimFrame, setPropMethod);
+        });
+        return null;
+    };
+
     private static Function<Frame, Void> registerNatives = frame -> {
-        Registry.register(classStr, "arraycopy", "(Ljava/lang/Object;ILjava/lang/Object;II)V", arraycopy);
+        Registry.register(CLASS_STR, "arraycopy", "(Ljava/lang/Object;ILjava/lang/Object;II)V", arraycopy);
+        Registry.register(CLASS_STR, "initProperties", "(Ljava/util/Properties;)Ljava/util/Properties;", initProperties);
+//        Registry.register(CLASS_STR, "setIn0", "(Ljava/io/InputStream;)V", setIn0);
+//        Registry.register(CLASS_STR, "setOut0", "(Ljava/io/PrintStream;)V", setOut0);
+//        Registry.register(CLASS_STR, "setErr0", "(Ljava/io/PrintStream;)V", setErr0);
+//        Registry.register(CLASS_STR, "currentTimeMillis", "()J", currentTimeMillis);
         return null;
     };
 
     public static void registerNatives() {
-        Registry.register(classStr, "registerNatives", "()V", registerNatives);
+        Registry.register(CLASS_STR, "registerNatives", "()V", registerNatives);
     }
 
     private static boolean checkArrayCopy(JvmObject src, JvmObject dest) {

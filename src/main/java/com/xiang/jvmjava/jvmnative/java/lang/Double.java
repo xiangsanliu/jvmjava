@@ -13,7 +13,7 @@ import java.util.function.Function;
 
 public class Double {
 
-    private static final java.lang.String classStr = "java/lang/Double";
+    private static final java.lang.String CLASS_STR = "java/lang/Double";
 
     private static Function<Frame, Void> doubleToRawLongBits = frame -> {
         double val = frame.getLocalVars().getDouble(0);
@@ -28,8 +28,8 @@ public class Double {
     };
 
     public static void registerNatives() {
-        Registry.register(classStr, "doubleToRawLongBits", "(D)J", doubleToRawLongBits);
-        Registry.register(classStr, "longBitsToDouble", "(J)D", longBitsToDouble);
+        Registry.register(CLASS_STR, "doubleToRawLongBits", "(D)J", doubleToRawLongBits);
+        Registry.register(CLASS_STR, "longBitsToDouble", "(J)D", longBitsToDouble);
     }
 
 }

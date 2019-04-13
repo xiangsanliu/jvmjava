@@ -23,7 +23,7 @@ public class InvokeNative extends NoOperandsInstruction {
         String methodDescriptor = method.getDescriptor();
         Function<Frame, Void> nativeMethod = Registry.findNativeMethod(className, methodName, methodDescriptor);
         if (nativeMethod == null) {
-            throw new UnsatisfiedLinkError(String.format("%s.%s%s", className, methodName, methodDescriptor));
+            throw new UnsatisfiedLinkError(String.format("%s.%s%s", method.getClazz().getClassName(), methodName, methodDescriptor));
         }
         nativeMethod.apply(frame);
     }

@@ -25,7 +25,7 @@ public abstract class Instruction {
     }
 
     // 新建栈帧，把参数放入栈帧
-    protected void invokeMethod(Frame invokerFrame, Method method) {
+    public static void invokeMethod(Frame invokerFrame, Method method) {
         Thread thread = invokerFrame.getThread();
         Frame newFrame = thread.newFrame(method);
         thread.pushFrame(newFrame);
@@ -38,13 +38,13 @@ public abstract class Instruction {
         }
     }
 
-    protected void initClass(Thread thread, JvmClass clazz) {
+    public static void initClass(Thread thread, JvmClass clazz) {
         clazz.startInit();
         scheduleClinit(thread, clazz);
         initSuperClass(thread, clazz);
     }
 
-    private void scheduleClinit(Thread thread, JvmClass clazz) {
+    private static void scheduleClinit(Thread thread, JvmClass clazz) {
         Method clinit = clazz.getClinitMethod();
         if (clinit != null) {
             // exec <clinit>
@@ -53,7 +53,7 @@ public abstract class Instruction {
         }
     }
 
-    private void initSuperClass(Thread thread, JvmClass clazz) {
+    private static void initSuperClass(Thread thread, JvmClass clazz) {
         if (!clazz.isInterface()) {
             JvmClass superClazz = clazz.getSuperClass();
             if (superClazz != null && !superClazz.isInitStarted()) {

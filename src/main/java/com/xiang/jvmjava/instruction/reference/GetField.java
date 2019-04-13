@@ -29,7 +29,6 @@ public class GetField extends Index16Instruction {
         }
         OperandStack stack = frame.getOperandStack();
         JvmObject ref = stack.popRef();
-
         if (ref == null) {
             throw new NullPointerException();
         }

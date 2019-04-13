@@ -15,7 +15,7 @@ import java.util.function.Function;
 
 public class String {
 
-    private static final java.lang.String classStr = "java/lang/String";
+    private static final java.lang.String CLASS_STR = "java/lang/String";
 
     private static Function<Frame, Void> intern = frame -> {
         JvmObject self = frame.getLocalVars().getThis();
@@ -24,7 +24,7 @@ public class String {
     };
 
     public static void registerNatives() {
-        Registry.register(classStr, "intern", "()Ljava/lang/String;", intern);
+        Registry.register(CLASS_STR, "intern", "()Ljava/lang/String;", intern);
     }
 
 }

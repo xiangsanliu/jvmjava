@@ -15,7 +15,7 @@ import java.util.function.Function;
 
 public class Object {
 
-    private static final java.lang.String classStr = "java/lang/Object";
+    private static final java.lang.String CLASS_STR = "java/lang/Object";
 
     private static Function<Frame, Void> getClass = frame -> {
         JvmObject self = frame.getLocalVars().getThis();
@@ -41,14 +41,14 @@ public class Object {
     };
 
     private static Function<Frame, Void> registerNatives = frame -> {
-        Registry.register(classStr, "getClass", "()Ljava/lang/Class;", getClass);
-        Registry.register(classStr, "hashCode", "()I", hashCode);
-        Registry.register(classStr, "clone", "()Ljava/lang/Object;", clone);
+        Registry.register(CLASS_STR, "getClass", "()Ljava/lang/Class;", getClass);
+        Registry.register(CLASS_STR, "hashCode", "()I", hashCode);
+        Registry.register(CLASS_STR, "clone", "()Ljava/lang/Object;", clone);
         return null;
     };
 
     public static void registerNatives() {
-        Registry.register(classStr, "registerNatives", "()V", registerNatives);
+        Registry.register(CLASS_STR, "registerNatives", "()V", registerNatives);
     }
 
 

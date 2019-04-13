@@ -1,6 +1,7 @@
 package com.xiang.jvmjava.jvmnative;
 
 import com.xiang.jvmjava.classfile.rtda.Frame;
+import com.xiang.jvmjava.jvmnative.sun.misc.VM;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,13 +28,14 @@ public class Registry {
         if (method != null) {
             return method;
         }
-        if (methodDescriptor.equals("()V") && methodName.equals("registerNatives")) {
+        if (methodDescriptor.equals("()V") && methodName.equals("initIDs")) {
             return frame -> null;
         }
         return null;
     }
 
     static {
+        VM.registerNatives();
         com.xiang.jvmjava.jvmnative.java.lang.Class.registerNatives();
         com.xiang.jvmjava.jvmnative.java.lang.Object.registerNatives();
         com.xiang.jvmjava.jvmnative.java.lang.System.registerNatives();
@@ -41,6 +43,12 @@ public class Registry {
         com.xiang.jvmjava.jvmnative.java.lang.Double.registerNatives();
         com.xiang.jvmjava.jvmnative.java.lang.Float.registerNatives();
         com.xiang.jvmjava.jvmnative.java.lang.Throwable.registerNatives();
+        com.xiang.jvmjava.jvmnative.sun.misc.Unsafe.registerNatives();
+        com.xiang.jvmjava.jvmnative.sun.reflect.Reflection.registerNatives();
+        com.xiang.jvmjava.jvmnative.java.io.FileDescriptor.registerNatives();
+        com.xiang.jvmjava.jvmnative.java.io.FileOutputStream.registerNatives();
+        com.xiang.jvmjava.jvmnative.java.security.AccessController.registerNatives();
+        com.xiang.jvmjava.jvmnative.java.lang.Thread.registerNatives();
     }
 
 }

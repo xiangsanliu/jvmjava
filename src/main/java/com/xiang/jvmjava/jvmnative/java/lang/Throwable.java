@@ -19,7 +19,7 @@ import java.util.function.Function;
 
 public class Throwable {
 
-    private static final java.lang.String classStr = "java/lang/Throwable";
+    private static final java.lang.String CLASS_STR = "java/lang/Throwable";
 
     private static Function<Frame, Void> fillInStackTrace = frame -> {
         JvmObject self = frame.getLocalVars().getThis();
@@ -29,7 +29,7 @@ public class Throwable {
     };
 
     public static void registerNatives() {
-        Registry.register(classStr, "fillInStackTrace", "(I)Ljava/lang/Throwable;", fillInStackTrace);
+        Registry.register(CLASS_STR, "fillInStackTrace", "(I)Ljava/lang/Throwable;", fillInStackTrace);
     }
 
     private static StackTraceElement[] createStackTraceElements(JvmObject obj, Thread thread) {

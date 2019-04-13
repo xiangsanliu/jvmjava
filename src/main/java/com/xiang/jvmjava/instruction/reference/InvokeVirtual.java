@@ -1,11 +1,9 @@
 package com.xiang.jvmjava.instruction.reference;
 
 import com.xiang.jvmjava.classfile.rtda.Frame;
-import com.xiang.jvmjava.classfile.rtda.OperandStack;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmClass;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmConstantPool;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmObject;
-import com.xiang.jvmjava.classfile.rtda.heap.StringPool;
 import com.xiang.jvmjava.classfile.rtda.heap.member.Method;
 import com.xiang.jvmjava.classfile.rtda.heap.ref.MethodRef;
 import com.xiang.jvmjava.instruction.base.Index16Instruction;
@@ -29,10 +27,6 @@ public class InvokeVirtual extends Index16Instruction {
         }
         JvmObject ref = frame.getOperandStack().getRefFromTop(resolvedMethod.getArgSlotCount() - 1);
         if (ref == null) {
-            if (methodRef.getName().equals("println")) {
-                print(frame.getOperandStack(), methodRef.getDescriptor());
-                return;
-            }
             throw new NullPointerException();
         }
         if (resolvedMethod.isProtected() &&
@@ -40,46 +34,15 @@ public class InvokeVirtual extends Index16Instruction {
                 !resolvedMethod.getClazz().getPackageName().equals(currentClass.getPackageName()) &&
                 ref.getClazz() != currentClass &&
                 !ref.getClazz().isSubClassOf(currentClass)) {
-            throw new IllegalAccessError();
+            if (!(ref.getClazz().isArray() && resolvedMethod.getName().equals("clone"))) {
+                throw new IllegalAccessError();
+            }
         }
         Method tobeInvoked = MethodRef.lookupMethodInClass(ref.getClazz(), methodRef.getName(), methodRef.getDescriptor());
         if (tobeInvoked == null || tobeInvoked.isAbstract()) {
             throw new AbstractMethodError();
         }
         invokeMethod(frame, tobeInvoked);
-    }
-
-    private void print(OperandStack stack, String descriptor) {
-        switch (descriptor) {
-            case "(Z)V":
-                System.out.println(stack.popInt() != 0);
-                break;
-            case "(C)V":
-                System.out.printf("%c\n", stack.popInt());
-                break;
-            case "(I)V":
-            case "(B)V":
-            case "(S)V":
-                System.out.println(stack.popInt());
-                break;
-            case "(F)V":
-                System.out.println(stack.popFloat());
-                break;
-            case "(J)V":
-                System.out.println(stack.popLong());
-                break;
-            case "(D)V":
-                System.out.println(stack.popDouble());
-                break;
-            case "(Ljava/lang/String;)V":
-                JvmObject jvmStr = stack.popRef();
-                System.out.println(StringPool.jvmStrToString(jvmStr));
-                break;
-            default:
-                throw new Error("println: " + descriptor);
-
-        }
-        stack.popRef();
     }
 
 }

@@ -107,14 +107,12 @@ public class JvmClass {
         return this.getStaticMethod("<clinit>", "()V");
     }
 
-    private Method getStaticMethod(String name, String descriptor) {
-        for (Method method : this.methods) {
-            if (method.isStatic() && name.equals(method.getName()) &&
-                    descriptor.equals(method.getDescriptor())) {
-                return method;
-            }
-        }
-        return null;
+    public Method getInstanceMethod(String name, String descriptor) {
+        return getMethod(name, descriptor, false);
+    }
+
+    public Method getStaticMethod(String name, String descriptor) {
+        return getMethod(name, descriptor, true);
     }
 
     public JvmObject newObject() {
@@ -148,11 +146,7 @@ public class JvmClass {
             case "[D":
                 return newObject(new double[count]);
             default:
-                JvmObject[] objects = new JvmObject[count];
-                for (int i = 0; i < count; i++) {
-                    objects[i] = new JvmObject();
-                }
-                return newObject(objects);
+                return newObject(new JvmObject[count]);
         }
     }
 
@@ -175,6 +169,17 @@ public class JvmClass {
             return toClassName(descriptor);
         }
         throw new Error("Not array: " + name);
+    }
+
+    private Method getMethod(String name, String descriptor, boolean isStatic) {
+        for (Method method : this.methods) {
+            if (method.isStatic() == isStatic &&
+                    name.equals(method.getName()) &&
+                    descriptor.equals(method.getDescriptor())) {
+                return method;
+            }
+        }
+        return null;
     }
 
     private String toClassName(String descriptor) {

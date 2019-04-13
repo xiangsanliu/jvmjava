@@ -44,6 +44,14 @@ public class Method extends ClassMember {
         }
     }
 
+    public Method() {
+        this.accessFlags = AccessFlags.ACC_STATIC;
+        this.name = "<return>";
+        this.clazz = new JvmClass();
+        this.clazz.setName("~shim");
+        this.code = new byte[]{-79};
+    }
+
     public static Method[] newMethods(JvmClass clazz, MemberInfo[] memberInfos) {
         Method[] methods = new Method[memberInfos.length];
         for (int i = 0; i < memberInfos.length; i++) {

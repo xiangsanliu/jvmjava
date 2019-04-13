@@ -13,7 +13,7 @@ import java.util.function.Function;
 
 public class Float {
 
-    private static final java.lang.String classStr = "java/lang/Float";
+    private static final java.lang.String CLASS_STR = "java/lang/Float";
 
     private static Function<Frame, Void> floatToRawIntBits = frame -> {
         float val = frame.getLocalVars().getFloat(0);
@@ -28,8 +28,8 @@ public class Float {
     };
 
     public static void registerNatives() {
-        Registry.register(classStr, "floatToRawIntBits", "(F)I", floatToRawIntBits);
-        Registry.register(classStr, "intBitsToFloat", "(I)F", intBitsToFloat);
+        Registry.register(CLASS_STR, "floatToRawIntBits", "(F)I", floatToRawIntBits);
+        Registry.register(CLASS_STR, "intBitsToFloat", "(I)F", intBitsToFloat);
     }
 
 }
