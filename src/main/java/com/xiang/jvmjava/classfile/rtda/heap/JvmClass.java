@@ -138,6 +138,11 @@ public class JvmClass {
         return object;
     }
 
+    public void setRefVar(String fieldName, String fieldDescriptor, JvmObject ref) {
+        Field field = getField(fieldName, fieldDescriptor, true);
+        staticVars.setRef(field.getSlotId(), ref);
+    }
+
     public JvmObject newArray(int count) {
         if (!isArray()) {
             throw new Error("Not array class: " + this.name);

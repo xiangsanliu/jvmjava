@@ -144,11 +144,24 @@ public class JvmObject {
         return clone;
     }
 
+    public boolean equals(JvmObject object) {
+        if (object != null) {
+            if (this.clazz != object.clazz) {
+                return false;
+            }
+            if (this.data != object.data) {
+                return false;
+            }
+            return this.extra == object.extra;
+        }
+        return false;
+    }
+
     @Override
     public String toString() {
-        if (this.getClazz() != null) {
-            return this.getClazz().getName();
-        }
+//        if (this.getClazz() != null) {
+//            return this.getClazz().getName();
+//        }
         return super.toString();
     }
 }

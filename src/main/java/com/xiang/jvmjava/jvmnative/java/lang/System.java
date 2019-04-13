@@ -66,12 +66,22 @@ public class System {
         });
         return null;
     };
+    private static Function<Frame, Void> setOut0 = frame -> {
+        java.lang.System.out.println("setOut0");
+        Slots vars = frame.getLocalVars();
+        JvmObject out = vars.getRef(0);
+        JvmClass systemClass = frame.getMethod().getClazz();
+        systemClass.setRefVar("out", "Ljava/io/PrintStream;", out);
+        return null;
+    };
+
+
 
     private static Function<Frame, Void> registerNatives = frame -> {
         Registry.register(CLASS_STR, "arraycopy", "(Ljava/lang/Object;ILjava/lang/Object;II)V", arraycopy);
         Registry.register(CLASS_STR, "initProperties", "(Ljava/util/Properties;)Ljava/util/Properties;", initProperties);
 //        Registry.register(CLASS_STR, "setIn0", "(Ljava/io/InputStream;)V", setIn0);
-//        Registry.register(CLASS_STR, "setOut0", "(Ljava/io/PrintStream;)V", setOut0);
+        Registry.register(CLASS_STR, "setOut0", "(Ljava/io/PrintStream;)V", setOut0);
 //        Registry.register(CLASS_STR, "setErr0", "(Ljava/io/PrintStream;)V", setErr0);
 //        Registry.register(CLASS_STR, "currentTimeMillis", "()J", currentTimeMillis);
         return null;
