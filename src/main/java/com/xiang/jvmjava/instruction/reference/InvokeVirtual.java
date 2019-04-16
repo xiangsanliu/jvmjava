@@ -29,8 +29,12 @@ public class InvokeVirtual extends Index16Instruction {
         }
         JvmObject ref = frame.getOperandStack().getRefFromTop(resolvedMethod.getArgSlotCount() - 1);
         if (ref == null) {
-            if (methodRef.getName().equals("println")) {
+            if (methodRef.getName().equals("print")) {
                 print(frame.getOperandStack(), methodRef.getDescriptor());
+                return;
+            }
+            if (methodRef.getName().equals("println")) {
+                println(frame.getOperandStack(), methodRef.getDescriptor());
                 return;
             }
             throw new NullPointerException();
@@ -52,34 +56,39 @@ public class InvokeVirtual extends Index16Instruction {
     private void print(OperandStack stack, String descriptor) {
         switch (descriptor) {
             case "(Z)V":
-                System.out.println(stack.popInt() != 0);
+                System.out.print(stack.popInt() != 0);
                 break;
             case "(C)V":
-                System.out.printf("%c\n", stack.popInt());
+                System.out.printf("%c", stack.popInt());
                 break;
             case "(I)V":
             case "(B)V":
             case "(S)V":
-                System.out.println(stack.popInt());
+                System.out.print(stack.popInt());
                 break;
             case "(F)V":
-                System.out.println(stack.popFloat());
+                System.out.print(stack.popFloat());
                 break;
             case "(J)V":
-                System.out.println(stack.popLong());
+                System.out.print(stack.popLong());
                 break;
             case "(D)V":
-                System.out.println(stack.popDouble());
+                System.out.print(stack.popDouble());
                 break;
             case "(Ljava/lang/String;)V":
                 JvmObject jvmStr = stack.popRef();
-                System.out.println(StringPool.jvmStrToString(jvmStr));
+                System.out.print(StringPool.jvmStrToString(jvmStr));
                 break;
             default:
-                throw new Error("println: " + descriptor);
+                throw new Error("print: " + descriptor);
 
         }
         stack.popRef();
+    }
+
+    private void println(OperandStack stack, String descriptor) {
+        print(stack, descriptor);
+        System.out.println();
     }
 
 }
