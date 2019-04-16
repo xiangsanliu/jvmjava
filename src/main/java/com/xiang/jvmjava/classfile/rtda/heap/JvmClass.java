@@ -138,6 +138,11 @@ public class JvmClass {
         return object;
     }
 
+    public JvmObject getRefVar(String name, String descriptor) {
+        Field field = getField(name, descriptor, false);
+        return staticVars.getRef(field.getSlotId());
+    }
+
     public void setRefVar(String fieldName, String fieldDescriptor, JvmObject ref) {
         Field field = getField(fieldName, fieldDescriptor, true);
         staticVars.setRef(field.getSlotId(), ref);

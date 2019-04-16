@@ -40,7 +40,7 @@ public class Interpreter {
         String className = method.getClazz().getName();
         String methodName = method.getName();
         int pc = frame.getThread().getPC();
-        System.out.printf("%s.%s() #pc: %2d %s\n", className, methodName, pc, instruction);
+        System.out.printf("%s.%s() #%2d %s\n", className, methodName, pc, instruction);
     }
 
 

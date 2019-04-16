@@ -11,6 +11,8 @@ import com.xiang.jvmjava.classfile.rtda.heap.member.Method;
 import com.xiang.jvmjava.instruction.base.Instruction;
 import com.xiang.jvmjava.jvmnative.Registry;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 
 /**
@@ -22,6 +24,32 @@ import java.util.function.Function;
 public class System {
 
     private static final java.lang.String CLASS_STR = "java/lang/System";
+
+    private static final Map<java.lang.String, java.lang.String> sysProps;
+
+    static {
+        sysProps = new HashMap<>();
+        sysProps.put("java.version", "1.8.0");
+        sysProps.put("java.vendor", "jvm.go");
+        sysProps.put("java.vendor.url", "https://github.com/zxh0/jvm.go");
+        sysProps.put("java.home", "");
+        sysProps.put("java.class.version", "52.0");
+        sysProps.put("java.class.path", "");
+        sysProps.put("java.awt.graphicsenv", "sun.awt.CGraphicsEnvironment");
+        sysProps.put("os.name", "windows");
+        sysProps.put("os.arch", "amd64");
+        sysProps.put("os.version", "");
+        sysProps.put("file.separator", "/");
+        sysProps.put("path.separator", ":");
+        sysProps.put("line.separator", "\n");
+        sysProps.put("user.name", "");
+        sysProps.put("user.home", "");
+        sysProps.put("user.dir", ".");
+        sysProps.put("user.country", "CN");
+        sysProps.put("file.encoding", "UTF-8");
+        sysProps.put("sun.stdout.encoding", "UTF-8");
+        sysProps.put("sun.stderr.encoding", "UTF-8");
+    }
 
     private static Function<Frame, Void> arraycopy = frame -> {
         Slots vars = frame.getLocalVars();
@@ -53,7 +81,7 @@ public class System {
         Method setPropMethod = props.getClazz().getInstanceMethod("setProperty",
                 "(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/Object;");
         Thread thread = frame.getThread();
-        java.lang.System.getProperties().forEach((key, val) -> {
+        sysProps.forEach((key, val) -> {
             JvmObject jvmKey = StringPool.getJvmString(frame.getMethod().getClazz().getLoader(), (java.lang.String) key);
             JvmObject jvmVal = StringPool.getJvmString(frame.getMethod().getClazz().getLoader(), (java.lang.String) val);
             OperandStack ops = new OperandStack(3);
@@ -64,6 +92,7 @@ public class System {
             thread.pushFrame(shimFrame);
             Instruction.invokeMethod(shimFrame, setPropMethod);
         });
+//        throw new Error("hehe");
         return null;
     };
     private static Function<Frame, Void> setOut0 = frame -> {
@@ -74,7 +103,6 @@ public class System {
         systemClass.setRefVar("out", "Ljava/io/PrintStream;", out);
         return null;
     };
-
 
 
     private static Function<Frame, Void> registerNatives = frame -> {
