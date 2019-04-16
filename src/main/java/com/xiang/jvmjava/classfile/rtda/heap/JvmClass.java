@@ -67,6 +67,10 @@ public class JvmClass {
         primitiveTypes.put("double", "D");
     }
 
+    public static JvmObject newJvmByteArray(ClassLoader classLoader, byte[] bytes) {
+        return new JvmObject(classLoader.loadClass("[B"), bytes);
+    }
+
     public JvmClass() {
         this.methods = new Method[0];
     }
@@ -128,9 +132,20 @@ public class JvmClass {
         return result;
     }
 
+    public List<Method> getConstructors(boolean publicOnly) {
+        List<Method> result = new ArrayList<>();
+        Arrays.asList(methods).forEach(method -> {
+            if (!publicOnly || method.isPublic()) {
+                result.add(method);
+            }
+        });
+        return result;
+    }
+
     public JvmObject newObject() {
         return new JvmObject(this);
     }
+
 
     private JvmObject newObject(Object data) {
         JvmObject object = new JvmObject(this);
@@ -256,7 +271,7 @@ public class JvmClass {
         return other.isSubClassOf(this);
     }
 
-    boolean isAssignableFrom(JvmClass other) {
+    public boolean isAssignableFrom(JvmClass other) {
         JvmClass t = this;
         if (other == t) {
             return true;

@@ -24,6 +24,7 @@ public class Registry {
 
     public static Function<Frame, Void> findNativeMethod(String className, String methodName, String methodDescriptor) {
         String key = className + "~" + methodName + "~" + methodDescriptor;
+        System.out.println("key: " + key);
         Function<Frame, Void> method = registry.get(key);
         if (method != null) {
             return method;
@@ -45,6 +46,7 @@ public class Registry {
         com.xiang.jvmjava.jvmnative.java.lang.Throwable.registerNatives();
         com.xiang.jvmjava.jvmnative.sun.misc.Unsafe.registerNatives();
         com.xiang.jvmjava.jvmnative.sun.reflect.Reflection.registerNatives();
+        com.xiang.jvmjava.jvmnative.sun.reflect.NativeConstructorAccessorImpl.registerNatives();
         com.xiang.jvmjava.jvmnative.java.io.FileDescriptor.registerNatives();
         com.xiang.jvmjava.jvmnative.java.io.FileOutputStream.registerNatives();
         com.xiang.jvmjava.jvmnative.java.security.AccessController.registerNatives();

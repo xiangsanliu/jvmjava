@@ -2,10 +2,12 @@ package com.xiang.jvmjava.classfile.rtda.heap.member;
 
 import com.xiang.jvmjava.classfile.MemberInfo;
 import com.xiang.jvmjava.classfile.attribute.CodeAttribute;
+import com.xiang.jvmjava.classfile.attribute.ExceptionsAttribute;
 import com.xiang.jvmjava.classfile.attribute.LineNumberTableAttribute;
 import com.xiang.jvmjava.classfile.rtda.heap.AccessFlags;
 import com.xiang.jvmjava.classfile.rtda.heap.ExceptionTable;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmClass;
+import com.xiang.jvmjava.classfile.rtda.heap.ref.ClassRef;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,6 +32,14 @@ public class Method extends ClassMember {
 
     private LineNumberTableAttribute lineNumberTable;
 
+    private ExceptionsAttribute exceptions;
+
+    private MethodDescriptor parsedMd;
+
+    private byte[] parameterAnnotationData;
+
+    private byte[] annotationDefaultData;
+
     private int argSlotCount;
 
     public Method(JvmClass clazz, MemberInfo info) {
@@ -38,6 +48,7 @@ public class Method extends ClassMember {
         this.copyMemberInfo(info);
         this.copyAttributes(info);
         MethodDescriptor md = MethodDescriptorParser.parse(this.descriptor);
+        this.parsedMd = md;
         this.calcArgSlotCount(md.getParameterTypes());
         if (this.isNative()) {
             this.injectCodeAttribute(md.getReturnType());
@@ -71,7 +82,36 @@ public class Method extends ClassMember {
             this.lineNumberTable = attribute.getLineNumberTableAttribute();
             this.exceptionTable = new ExceptionTable(attribute.getExceptionTable(), this.getClazz().getConstantPool());
         }
+        this.exceptions = memberInfo.getExceptionsAttribute();
         this.exceptionTable = new ExceptionTable();
+        this.annotationData = memberInfo.getRuntimeVisibleAnnotationsAttributeData();
+        this.parameterAnnotationData = memberInfo.getRuntimeVisibleAnnotationsAttributeData();
+        this.annotationDefaultData = memberInfo.getAnnotationDefaultAttributeData();
+    }
+
+    public JvmClass[] getParameterTypes() {
+        if (argSlotCount == 0) {
+            return null;
+        }
+        List<String> paramTypes = parsedMd.getParameterTypes();
+        JvmClass[] paramClasses = new JvmClass[paramTypes.size()];
+        for (int i = 0; i < paramTypes.size(); i++) {
+            paramClasses[i] = clazz.getLoader().loadClass(JvmClass.toClassName(paramTypes.get(i)));
+        }
+        return paramClasses;
+    }
+
+    public JvmClass[] getExceptionTypes() {
+        if (exceptions == null) {
+            return null;
+        }
+        int[] indexTable = exceptions.getExceptionIndexTable();
+        JvmClass[] exceptionClasses = new JvmClass[indexTable.length];
+        for (int i = 0; i < indexTable.length; i++) {
+            ClassRef classRef = (ClassRef) clazz.getConstantPool().getConstant(indexTable[i]);
+            exceptionClasses[i] = classRef.resolvedClass();
+        }
+        return exceptionClasses;
     }
 
     public int findExceptionHandlerPC(JvmClass exClass, int pc) {

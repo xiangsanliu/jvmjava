@@ -1,6 +1,8 @@
 package com.xiang.jvmjava.jvmnative.java.lang;
 
-import com.xiang.jvmjava.classfile.rtda.*;
+import com.xiang.jvmjava.classfile.rtda.Frame;
+import com.xiang.jvmjava.classfile.rtda.OperandStack;
+import com.xiang.jvmjava.classfile.rtda.Slots;
 import com.xiang.jvmjava.classfile.rtda.Thread;
 import com.xiang.jvmjava.classfile.rtda.heap.ClassLoader;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmClass;
@@ -10,6 +12,7 @@ import com.xiang.jvmjava.classfile.rtda.heap.member.Field;
 import com.xiang.jvmjava.classfile.rtda.heap.member.Method;
 import com.xiang.jvmjava.instruction.base.Instruction;
 import com.xiang.jvmjava.jvmnative.Registry;
+import com.xiang.jvmjava.util.JvmClassHelper;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -25,6 +28,13 @@ public class Class {
 
     private static final java.lang.String CLASS_STR = "java/lang/Class";
 
+    private static final java.lang.String CONSTRUCTOR_CONSTRUCTOR_DESCRIPTOR = "" +
+            "(Ljava/lang/Class;" +
+            "[Ljava/lang/Class;" +
+            "[Ljava/lang/Class;" +
+            "II" +
+            "Ljava/lang/String;" +
+            "[B[B)V";
     private static final java.lang.String FIELDC_CONSTRUCTOR_DESCRIPTOR = "" +
             "(Ljava/lang/Class;" +
             "Ljava/lang/String;" +
@@ -76,18 +86,22 @@ public class Class {
         Slots vars = frame.getLocalVars();
         JvmObject classObj = vars.getThis();
         boolean publicOnly = vars.getBoolean(1);
+
         JvmClass clazz = (JvmClass) classObj.getExtra();
         List<Field> fields = clazz.getPublicFields(publicOnly);
         ClassLoader loader = frame.getMethod().getClazz().getLoader();
         JvmClass fieldClass = loader.loadClass("java/lang/reflect/Field");
+
         JvmObject fieldArr = fieldClass.getArrayClass().newArray(fields.size());
         frame.getOperandStack().pushRef(fieldArr);
+
         if (fields.size() > 0) {
             Thread thread = frame.getThread();
             JvmObject[] fieldObjs = fieldArr.getRefs();
             Method fieldConstructor = fieldClass.getConstructor(FIELDC_CONSTRUCTOR_DESCRIPTOR);
             for (int i = 0; i < fields.size(); i++) {
                 Field field = fields.get(i);
+
                 JvmObject fieldObj = fieldClass.newObject();
                 fieldObj.setExtra(field);
                 fieldObjs[i] = fieldObj;
@@ -98,8 +112,8 @@ public class Class {
                 ops.pushRef(field.getType().getJvmClass());
                 ops.pushInt(field.getAccessFlags());
                 ops.pushInt(field.getSlotId());
-                ops.pushRef(null);
-                ops.pushRef(null);
+                ops.pushRef(JvmClassHelper.getSignature(loader, field.getSignature()));
+                ops.pushRef(JvmClassHelper.toJvmByteArray(loader, field.getAnnotationData()));
                 Frame shimFrame = new Frame(thread, ops);
                 thread.pushFrame(shimFrame);
                 Instruction.invokeMethod(shimFrame, fieldConstructor);
@@ -126,11 +140,53 @@ public class Class {
     };
 
     private static Function<Frame, Void> getDeclaredConstructors0 = frame -> {
-        throw new Error("todo");
+        Slots vars = frame.getLocalVars();
+        JvmObject classObj = vars.getThis();
+        boolean publicOnly = vars.getBoolean(1);
+
+        JvmClass clazz = (JvmClass) classObj.getExtra();
+        List<Method> constructors = clazz.getConstructors(publicOnly);
+        ClassLoader loader = frame.getMethod().getClazz().getLoader();
+        JvmClass constructorClass = loader.loadClass("java/lang/reflect/Constructor");
+
+        JvmObject constructorArr = constructorClass.getArrayClass().newArray(constructors.size());
+        frame.getOperandStack().pushRef(constructorArr);
+
+        if (constructors.size() > 0) {
+            Thread thread = frame.getThread();
+            JvmObject[] constructorObjs = constructorArr.getRefs();
+            Method constructorMethod = constructorClass.getConstructor(CONSTRUCTOR_CONSTRUCTOR_DESCRIPTOR);
+            for (int i = 0; i < constructors.size(); i++) {
+                Method constructor = constructors.get(i);
+
+                JvmObject constructorObj = constructorClass.newObject();
+                constructorObj.setExtra(constructor);
+                constructorObjs[i] = constructorObj;
+                OperandStack ops = new OperandStack(9);
+                ops.pushRef(constructorObj);                                        // this
+                ops.pushRef(classObj);                                       // declaringClass
+                ops.pushRef(JvmClassHelper.toClassArray(loader, constructor.getParameterTypes()));
+                ops.pushRef(JvmClassHelper.toClassArray(loader, constructor.getExceptionTypes()));
+                ops.pushInt(constructor.getAccessFlags());
+                ops.pushInt(0);
+                ops.pushRef(JvmClassHelper.getSignature(loader, constructor.getSignature()));
+                ops.pushRef(JvmClassHelper.toJvmByteArray(loader, constructor.getAnnotationData()));
+                ops.pushRef(JvmClassHelper.toJvmByteArray(loader, constructor.getParameterAnnotationData()));
+                Frame shimFrame = new Frame(thread, ops);
+                thread.pushFrame(shimFrame);
+                Instruction.invokeMethod(shimFrame, constructorMethod);
+            }
+        }
+        return null;
     };
 
     private static Function<Frame, Void> getModifiers = frame -> {
-        throw new Error("todo");
+        Slots vars = frame.getLocalVars();
+        JvmObject self = vars.getThis();
+        JvmClass clazz = (JvmClass) self.getExtra();
+        int modifers = clazz.getAccessFlags();
+        frame.getOperandStack().pushInt(modifers);
+        return null;
     };
 
     private static Function<Frame, Void> getSuperclass = frame -> {
@@ -165,7 +221,13 @@ public class Class {
     };
 
     private static Function<Frame, Void> isAssignableFrom = frame -> {
-        throw new Error("todo");
+        Slots vars = frame.getLocalVars();
+        JvmObject self = vars.getThis();
+        JvmObject obj = vars.getRef(1);
+        JvmClass thisClass = (JvmClass) self.getExtra();
+        JvmClass objClass = (JvmClass) obj.getExtra();
+        frame.getOperandStack().pushBoolean(thisClass.isAssignableFrom(objClass));
+        return null;
     };
 
     private static Function<Frame, Void> registerNatives = frame -> {

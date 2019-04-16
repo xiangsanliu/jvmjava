@@ -7,6 +7,7 @@ import com.xiang.jvmjava.classfile.rtda.heap.JvmClass;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmObject;
 import com.xiang.jvmjava.jvmnative.Registry;
 
+import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -20,7 +21,8 @@ public class Reflection {
     private static final String CLASS_STR = "sun/reflect/Reflection";
 
     private static Function<Frame, Void> getCallerClass = frame -> {
-        Frame callerFrame = frame.getThread().getFrames(0).get(2);  // todo
+        List<Frame> frames = frame.getThread().getFrames(0);  // todo
+        Frame callerFrame = frames.get(frames.size() - 3);
         JvmObject callerClass = callerFrame.getMethod().getClazz().getJvmClass();
         frame.getOperandStack().pushRef(callerClass);
         return null;

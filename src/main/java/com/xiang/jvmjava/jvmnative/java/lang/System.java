@@ -81,7 +81,7 @@ public class System {
         Method setPropMethod = props.getClazz().getInstanceMethod("setProperty",
                 "(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/Object;");
         Thread thread = frame.getThread();
-        sysProps.forEach((key, val) -> {
+        java.lang.System.getProperties().forEach((key, val) -> {
             JvmObject jvmKey = StringPool.getJvmString(frame.getMethod().getClazz().getLoader(), (java.lang.String) key);
             JvmObject jvmVal = StringPool.getJvmString(frame.getMethod().getClazz().getLoader(), (java.lang.String) val);
             OperandStack ops = new OperandStack(3);
@@ -92,11 +92,9 @@ public class System {
             thread.pushFrame(shimFrame);
             Instruction.invokeMethod(shimFrame, setPropMethod);
         });
-//        throw new Error("hehe");
         return null;
     };
     private static Function<Frame, Void> setOut0 = frame -> {
-        java.lang.System.out.println("setOut0");
         Slots vars = frame.getLocalVars();
         JvmObject out = vars.getRef(0);
         JvmClass systemClass = frame.getMethod().getClazz();
@@ -104,13 +102,29 @@ public class System {
         return null;
     };
 
+    private static Function<Frame, Void> setIn0 = frame -> {
+        Slots vars = frame.getLocalVars();
+        JvmObject in = vars.getRef(0);
+        JvmClass systemClass = frame.getMethod().getClazz();
+        systemClass.setRefVar("in", "Ljava/io/InputStream;", in);
+        return null;
+    };
+
+    private static Function<Frame, Void> setErr0 = frame -> {
+        Slots vars = frame.getLocalVars();
+        JvmObject err = vars.getRef(0);
+        JvmClass systemClass = frame.getMethod().getClazz();
+        systemClass.setRefVar("err", "Ljava/io/InputStream;", err);
+        return null;
+    };
+
 
     private static Function<Frame, Void> registerNatives = frame -> {
         Registry.register(CLASS_STR, "arraycopy", "(Ljava/lang/Object;ILjava/lang/Object;II)V", arraycopy);
         Registry.register(CLASS_STR, "initProperties", "(Ljava/util/Properties;)Ljava/util/Properties;", initProperties);
-//        Registry.register(CLASS_STR, "setIn0", "(Ljava/io/InputStream;)V", setIn0);
+        Registry.register(CLASS_STR, "setIn0", "(Ljava/io/InputStream;)V", setIn0);
         Registry.register(CLASS_STR, "setOut0", "(Ljava/io/PrintStream;)V", setOut0);
-//        Registry.register(CLASS_STR, "setErr0", "(Ljava/io/PrintStream;)V", setErr0);
+        Registry.register(CLASS_STR, "setErr0", "(Ljava/io/PrintStream;)V", setErr0);
 //        Registry.register(CLASS_STR, "currentTimeMillis", "()J", currentTimeMillis);
         return null;
     };

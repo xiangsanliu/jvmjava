@@ -62,17 +62,71 @@ public class Unsafe {
         return null;
     };
 
+    private static Function<Frame, Void> getIntVolatile = frame -> {
+        Slots vars = frame.getLocalVars();
+        Object fields = vars.getRef(1).getData();
+        long offset = vars.getLong(2);
+        if (fields instanceof Slots) {
+            frame.getOperandStack().pushInt(((Slots) fields).getInt((int) offset));
+        } else if (fields instanceof int[]) {
+            frame.getOperandStack().pushInt(((int[]) fields)[(int) offset]);
+        } else {
+            throw new Error("getIntVolatile!");
+        }
+        return null;
+    };
+
+    private static Function<Frame, Void> compareAndSwapInt = frame -> {
+        Slots vars = frame.getLocalVars();
+        Object fields = vars.getRef(1).getData();
+        long offset = vars.getLong(2);
+        int expected = vars.getInt(4);
+        int newVal = vars.getInt(5);
+        if (fields instanceof Slots) {
+            int oldVal = ((Slots) fields).getInt((int) offset);
+            if (oldVal == expected) {
+                ((Slots) fields).setInt((int) offset, newVal);
+                frame.getOperandStack().pushBoolean(true);
+            } else {
+                frame.getOperandStack().pushBoolean(false);
+            }
+        } else if (fields instanceof int[]) {
+            int[] ints = (int[]) fields;
+            int oldVal = ints[(int) offset];
+            if (oldVal == expected) {
+                ints[(int) offset] = newVal;
+                frame.getOperandStack().pushBoolean(true);
+            } else {
+                frame.getOperandStack().pushBoolean(false);
+            }
+        } else {
+            throw new Error("compareAndSwapInt");
+        }
+        return null;
+    };
+
+    private static Function<Frame, Void> getObjectVolatile = frame -> {
+        throw new Error("todo");
+//        return null;
+    };
+
     private static Function<Frame, Void> registerNatives = frame -> {
         Registry.register(CLASS_STR, "arrayBaseOffset", "(Ljava/lang/Class;)I", arrayBaseOffset);
         Registry.register(CLASS_STR, "arrayIndexScale", "(Ljava/lang/Class;)I", arrayIndexScale);
         Registry.register(CLASS_STR, "addressSize", "()I", addressSize);
         Registry.register(CLASS_STR, "objectFieldOffset", "(Ljava/lang/reflect/Field;)J", objectFieldOffset);
         Registry.register(CLASS_STR, "compareAndSwapObject", "(Ljava/lang/Object;JLjava/lang/Object;Ljava/lang/Object;)Z", compareAndSwapObject);
-//        Registry.register(CLASS_STR, "getIntVolatile", "(Ljava/lang/Object;J)I", getInt);
-//        Registry.register(CLASS_STR, "compareAndSwapInt", "(Ljava/lang/Object;JII)Z", compareAndSwapInt);
-//        Registry.register(CLASS_STR, "getObjectVolatile", "(Ljava/lang/Object;J)Ljava/lang/Object;", getObject);
+        Registry.register(CLASS_STR, "getIntVolatile", "(Ljava/lang/Object;J)I", getIntVolatile);
+        Registry.register(CLASS_STR, "compareAndSwapInt", "(Ljava/lang/Object;JII)Z", compareAndSwapInt);
+        Registry.register(CLASS_STR, "getObjectVolatile", "(Ljava/lang/Object;J)Ljava/lang/Object;", getObjectVolatile);
 //        Registry.register(CLASS_STR, "compareAndSwapLong", "(Ljava/lang/Object;JJJ)Z", compareAndSwapLong);
+        Registry.register(CLASS_STR, "allocateMemory", "(J)J",
+                frame1 -> {
+                    Slots vars = frame.getLocalVars();
+                    long bytes = vars.getLong(1);
 
+                    return null;
+                });
         return null;
     };
 

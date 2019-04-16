@@ -2,6 +2,7 @@ package com.xiang.jvmjava.classfile.attribute;
 
 import com.xiang.jvmjava.classfile.AttributeInfo;
 import com.xiang.jvmjava.classfile.ClassReader;
+import lombok.Getter;
 
 /**
  * @author 项三六
@@ -9,6 +10,7 @@ import com.xiang.jvmjava.classfile.ClassReader;
  * @comment
  */
 
+@Getter
 public class UnparsedAttribute extends AttributeInfo {
 
     private String name;
