@@ -5,8 +5,9 @@ import com.xiang.jvmjava.classfile.rtda.OperandStack;
 import com.xiang.jvmjava.classfile.rtda.Slots;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmObject;
 import com.xiang.jvmjava.jvmnative.Registry;
+import com.xiang.jvmjava.util.Function;
 
-import java.util.function.Function;
+import java.lang.reflect.Field;
 
 /**
  * @author 项三六
@@ -18,34 +19,34 @@ public class Unsafe {
 
     private static final String CLASS_STR = "sun/misc/Unsafe";
 
-    private static Function<Frame, Void> arrayBaseOffset = frame -> {
+    private static Function<Frame> arrayBaseOffset = frame -> {
         OperandStack stack = frame.getOperandStack();
         stack.pushInt(0);
-        return null;
+
     };
 
-    private static Function<Frame, Void> arrayIndexScale = frame -> {
+    private static Function<Frame> arrayIndexScale = frame -> {
         OperandStack stack = frame.getOperandStack();
         stack.pushInt(1);
-        return null;
+
     };
 
-    private static Function<Frame, Void> addressSize = frame -> {
+    private static Function<Frame> addressSize = frame -> {
         OperandStack stack = frame.getOperandStack();
         stack.pushInt(8);
-        return null;
+
     };
 
-    private static Function<Frame, Void> objectFieldOffset = frame -> {
+    private static Function<Frame> objectFieldOffset = frame -> {
         Slots vars = frame.getLocalVars();
         JvmObject field = vars.getRef(1);
         int offset = field.getIntVar("slot", "I");
         OperandStack stack = frame.getOperandStack();
         stack.pushLong(offset);
-        return null;
+
     };
 
-    private static Function<Frame, Void> compareAndSwapObject = frame -> {
+    private static Function<Frame> compareAndSwapObject = frame -> {
         Slots vars = frame.getLocalVars();
         JvmObject obj = vars.getRef(1);
         Object fields = obj.getData();
@@ -59,10 +60,10 @@ public class Unsafe {
         } else {
             throw new Error("todo: compareAndSwapObject!");
         }
-        return null;
+
     };
 
-    private static Function<Frame, Void> getIntVolatile = frame -> {
+    private static Function<Frame> getIntVolatile = frame -> {
         Slots vars = frame.getLocalVars();
         Object fields = vars.getRef(1).getData();
         long offset = vars.getLong(2);
@@ -73,10 +74,10 @@ public class Unsafe {
         } else {
             throw new Error("getIntVolatile!");
         }
-        return null;
+
     };
 
-    private static Function<Frame, Void> compareAndSwapInt = frame -> {
+    private static Function<Frame> compareAndSwapInt = frame -> {
         Slots vars = frame.getLocalVars();
         Object fields = vars.getRef(1).getData();
         long offset = vars.getLong(2);
@@ -102,15 +103,33 @@ public class Unsafe {
         } else {
             throw new Error("compareAndSwapInt");
         }
-        return null;
+
     };
 
-    private static Function<Frame, Void> getObjectVolatile = frame -> {
+    private static Function<Frame> getObjectVolatile = frame -> {
         throw new Error("todo");
-//        return null;
+//        
     };
 
-    private static Function<Frame, Void> registerNatives = frame -> {
+    private static Function<Frame> allocateMemory = frame -> {
+        Slots vars = frame.getLocalVars();
+        try {
+            Field field = sun.misc.Unsafe.class.getDeclaredField("theUnsafe");
+            field.setAccessible(true);
+            sun.misc.Unsafe unsafe = (sun.misc.Unsafe) field.get(null);
+
+            frame.getOperandStack().pushLong(unsafe.allocateMemory(vars.getLong(1)));
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+    };
+
+    private static Function<Frame> registerNatives = frame -> {
+    };
+
+    public static void registerNatives() {
+        Registry.register(CLASS_STR, "registerNatives", "()V", registerNatives);
         Registry.register(CLASS_STR, "arrayBaseOffset", "(Ljava/lang/Class;)I", arrayBaseOffset);
         Registry.register(CLASS_STR, "arrayIndexScale", "(Ljava/lang/Class;)I", arrayIndexScale);
         Registry.register(CLASS_STR, "addressSize", "()I", addressSize);
@@ -120,18 +139,45 @@ public class Unsafe {
         Registry.register(CLASS_STR, "compareAndSwapInt", "(Ljava/lang/Object;JII)Z", compareAndSwapInt);
         Registry.register(CLASS_STR, "getObjectVolatile", "(Ljava/lang/Object;J)Ljava/lang/Object;", getObjectVolatile);
 //        Registry.register(CLASS_STR, "compareAndSwapLong", "(Ljava/lang/Object;JJJ)Z", compareAndSwapLong);
-        Registry.register(CLASS_STR, "allocateMemory", "(J)J",
-                frame1 -> {
-                    Slots vars = frame.getLocalVars();
-                    long bytes = vars.getLong(1);
+        Registry.register(CLASS_STR, "allocateMemory", "(J)J", allocateMemory);
+        Registry.register(CLASS_STR, "putLong", "(JJ)V", frame -> {
+            long address = frame.getLocalVars().getLong(1);
+            long x = frame.getLocalVars().getLong(3);
+            try {
+                Field field = sun.misc.Unsafe.class.getDeclaredField("theUnsafe");
+                field.setAccessible(true);
+                sun.misc.Unsafe unsafe = (sun.misc.Unsafe) field.get(null);
+                unsafe.putLong(address, x);
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
 
-                    return null;
-                });
-        return null;
-    };
+        });
 
-    public static void registerNatives() {
-        Registry.register(CLASS_STR, "registerNatives", "()V", registerNatives);
+        Registry.register(CLASS_STR, "getByte", "(J)B", frame -> {
+            long address = frame.getLocalVars().getLong(1);
+            try {
+                Field field = sun.misc.Unsafe.class.getDeclaredField("theUnsafe");
+                field.setAccessible(true);
+                sun.misc.Unsafe unsafe = (sun.misc.Unsafe) field.get(null);
+                frame.getOperandStack().pushInt(unsafe.getByte(address));
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        });
+
+        Registry.register(CLASS_STR, "freeMemory", "(J)V", frame -> {
+            long address = frame.getLocalVars().getLong(1);
+            try {
+                Field field = sun.misc.Unsafe.class.getDeclaredField("theUnsafe");
+                field.setAccessible(true);
+                sun.misc.Unsafe unsafe = (sun.misc.Unsafe) field.get(null);
+                unsafe.freeMemory(address);
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        });
+
     }
 
     private static boolean casObj(Slots fields, long offset, JvmObject expected, JvmObject newVal) {

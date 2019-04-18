@@ -13,7 +13,7 @@ import com.xiang.jvmjava.jvmnative.Registry;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
+import com.xiang.jvmjava.util.Function;
 
 /**
  * @author 项三六
@@ -51,7 +51,7 @@ public class System {
         sysProps.put("sun.stderr.encoding", "UTF-8");
     }
 
-    private static Function<Frame, Void> arraycopy = frame -> {
+    private static Function<Frame> arraycopy = frame -> {
         Slots vars = frame.getLocalVars();
         JvmObject src = vars.getRef(0);
         int srcPos = vars.getInt(1);
@@ -70,10 +70,10 @@ public class System {
             throw new IndexOutOfBoundsException();
         }
         java.lang.System.arraycopy(src.getData(), srcPos, dest.getData(), destPos, length);
-        return null;
+        
     };
 
-    private static Function<Frame, Void> initProperties = frame -> {
+    private static Function<Frame> initProperties = frame -> {
         Slots vars = frame.getLocalVars();
         JvmObject props = vars.getRef(0);
         OperandStack stack = frame.getOperandStack();
@@ -92,41 +92,41 @@ public class System {
             thread.pushFrame(shimFrame);
             Instruction.invokeMethod(shimFrame, setPropMethod);
         });
-        return null;
+        
     };
-    private static Function<Frame, Void> setOut0 = frame -> {
+    private static Function<Frame> setOut0 = frame -> {
         Slots vars = frame.getLocalVars();
         JvmObject out = vars.getRef(0);
         JvmClass systemClass = frame.getMethod().getClazz();
         systemClass.setRefVar("out", "Ljava/io/PrintStream;", out);
-        return null;
+        
     };
 
-    private static Function<Frame, Void> setIn0 = frame -> {
+    private static Function<Frame> setIn0 = frame -> {
         Slots vars = frame.getLocalVars();
         JvmObject in = vars.getRef(0);
         JvmClass systemClass = frame.getMethod().getClazz();
         systemClass.setRefVar("in", "Ljava/io/InputStream;", in);
-        return null;
+        
     };
 
-    private static Function<Frame, Void> setErr0 = frame -> {
+    private static Function<Frame> setErr0 = frame -> {
         Slots vars = frame.getLocalVars();
         JvmObject err = vars.getRef(0);
         JvmClass systemClass = frame.getMethod().getClazz();
-        systemClass.setRefVar("err", "Ljava/io/InputStream;", err);
-        return null;
+        systemClass.setRefVar("err", "Ljava/io/PrintStream;", err);
+        
     };
 
 
-    private static Function<Frame, Void> registerNatives = frame -> {
+    private static Function<Frame> registerNatives = frame -> {
         Registry.register(CLASS_STR, "arraycopy", "(Ljava/lang/Object;ILjava/lang/Object;II)V", arraycopy);
         Registry.register(CLASS_STR, "initProperties", "(Ljava/util/Properties;)Ljava/util/Properties;", initProperties);
         Registry.register(CLASS_STR, "setIn0", "(Ljava/io/InputStream;)V", setIn0);
         Registry.register(CLASS_STR, "setOut0", "(Ljava/io/PrintStream;)V", setOut0);
         Registry.register(CLASS_STR, "setErr0", "(Ljava/io/PrintStream;)V", setErr0);
 //        Registry.register(CLASS_STR, "currentTimeMillis", "()J", currentTimeMillis);
-        return null;
+        
     };
 
     public static void registerNatives() {

@@ -7,7 +7,7 @@ import com.xiang.jvmjava.classfile.rtda.heap.member.Method;
 import com.xiang.jvmjava.instruction.base.Instruction;
 import com.xiang.jvmjava.jvmnative.Registry;
 
-import java.util.function.Function;
+import com.xiang.jvmjava.util.Function;
 
 /**
  * @author 项三六
@@ -17,7 +17,7 @@ import java.util.function.Function;
 
 public class VM {
 
-    private static Function<Frame, Void> initialize = frame -> {
+    private static Function<Frame> initialize = frame -> {
         ClassLoader loader = frame.getMethod().getClazz().getLoader();
         JvmClass systemClass = loader.loadClass("java/lang/System");
         Method method = systemClass.getStaticMethod("initializeSystemClass", "()V");
@@ -31,7 +31,7 @@ public class VM {
 //        JvmClass propsClass = vmClass.getLoader().loadClass("java/util/Properties");
 //        Method method = propsClass.getInstanceMethod("setProperty", "(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/Object;");
         Instruction.invokeMethod(frame, method);
-        return null;
+        
     };
 
     public static void registerNatives() {

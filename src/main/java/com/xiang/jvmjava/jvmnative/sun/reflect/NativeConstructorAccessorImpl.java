@@ -9,7 +9,7 @@ import com.xiang.jvmjava.classfile.rtda.heap.member.Method;
 import com.xiang.jvmjava.instruction.base.Instruction;
 import com.xiang.jvmjava.jvmnative.Registry;
 
-import java.util.function.Function;
+import com.xiang.jvmjava.util.Function;
 
 /**
  * @author 项三六
@@ -19,7 +19,7 @@ import java.util.function.Function;
 
 public class NativeConstructorAccessorImpl {
 
-    private static Function<Frame, Void> newInstance0 = frame -> {
+    private static Function<Frame> newInstance0 = frame -> {
         Slots vars = frame.getLocalVars();
         JvmObject constructorObj = vars.getRef(0);
         JvmObject argArrObj = vars.getRef(1);
@@ -28,7 +28,6 @@ public class NativeConstructorAccessorImpl {
         if (!clazz.isInitStarted()) {
             frame.revertNextPC();
             Instruction.initClass(frame.getThread(), clazz);
-            return null;
         }
         JvmObject object = clazz.newObject();
         frame.getOperandStack().pushRef(object);
@@ -36,7 +35,7 @@ public class NativeConstructorAccessorImpl {
         Frame shimFrame = new Frame(frame.getThread(), ops);
         frame.getThread().pushFrame(shimFrame);
         Instruction.invokeMethod(shimFrame, constructor);
-        return null;
+
     };
 
     public static void registerNatives() {
@@ -49,7 +48,7 @@ public class NativeConstructorAccessorImpl {
 
     private static OperandStack convertArgs(JvmObject self, Method method) {
         if (method.getArgSlotCount() == 0) {
-            return null;
+
         }
         OperandStack ops = new OperandStack(method.getArgSlotCount());
         if (!method.isStatic()) {

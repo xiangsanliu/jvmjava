@@ -7,8 +7,7 @@ import com.xiang.jvmjava.classfile.rtda.heap.JvmObject;
 import com.xiang.jvmjava.classfile.rtda.heap.member.Method;
 import com.xiang.jvmjava.instruction.base.Instruction;
 import com.xiang.jvmjava.jvmnative.Registry;
-
-import java.util.function.Function;
+import com.xiang.jvmjava.util.Function;
 
 /**
  * @author 项三六
@@ -20,19 +19,17 @@ public class AccessController {
 
     private static final String CLASS_STR = "java/security/AccessController";
 
-    private static Function<Frame, Void> doPrivileged = frame -> {
+    private static Function<Frame> doPrivileged = frame -> {
         Slots vars = frame.getLocalVars();
         JvmObject action = vars.getRef(0);
         OperandStack stack = frame.getOperandStack();
         stack.pushRef(action);
         Method method = action.getClazz().getInstanceMethod("run", "()Ljava/lang/Object;");
         Instruction.invokeMethod(frame, method);
-        return null;
     };
 
-    private static Function<Frame, Void> getStackAccessControlContext = frame -> {
+    private static Function<Frame> getStackAccessControlContext = frame -> {
         frame.getOperandStack().pushRef(null);
-        return null;
     };
 
     public static void registerNatives() {

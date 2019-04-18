@@ -8,7 +8,7 @@ import com.xiang.jvmjava.classfile.rtda.heap.JvmObject;
 import com.xiang.jvmjava.jvmnative.Registry;
 
 import java.util.List;
-import java.util.function.Function;
+import com.xiang.jvmjava.util.Function;
 
 /**
  * @author 项三六
@@ -20,22 +20,22 @@ public class Reflection {
 
     private static final String CLASS_STR = "sun/reflect/Reflection";
 
-    private static Function<Frame, Void> getCallerClass = frame -> {
+    private static Function<Frame> getCallerClass = frame -> {
         List<Frame> frames = frame.getThread().getFrames(0);  // todo
         Frame callerFrame = frames.get(frames.size() - 3);
         JvmObject callerClass = callerFrame.getMethod().getClazz().getJvmClass();
         frame.getOperandStack().pushRef(callerClass);
-        return null;
+        
     };
 
-    private static Function<Frame, Void> getClassAccessFlags = frame -> {
+    private static Function<Frame> getClassAccessFlags = frame -> {
         Slots vars = frame.getLocalVars();
         JvmObject type = vars.getRef(0);
         JvmClass clazz = (JvmClass) type.getExtra();
         int flags = clazz.getAccessFlags();
         OperandStack stack = frame.getOperandStack();
         stack.pushInt(flags);
-        return null;
+        
     };
 
     public static void registerNatives() {

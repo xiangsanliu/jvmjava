@@ -2,10 +2,10 @@ package com.xiang.jvmjava.jvmnative;
 
 import com.xiang.jvmjava.classfile.rtda.Frame;
 import com.xiang.jvmjava.jvmnative.sun.misc.VM;
+import com.xiang.jvmjava.util.Function;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 /**
  * @author 项三六
@@ -15,22 +15,23 @@ import java.util.function.Function;
 
 public class Registry {
 
-    private static Map<String, Function<Frame, Void>> registry = new HashMap<>();
+    private static Map<String, Function<Frame>> registry = new HashMap<>();
 
-    public static void register(String className, String methodName, String methodDescriptor, Function<Frame, Void> method) {
+    public static void register(String className, String methodName, String methodDescriptor, Function<Frame> method) {
         String key = className + "~" + methodName + "~" + methodDescriptor;
         registry.put(key, method);
     }
 
-    public static Function<Frame, Void> findNativeMethod(String className, String methodName, String methodDescriptor) {
+    public static Function<Frame> findNativeMethod(String className, String methodName, String methodDescriptor) {
         String key = className + "~" + methodName + "~" + methodDescriptor;
         System.out.println("key: " + key);
-        Function<Frame, Void> method = registry.get(key);
+        Function<Frame> method = registry.get(key);
         if (method != null) {
             return method;
         }
         if (methodDescriptor.equals("()V") && methodName.equals("initIDs")) {
-            return frame -> null;
+            return frame -> {
+            };
         }
         return null;
     }
@@ -51,6 +52,7 @@ public class Registry {
         com.xiang.jvmjava.jvmnative.java.io.FileOutputStream.registerNatives();
         com.xiang.jvmjava.jvmnative.java.security.AccessController.registerNatives();
         com.xiang.jvmjava.jvmnative.java.lang.Thread.registerNatives();
+        com.xiang.jvmjava.jvmnative.java.util.concurrent.atomic.AtomicLong.registerNatives();
     }
 
 }
