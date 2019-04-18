@@ -28,6 +28,7 @@ public class Classpath {
         return classpath;
     }
 
+    // 双亲委派模型
     public Pair<Entry, byte[]> readClass(String className) throws IOException {
         className = StringUtils.replaceChars(className, '.', '/') + ".class";
         byte[] data = this.bootClasspath.readClass(className);

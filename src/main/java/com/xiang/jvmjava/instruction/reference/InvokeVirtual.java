@@ -56,31 +56,30 @@ public class InvokeVirtual extends Index16Instruction {
     private void print(OperandStack stack, String descriptor) {
         switch (descriptor) {
             case "(Z)V":
-                System.out.print(stack.popInt() != 0);
+                System.err.print(stack.popInt() != 0);
                 break;
             case "(C)V":
-                System.out.printf("%c", stack.popInt());
+                System.err.printf("%c", stack.popInt());
                 break;
             case "(I)V":
             case "(B)V":
             case "(S)V":
-                System.out.print(stack.popInt());
+                System.err.print(stack.popInt());
                 break;
             case "(F)V":
-                System.out.print(stack.popFloat());
+                System.err.print(stack.popFloat());
                 break;
             case "(J)V":
-                System.out.print(stack.popLong());
+                System.err.print(stack.popLong());
                 break;
             case "(D)V":
-                System.out.print(stack.popDouble());
+                System.err.print(stack.popDouble());
                 break;
             case "(Ljava/lang/String;)V":
                 JvmObject jvmStr = stack.popRef();
-                System.out.print(StringPool.jvmStrToString(jvmStr));
+                System.err.print(StringPool.jvmStrToString(jvmStr));
                 break;
             default:
-                throw new Error("print: " + descriptor);
 
         }
         stack.popRef();
@@ -88,7 +87,7 @@ public class InvokeVirtual extends Index16Instruction {
 
     private void println(OperandStack stack, String descriptor) {
         print(stack, descriptor);
-        System.out.println();
+        System.err.println();
     }
 
 }

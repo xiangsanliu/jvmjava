@@ -371,10 +371,6 @@ class InstructionFactory {
                 return new IF_ACMP.IF_ACMPNE();
             case 0xa7:
                 return new Goto();
-            // case 0xa8:
-            // 	return &JSR{}
-            // case 0xa9:
-            // 	return &RET{}
             case 0xaa:
                 return new TableSwitch();
             case 0xab:
@@ -407,8 +403,6 @@ class InstructionFactory {
                 return new InvokeStatic();
             case 0xb9:
                 return new InvokeInterface();
-            // case 0xba:
-            // 	return &INVOKE_DYNAMIC{}
             case 0xbb:
                 return new New();
             case 0xbc:
@@ -423,10 +417,6 @@ class InstructionFactory {
                 return new CheckCast();
             case 0xc1:
                 return new Instanceof();
-            // case 0xc2:
-            // 	return monitorenter
-            // case 0xc3:
-            // 	return monitorexit
             case 0xc4:
                 return new Wide();
             case 0xc5:
@@ -437,12 +427,8 @@ class InstructionFactory {
                 return new IfNotNull();
             case 0xc8:
                 return new GotoW();
-            // case 0xc9:
-            // 	return &JSR_W{}
-            // case 0xca: breakpoint
             case 0xfe:
                 return new InvokeNative();
-            // case 0xff: impdep2
             default:
                 System.out.println(Integer.toHexString(opcode));
                 throw new UnsupportedOperationException();

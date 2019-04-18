@@ -5,8 +5,6 @@ import com.xiang.jvmjava.classfile.rtda.heap.JvmConstantPool;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.IOException;
-
 /**
  * @author 项三六
  * @time 2019/3/23 21:35
@@ -29,6 +27,7 @@ public class SymRef {
         return this.clazz;
     }
 
+    // 解析符号引用为直接引用
     private void resolveClassRef() {
         JvmClass d = this.constantPool.getClazz();
         JvmClass c = d.getLoader().loadClass(this.className);

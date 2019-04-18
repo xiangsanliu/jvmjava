@@ -1,11 +1,9 @@
 package com.xiang.jvmjava.classfile.rtda.heap.ref;
 
 import com.xiang.jvmjava.classfile.constantinfo.ConstantMemberRefInfo;
-import com.xiang.jvmjava.classfile.rtda.heap.member.Field;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmClass;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmConstantPool;
-
-import java.io.IOException;
+import com.xiang.jvmjava.classfile.rtda.heap.member.Field;
 
 /**
  * @author 项三六
@@ -28,6 +26,7 @@ public class FieldRef extends MemberRef {
         return this.field;
     }
 
+    // 解析符号引用为直接引用
     private void resolveFieldRef() {
         JvmClass d = this.getConstantPool().getClazz();
         JvmClass c = this.resolvedClass();

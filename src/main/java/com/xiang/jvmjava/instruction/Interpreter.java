@@ -10,8 +10,6 @@ import com.xiang.jvmjava.classfile.rtda.heap.StringPool;
 import com.xiang.jvmjava.classfile.rtda.heap.member.Method;
 import com.xiang.jvmjava.instruction.base.Instruction;
 
-import java.io.IOException;
-
 /**
  * @author 项三六
  * @time 2019/3/22 16:13
@@ -50,7 +48,7 @@ public class Interpreter {
         String className = method.getClazz().getName();
         String methodName = method.getName();
         int pc = frame.getThread().getPC();
-        System.out.printf("%s.%s() #pc: %2d %s\n", className, methodName, pc, instruction);
+        System.out.printf("%s.%s() #%2d %s\n", className, methodName, pc, instruction);
     }
 
     private static JvmObject createArgsArray(ClassLoader loader, String[] args) {
