@@ -434,8 +434,7 @@ class InstructionFactory {
             case 0xfe:
                 return new InvokeNative();
             default:
-                System.out.println(Integer.toHexString(opcode));
-                throw new UnsupportedOperationException();
+                throw new UnsupportedOperationException(Integer.toHexString(opcode));
         }
     }
 

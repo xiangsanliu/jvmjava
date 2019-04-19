@@ -31,8 +31,9 @@ public class IInc extends Instruction {
         localVars.setInt(this.index, val);
     }
 
-    public IInc setIndex(int index) {
+    public IInc setIndexAndCon(int index, int con) {
         this.index = index;
+        this.con = con;
         return this;
     }
 }

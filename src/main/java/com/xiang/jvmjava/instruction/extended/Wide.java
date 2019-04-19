@@ -54,10 +54,10 @@ public class Wide extends Instruction {
                 modifiedInstruction = new AStore.AStoreA().setIndex(reader.readUint16());
                 return;
             case 0x84:
-                modifiedInstruction = new IInc().setIndex(reader.readUint16());
+                modifiedInstruction = new IInc().setIndexAndCon(reader.readUint16(), reader.readUint16());
                 return;
             case 0xa9:
-                throw new UnsupportedOperationException("0xa9!");
+                throw new UnsupportedOperationException(Integer.toHexString(opcode));
         }
     }
 
