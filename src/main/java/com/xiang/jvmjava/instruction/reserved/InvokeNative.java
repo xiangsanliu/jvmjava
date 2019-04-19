@@ -5,7 +5,7 @@ import com.xiang.jvmjava.classfile.rtda.heap.member.Method;
 import com.xiang.jvmjava.instruction.base.NoOperandsInstruction;
 import com.xiang.jvmjava.jvmnative.Registry;
 
-import java.util.function.Function;
+import com.xiang.jvmjava.util.Function;
 
 /**
  * @author 项三六
@@ -21,9 +21,9 @@ public class InvokeNative extends NoOperandsInstruction {
         String className = method.getClazz().getName();
         String methodName = method.getName();
         String methodDescriptor = method.getDescriptor();
-        Function<Frame, Void> nativeMethod = Registry.findNativeMethod(className, methodName, methodDescriptor);
+        Function<Frame> nativeMethod = Registry.findNativeMethod(className, methodName, methodDescriptor);
         if (nativeMethod == null) {
-            throw new UnsatisfiedLinkError(String.format("%s.%s%s", className, methodName, methodDescriptor));
+            throw new UnsatisfiedLinkError(String.format("%s.%s%s", method.getClazz().getClassName(), methodName, methodDescriptor));
         }
         nativeMethod.apply(frame);
     }

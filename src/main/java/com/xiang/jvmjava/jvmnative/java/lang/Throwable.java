@@ -9,7 +9,7 @@ import com.xiang.jvmjava.jvmnative.Registry;
 import lombok.Getter;
 
 import java.util.List;
-import java.util.function.Function;
+import com.xiang.jvmjava.util.Function;
 
 /**
  * @author 项三六
@@ -19,17 +19,17 @@ import java.util.function.Function;
 
 public class Throwable {
 
-    private static final java.lang.String classStr = "java/lang/Throwable";
+    private static final java.lang.String CLASS_STR = "java/lang/Throwable";
 
-    private static Function<Frame, Void> fillInStackTrace = frame -> {
+    private static Function<Frame> fillInStackTrace = frame -> {
         JvmObject self = frame.getLocalVars().getThis();
         frame.getOperandStack().pushRef(self);
         self.setExtra(createStackTraceElements(self, frame.getThread()));
-        return null;
+        
     };
 
     public static void registerNatives() {
-        Registry.register(classStr, "fillInStackTrace", "(I)Ljava/lang/Throwable;", fillInStackTrace);
+        Registry.register(CLASS_STR, "fillInStackTrace", "(I)Ljava/lang/Throwable;", fillInStackTrace);
     }
 
     private static StackTraceElement[] createStackTraceElements(JvmObject obj, Thread thread) {

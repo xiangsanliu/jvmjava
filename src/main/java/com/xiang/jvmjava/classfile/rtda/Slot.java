@@ -27,9 +27,11 @@ public class Slot {
     }
 
     public Slot(Slot slot) {
-        this.num32 = slot.num32;
-        this.num64 = slot.num64;
-        this.ref = slot.ref;
+        if (slot != null) {
+            this.num32 = slot.num32;
+            this.num64 = slot.num64;
+            this.ref = slot.ref;
+        }
     }
 
     @Override

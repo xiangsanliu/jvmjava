@@ -2,6 +2,8 @@ package com.xiang.jvmjava.classfile;
 
 import com.xiang.jvmjava.classfile.attribute.CodeAttribute;
 import com.xiang.jvmjava.classfile.attribute.ConstantValueAttribute;
+import com.xiang.jvmjava.classfile.attribute.ExceptionsAttribute;
+import com.xiang.jvmjava.classfile.attribute.UnparsedAttribute;
 import lombok.Getter;
 
 /**
@@ -62,6 +64,39 @@ public class MemberInfo {
         for (AttributeInfo attribute : attributes) {
             if (attribute instanceof ConstantValueAttribute) {
                 return (ConstantValueAttribute) attribute;
+            }
+        }
+        return null;
+    }
+
+    public byte[] getRuntimeVisibleAnnotationsAttributeData() {
+        return getUnparsedAttributeData("RuntimeVisibleAnnotations");
+    }
+
+    public byte[] getRuntimeVisibleParameterAnnotationsAttributeData() {
+        return getUnparsedAttributeData("RuntimeVisibleParameterAnnotationsAttribute");
+    }
+
+    public byte[] getAnnotationDefaultAttributeData() {
+        return getUnparsedAttributeData("AnnotationDefault");
+    }
+
+    private byte[] getUnparsedAttributeData(String name) {
+        for (AttributeInfo info : attributes) {
+            if (info instanceof UnparsedAttribute) {
+                UnparsedAttribute attr = (UnparsedAttribute) info;
+                if (attr.getName().equals(name)) {
+                    return attr.getInfo();
+                }
+            }
+        }
+        return null;
+    }
+
+    public ExceptionsAttribute getExceptionsAttribute() {
+        for (AttributeInfo info : attributes) {
+            if (info instanceof ExceptionsAttribute) {
+                return (ExceptionsAttribute) info;
             }
         }
         return null;

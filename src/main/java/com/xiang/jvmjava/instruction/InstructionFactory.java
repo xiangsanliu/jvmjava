@@ -417,6 +417,10 @@ class InstructionFactory {
                 return new CheckCast();
             case 0xc1:
                 return new Instanceof();
+            case 0xc2:
+                return new MonitorEnter();
+            case 0xc3:
+                return new MonitorExit();
             case 0xc4:
                 return new Wide();
             case 0xc5:

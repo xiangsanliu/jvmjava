@@ -1,6 +1,7 @@
 package com.xiang.jvmjava.instruction.control.retrun;
 
 import com.xiang.jvmjava.classfile.rtda.Frame;
+import com.xiang.jvmjava.classfile.rtda.Thread;
 import com.xiang.jvmjava.instruction.base.NoOperandsInstruction;
 
 /**
@@ -13,9 +14,10 @@ public class IReturn extends NoOperandsInstruction {
 
     @Override
     public void execute(Frame frame) {
-
-        Frame currentFrame = frame.getThread().popFrame();
-        Frame invokerFrame = frame.getThread().topFrame();
-        invokerFrame.getOperandStack().pushInt(currentFrame.getOperandStack().popInt());
+        Thread thread = frame.getThread();
+        Frame currentFrame = thread.popFrame();
+        Frame invokerFrame = thread.topFrame();
+        int val = currentFrame.getOperandStack().popInt();
+        invokerFrame.getOperandStack().pushInt(val);
     }
 }

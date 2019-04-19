@@ -4,6 +4,7 @@ import com.xiang.jvmjava.classfile.MemberInfo;
 import com.xiang.jvmjava.classfile.rtda.heap.AccessFlags;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmClass;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author 项三六
@@ -21,6 +22,11 @@ public abstract class ClassMember {
     protected String descriptor;
 
     protected JvmClass clazz;
+
+    @Setter
+    protected String signature;
+
+    protected byte[] annotationData;
 
     void copyMemberInfo(MemberInfo info) {
         this.accessFlags = info.getAccessFlags();

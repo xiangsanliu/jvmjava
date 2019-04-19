@@ -4,7 +4,6 @@ package com.xiang.jvmjava.classfile.rtda.heap;
 import com.xiang.jvmjava.classfile.rtda.Slots;
 import com.xiang.jvmjava.classfile.rtda.heap.member.Field;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -15,7 +14,6 @@ import org.apache.commons.lang3.ArrayUtils;
  */
 @Getter
 @Setter
-@NoArgsConstructor
 public class JvmObject {
 
     private JvmClass clazz;
@@ -23,6 +21,9 @@ public class JvmObject {
     private Object data;
 
     private Object extra;
+
+    public JvmObject() {
+    }
 
     public JvmObject(JvmClass clazz) {
         this.clazz = clazz;
@@ -94,7 +95,7 @@ public class JvmObject {
         }
     }
 
-    void setRefVar(String name, String descriptor, JvmObject ref) {
+    public void setRefVar(String name, String descriptor, JvmObject ref) {
         Field field = this.clazz.getField(name, descriptor, false);
         Slots slots = (Slots) this.data;
         slots.setRef(field.getSlotId(), ref);
@@ -104,6 +105,17 @@ public class JvmObject {
         Field field = this.clazz.getField(name, descriptor, false);
         Slots slots = (Slots) this.data;
         return slots.getRef(field.getSlotId());
+    }
+
+    public void setIntVar(String name, String descriptor, int val) {
+        Field field = this.clazz.getField(name, descriptor, false);
+        Slots slots = (Slots) this.data;
+        slots.setInt(field.getSlotId(), val);
+    }
+
+    public int getIntVar(String name, String descriptor) {
+        Field field = clazz.getField(name, descriptor, false);
+        return ((Slots) this.data).getInt(field.getSlotId());
     }
 
     public JvmObject jvmClone() {
@@ -132,8 +144,24 @@ public class JvmObject {
         return clone;
     }
 
+    public boolean equals(JvmObject object) {
+        if (object != null) {
+            if (this.clazz != object.clazz) {
+                return false;
+            }
+            if (this.data != object.data) {
+                return false;
+            }
+            return this.extra == object.extra;
+        }
+        return false;
+    }
+
     @Override
     public String toString() {
-        return this.getClazz().getName();
+//        if (this.getClazz() != null) {
+//            return this.getClazz().getName();
+//        }
+        return super.toString();
     }
 }

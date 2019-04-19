@@ -8,8 +8,7 @@ import com.xiang.jvmjava.classfile.rtda.heap.member.Method;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -68,6 +67,10 @@ public class JvmClass {
         primitiveTypes.put("double", "D");
     }
 
+    public static JvmObject newJvmByteArray(ClassLoader classLoader, byte[] bytes) {
+        return new JvmObject(classLoader.loadClass("[B"), bytes);
+    }
+
     public JvmClass() {
         this.methods = new Method[0];
     }
@@ -107,24 +110,57 @@ public class JvmClass {
         return this.getStaticMethod("<clinit>", "()V");
     }
 
-    private Method getStaticMethod(String name, String descriptor) {
-        for (Method method : this.methods) {
-            if (method.isStatic() && name.equals(method.getName()) &&
-                    descriptor.equals(method.getDescriptor())) {
-                return method;
+    public Method getInstanceMethod(String name, String descriptor) {
+        return getMethod(name, descriptor, false);
+    }
+
+    public Method getStaticMethod(String name, String descriptor) {
+        return getMethod(name, descriptor, true);
+    }
+
+    public Method getConstructor(String descriptor) {
+        return getInstanceMethod("<init>", descriptor);
+    }
+
+    public List<Field> getPublicFields(boolean publicOnly) {
+        List<Field> result = new ArrayList<>();
+        Arrays.asList(fields).forEach(field -> {
+            if (field.isPublic() || !publicOnly) {
+                result.add(field);
             }
-        }
-        return null;
+        });
+        return result;
+    }
+
+    public List<Method> getConstructors(boolean publicOnly) {
+        List<Method> result = new ArrayList<>();
+        Arrays.asList(methods).forEach(method -> {
+            if (!publicOnly || method.isPublic()) {
+                result.add(method);
+            }
+        });
+        return result;
     }
 
     public JvmObject newObject() {
         return new JvmObject(this);
     }
 
+
     private JvmObject newObject(Object data) {
         JvmObject object = new JvmObject(this);
         object.setData(data);
         return object;
+    }
+
+    public JvmObject getRefVar(String name, String descriptor) {
+        Field field = getField(name, descriptor, false);
+        return staticVars.getRef(field.getSlotId());
+    }
+
+    public void setRefVar(String fieldName, String fieldDescriptor, JvmObject ref) {
+        Field field = getField(fieldName, fieldDescriptor, true);
+        staticVars.setRef(field.getSlotId(), ref);
     }
 
     public JvmObject newArray(int count) {
@@ -148,11 +184,7 @@ public class JvmClass {
             case "[D":
                 return newObject(new double[count]);
             default:
-                JvmObject[] objects = new JvmObject[count];
-                for (int i = 0; i < count; i++) {
-                    objects[i] = new JvmObject();
-                }
-                return newObject(objects);
+                return newObject(new JvmObject[count]);
         }
     }
 
@@ -177,7 +209,18 @@ public class JvmClass {
         throw new Error("Not array: " + name);
     }
 
-    private String toClassName(String descriptor) {
+    private Method getMethod(String name, String descriptor, boolean isStatic) {
+        for (Method method : this.methods) {
+            if (method.isStatic() == isStatic &&
+                    name.equals(method.getName()) &&
+                    descriptor.equals(method.getDescriptor())) {
+                return method;
+            }
+        }
+        return null;
+    }
+
+    public static String toClassName(String descriptor) {
         if (descriptor.charAt(0) == '[') {
             return descriptor;
         }
@@ -228,7 +271,7 @@ public class JvmClass {
         return other.isSubClassOf(this);
     }
 
-    boolean isAssignableFrom(JvmClass other) {
+    public boolean isAssignableFrom(JvmClass other) {
         JvmClass t = this;
         if (other == t) {
             return true;

@@ -35,6 +35,12 @@ public class Frame {
         this.operandStack = new OperandStack(method.getMaxStack());
     }
 
+    public Frame(Thread thread, OperandStack ops) {
+        this.thread = thread;
+        this.method = new Method();
+        this.operandStack = ops;
+    }
+
     public void revertNextPC() {
         this.nextPC = this.thread.getPC();
     }

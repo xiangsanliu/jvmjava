@@ -5,7 +5,7 @@ import com.xiang.jvmjava.classfile.rtda.heap.JvmObject;
 import com.xiang.jvmjava.classfile.rtda.heap.StringPool;
 import com.xiang.jvmjava.jvmnative.Registry;
 
-import java.util.function.Function;
+import com.xiang.jvmjava.util.Function;
 
 /**
  * @author 项三六
@@ -15,16 +15,15 @@ import java.util.function.Function;
 
 public class String {
 
-    private static final java.lang.String classStr = "java/lang/String";
+    private static final java.lang.String CLASS_STR = "java/lang/String";
 
-    private static Function<Frame, Void> intern = frame -> {
+    private static Function<Frame> intern = frame -> {
         JvmObject self = frame.getLocalVars().getThis();
         frame.getOperandStack().pushRef(StringPool.internString(self));
-        return null;
     };
 
     public static void registerNatives() {
-        Registry.register(classStr, "intern", "()Ljava/lang/String;", intern);
+        Registry.register(CLASS_STR, "intern", "()Ljava/lang/String;", intern);
     }
 
 }

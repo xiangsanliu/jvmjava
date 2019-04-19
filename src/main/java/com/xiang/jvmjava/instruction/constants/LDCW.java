@@ -3,6 +3,7 @@ package com.xiang.jvmjava.instruction.constants;
 import com.xiang.jvmjava.classfile.rtda.Frame;
 import com.xiang.jvmjava.classfile.rtda.OperandStack;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmConstantPool;
+import com.xiang.jvmjava.classfile.rtda.heap.StringPool;
 import com.xiang.jvmjava.classfile.rtda.heap.ref.ClassRef;
 import com.xiang.jvmjava.instruction.base.Index16Instruction;
 
@@ -24,9 +25,9 @@ public class LDCW extends Index16Instruction {
         } else if (val instanceof Float) {
             stack.pushFloat((Float) val);
         } else if (val instanceof String) {
-            throw new Error("todo");
+            stack.pushRef(StringPool.getJvmString(frame.getMethod().getClazz().getLoader(), (String) val));
         } else if (val instanceof ClassRef) {
-            throw new Error("todo");
+            stack.pushRef(((ClassRef) val).resolvedClass().getJvmClass());
         } else {
             throw new Error("todo");
         }

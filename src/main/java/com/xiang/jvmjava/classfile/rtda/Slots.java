@@ -72,6 +72,10 @@ public class Slots {
         return this.vars[index].getRef();
     }
 
+    public boolean getBoolean(int index) {
+        return this.getInt(index) == 1;
+    }
+
     public JvmObject getThis() {
         return this.getRef(0);
     }
