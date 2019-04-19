@@ -1,8 +1,6 @@
 package com.xiang.jvmjava.classfile.rtda;
 
 import com.xiang.jvmjava.classfile.rtda.heap.member.Method;
-import lombok.Setter;
-import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +62,15 @@ public class Thread {
     }
 
     public List<Frame> getFrames(int skip) {
-        return this.stack.subList(0, this.stack.size()-skip);
+        return this.stack.subList(0, this.stack.size() - skip);
+    }
+
+    public List<Frame> getAllFrames() {
+        List<Frame> frames = new ArrayList<>();
+        for (int i = stack.size() - 1; i >= 0; i--) {
+            frames.add(stack.get(i));
+        }
+        return frames;
     }
 
     public boolean isStackEmpty() {

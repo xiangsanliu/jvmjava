@@ -20,13 +20,11 @@ public class Object {
         JvmObject self = frame.getLocalVars().getThis();
         JvmObject jvmClass = self.getClazz().getJvmClass();
         frame.getOperandStack().pushRef(jvmClass);
-
     };
 
     private static Function<Frame> hashCode = frame -> {
         JvmObject self = frame.getLocalVars().getThis();
         frame.getOperandStack().pushInt(self.hashCode());
-
     };
 
     private static Function<Frame> clone = frame -> {
@@ -36,7 +34,6 @@ public class Object {
             throw new Error("java.lang.CloneNotSupportedException");
         }
         frame.getOperandStack().pushRef(self.jvmClone());
-
     };
 
     public static void registerNatives() {
@@ -46,7 +43,6 @@ public class Object {
         Registry.register(CLASS_STR, "hashCode", "()I", hashCode);
         Registry.register(CLASS_STR, "clone", "()Ljava/lang/Object;", clone);
         Registry.register(CLASS_STR, "notifyAll", "()V", frame -> {
-
         });
 
     }

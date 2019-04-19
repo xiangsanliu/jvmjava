@@ -46,7 +46,7 @@ public abstract class Instruction {
 
     private static void scheduleClinit(Thread thread, JvmClass clazz) {
         Method clinit = clazz.getClinitMethod();
-        if (clinit != null) {
+        if (clinit != null && clinit.getClazz() == clazz) {
             // exec <clinit>
             Frame newFrame = thread.newFrame(clinit);
             thread.pushFrame(newFrame);

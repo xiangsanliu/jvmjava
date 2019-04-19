@@ -80,7 +80,7 @@ public class ClassLoader {
         clazz.setInterfaces(new JvmClass[]{
                 this.loadClass("java/lang/Cloneable"),
                 this.loadClass("java/io/Serializable")});
-        this.classMap.put("name", clazz);
+        this.classMap.put(name, clazz);
         if (Cmd.logClassLoader) {
             System.out.printf("[Loaded '%s' ]\n", name);
         }

@@ -12,11 +12,11 @@ import com.xiang.jvmjava.classfile.rtda.heap.member.Field;
 import com.xiang.jvmjava.classfile.rtda.heap.member.Method;
 import com.xiang.jvmjava.instruction.base.Instruction;
 import com.xiang.jvmjava.jvmnative.Registry;
+import com.xiang.jvmjava.util.Function;
 import com.xiang.jvmjava.util.JvmClassHelper;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
-import com.xiang.jvmjava.util.Function;
 
 /**
  * @author 项三六
@@ -35,13 +35,8 @@ public class Class {
             "II" +
             "Ljava/lang/String;" +
             "[B[B)V";
-    private static final java.lang.String FIELDC_CONSTRUCTOR_DESCRIPTOR = "" +
-            "(Ljava/lang/Class;" +
-            "Ljava/lang/String;" +
-            "Ljava/lang/Class;" +
-            "II" +
-            "Ljava/lang/String;" +
-            "[B)V";
+    private static final java.lang.String FIELDC_CONSTRUCTOR_DESCRIPTOR =
+            "(Ljava/lang/Class;Ljava/lang/String;Ljava/lang/Class;IILjava/lang/String;[B)V";
 
     private static Function<Frame> getPrimitiveClass = frame -> {
         JvmObject nameObj = frame.getLocalVars().getRef(0);
@@ -49,7 +44,7 @@ public class Class {
         ClassLoader loader = frame.getMethod().getClazz().getLoader();
         JvmObject jvmClass = loader.loadClass(name).getJvmClass();
         frame.getOperandStack().pushRef(jvmClass);
-        
+
     };
 
     private static Function<Frame> getName0 = frame -> {
@@ -58,20 +53,17 @@ public class Class {
         java.lang.String name = clazz.getClassName();
         JvmObject nameObj = StringPool.getJvmString(clazz.getLoader(), name);
         frame.getOperandStack().pushRef(nameObj);
-        
+
     };
 
-    private static Function<Frame> desiredAssertionStatus0 = frame -> {
-        frame.getOperandStack().pushBoolean(false);
-        
-    };
+    private static Function<Frame> desiredAssertionStatus0 = frame -> frame.getOperandStack().pushBoolean(false);
 
     private static Function<Frame> isInterface = frame -> {
         Slots vars = frame.getLocalVars();
         JvmObject self = vars.getThis();
         JvmClass clazz = (JvmClass) self.getExtra();
         frame.getOperandStack().pushBoolean(clazz.isInterface());
-        
+
     };
 
     private static Function<Frame> isPrimitive = frame -> {
@@ -79,7 +71,7 @@ public class Class {
         JvmObject self = vars.getThis();
         JvmClass clazz = (JvmClass) self.getExtra();
         frame.getOperandStack().pushBoolean(clazz.isPrimitive());
-        
+
     };
 
     private static Function<Frame> getDeclaredFields0 = frame -> {
@@ -119,7 +111,7 @@ public class Class {
                 Instruction.invokeMethod(shimFrame, fieldConstructor);
             }
         }
-        
+
     };
 
     private static Function<Frame> forName0 = frame -> {
@@ -129,14 +121,13 @@ public class Class {
         java.lang.String name = StringPool.jvmStrToString(nameStr);
         name = StringUtils.replaceChars(name, ".", "/");
         JvmClass clazz = frame.getMethod().getClazz().getLoader().loadClass(name);
-        JvmObject jvmClass = clazz.getJvmClass();
-        if (initialize && clazz.isInitStarted()) {
-            frame.setNextPC(frame.getThread().getPC());
+        if (initialize && !clazz.isInitStarted()) {
+            frame.revertNextPC();
             Instruction.initClass(frame.getThread(), clazz);
         } else {
-            frame.getOperandStack().pushRef(jvmClass);
+            frame.getOperandStack().pushRef(clazz.getJvmClass());
         }
-        
+
     };
 
     private static Function<Frame> getDeclaredConstructors0 = frame -> {
@@ -185,7 +176,7 @@ public class Class {
         JvmClass clazz = (JvmClass) self.getExtra();
         int modifers = clazz.getAccessFlags();
         frame.getOperandStack().pushInt(modifers);
-        
+
     };
 
     private static Function<Frame> getSuperclass = frame -> {
@@ -198,7 +189,7 @@ public class Class {
         } else {
             frame.getOperandStack().pushRef(null);
         }
-        
+
 
     };
 
@@ -226,7 +217,6 @@ public class Class {
         JvmClass thisClass = (JvmClass) self.getExtra();
         JvmClass objClass = (JvmClass) obj.getExtra();
         frame.getOperandStack().pushBoolean(thisClass.isAssignableFrom(objClass));
-        
     };
 
     private static Function<Frame> registerNatives = frame -> {
@@ -245,7 +235,6 @@ public class Class {
         Registry.register(CLASS_STR, "getDeclaredMethods0", "(Z)[Ljava/lang/reflect/Method;", getDeclaredMethods0);
         Registry.register(CLASS_STR, "getComponentType", "()Ljava/lang/Class;", getComponentType);
         Registry.register(CLASS_STR, "isAssignableFrom", "(Ljava/lang/Class;)Z", isAssignableFrom);
-        
     };
 
     public static void registerNatives() {

@@ -19,8 +19,7 @@ public class IF_ACMP {
         public void execute(Frame frame) {
             JvmObject ref2 = frame.getOperandStack().popRef();
             JvmObject ref1 = frame.getOperandStack().popRef();
-            // 这个地方是没有办法得办法，因为Atomic...Impl运行到这里总是出错
-            if (ref1 == ref2 || frame.getMethod().getClazz().getName().equals("java/util/concurrent/atomic/AtomicReferenceFieldUpdater$AtomicReferenceFieldUpdaterImpl")) {
+            if (ref1 == ref2) {
                 Instruction.branch(frame, offset);
             }
         }
