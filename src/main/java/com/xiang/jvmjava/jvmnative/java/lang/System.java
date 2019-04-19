@@ -25,32 +25,6 @@ public class System {
 
     private static final java.lang.String CLASS_STR = "java/lang/System";
 
-    private static final Map<java.lang.String, java.lang.String> sysProps;
-
-    static {
-        sysProps = new HashMap<>();
-        sysProps.put("java.version", "1.8.0");
-        sysProps.put("java.vendor", "jvm.go");
-        sysProps.put("java.vendor.url", "https://github.com/zxh0/jvm.go");
-        sysProps.put("java.home", "");
-        sysProps.put("java.class.version", "52.0");
-        sysProps.put("java.class.path", "");
-        sysProps.put("java.awt.graphicsenv", "sun.awt.CGraphicsEnvironment");
-        sysProps.put("os.name", "windows");
-        sysProps.put("os.arch", "amd64");
-        sysProps.put("os.version", "");
-        sysProps.put("file.separator", "/");
-        sysProps.put("path.separator", ":");
-        sysProps.put("line.separator", "\n");
-        sysProps.put("user.name", "");
-        sysProps.put("user.home", "");
-        sysProps.put("user.dir", ".");
-        sysProps.put("user.country", "CN");
-        sysProps.put("file.encoding", "UTF-8");
-        sysProps.put("sun.stdout.encoding", "UTF-8");
-        sysProps.put("sun.stderr.encoding", "UTF-8");
-    }
-
     private static Function<Frame> arraycopy = frame -> {
         Slots vars = frame.getLocalVars();
         JvmObject src = vars.getRef(0);
@@ -106,9 +80,6 @@ public class System {
         systemClass.setRefVar("err", "Ljava/io/PrintStream;", err);
     };
 
-
-    private static Function<Frame> registerNatives = frame -> {
-    };
 
     public static void registerNatives() {
         Registry.register(CLASS_STR, "registerNatives", "()V", frame -> {

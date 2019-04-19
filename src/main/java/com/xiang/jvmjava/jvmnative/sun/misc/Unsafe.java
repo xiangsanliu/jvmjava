@@ -138,8 +138,8 @@ public class Unsafe {
         Registry.register(CLASS_STR, "getIntVolatile", "(Ljava/lang/Object;J)I", getIntVolatile);
         Registry.register(CLASS_STR, "compareAndSwapInt", "(Ljava/lang/Object;JII)Z", compareAndSwapInt);
         Registry.register(CLASS_STR, "getObjectVolatile", "(Ljava/lang/Object;J)Ljava/lang/Object;", getObjectVolatile);
-//        Registry.register(CLASS_STR, "compareAndSwapLong", "(Ljava/lang/Object;JJJ)Z", compareAndSwapLong);
         Registry.register(CLASS_STR, "allocateMemory", "(J)J", allocateMemory);
+
         Registry.register(CLASS_STR, "putLong", "(JJ)V", frame -> {
             long address = frame.getLocalVars().getLong(1);
             long x = frame.getLocalVars().getLong(3);
