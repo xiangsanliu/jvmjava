@@ -17,7 +17,7 @@ import com.xiang.jvmjava.instruction.base.Instruction;
  * @comment
  */
 
-public class JVM {
+class JVM {
 
     private Cmd cmd;
 
@@ -25,14 +25,14 @@ public class JVM {
 
     private Thread mainThread;
 
-    public JVM(Cmd cmd) {
+    JVM(Cmd cmd) {
         this.cmd = cmd;
         Classpath classpath = Classpath.parse(cmd);
         this.classLoader = new ClassLoader(classpath);
         this.mainThread = new Thread();
     }
 
-    public void start() {
+    void start() {
         initVM();
         execMain();
     }

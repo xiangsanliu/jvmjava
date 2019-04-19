@@ -37,7 +37,7 @@ public class Cmd {
         this.options.addOption("v", "version", false, "Show version");
         this.options.addOption("h", "help", false, "Help");
         this.options.addOption("li", "logInstruction", false, "Show logInstruction");
-        this.options.addOption("lc", "logClassLoader", false, "Show logInstruction");
+        this.options.addOption("lc", "logClassLoader", false, "Show logClassLoader");
     }
 
     void printHelp() {

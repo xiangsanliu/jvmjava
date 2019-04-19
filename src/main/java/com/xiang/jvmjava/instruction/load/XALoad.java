@@ -5,8 +5,6 @@ import com.xiang.jvmjava.classfile.rtda.OperandStack;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmObject;
 import com.xiang.jvmjava.instruction.base.NoOperandsInstruction;
 
-import java.io.IOException;
-
 /**
  * @author 项三六
  * @time 2019/4/3 10:34
