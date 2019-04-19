@@ -34,7 +34,7 @@ public class ExceptionTable {
                     return handler; // catch-all
                 }
                 JvmClass catchClass = handler.catchType.resolvedClass();
-                if (catchClass == exClass || catchClass.isSubClassOf(exClass)) {
+                if (catchClass == exClass || catchClass.isSuperClassOf(exClass)) {
                     return handler;
                 }
             }

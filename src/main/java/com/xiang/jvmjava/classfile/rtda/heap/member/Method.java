@@ -81,9 +81,10 @@ public class Method extends ClassMember {
             this.code = attribute.getCode();
             this.lineNumberTable = attribute.getLineNumberTableAttribute();
             this.exceptionTable = new ExceptionTable(attribute.getExceptionTable(), this.getClazz().getConstantPool());
+        } else {
+            this.exceptionTable = new ExceptionTable();
         }
         this.exceptions = memberInfo.getExceptionsAttribute();
-        this.exceptionTable = new ExceptionTable();
         this.annotationData = memberInfo.getRuntimeVisibleAnnotationsAttributeData();
         this.parameterAnnotationData = memberInfo.getRuntimeVisibleAnnotationsAttributeData();
         this.annotationDefaultData = memberInfo.getAnnotationDefaultAttributeData();
