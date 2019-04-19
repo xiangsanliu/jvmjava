@@ -5,8 +5,6 @@ import com.xiang.jvmjava.classfile.rtda.heap.JvmClass;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmConstantPool;
 import com.xiang.jvmjava.classfile.rtda.heap.member.Method;
 
-import java.io.IOException;
-
 /**
  * @author 项三六
  * @time 2019/3/24 20:12
@@ -28,6 +26,7 @@ public class InterfaceMethodRef extends MemberRef {
         return this.method;
     }
 
+    // 解析符号引用为直接引用
     private void resolveInterfaceMethodRef() {
         JvmClass c = this.resolvedClass();
         if (!c.isInterface()) {

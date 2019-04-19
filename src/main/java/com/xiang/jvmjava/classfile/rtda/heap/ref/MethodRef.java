@@ -26,6 +26,7 @@ public class MethodRef extends MemberRef {
         return this.method;
     }
 
+    // 解析符号引用为直接引用
     private void resolveMethodRef() {
         JvmClass c = this.resolvedClass();
         if (c.isInterface()) {

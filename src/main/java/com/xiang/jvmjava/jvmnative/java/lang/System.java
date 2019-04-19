@@ -58,17 +58,6 @@ public class System {
         JvmObject dest = vars.getRef(2);
         int destPos = vars.getInt(3);
         int length = vars.getInt(4);
-        if (src == null || dest == null) {
-            throw new NullPointerException();
-        }
-        if (!checkArrayCopy(src, dest)) {
-            throw new ArrayStoreException();
-        }
-        if (srcPos < 0 || destPos < 0 || length < 0 ||
-                srcPos + length > src.getArrayLength() ||
-                destPos + length > dest.getArrayLength()) {
-            throw new IndexOutOfBoundsException();
-        }
         java.lang.System.arraycopy(src.getData(), srcPos, dest.getData(), destPos, length);
 
     };
@@ -151,18 +140,6 @@ public class System {
                     );
 
                 });
-    }
-
-    private static boolean checkArrayCopy(JvmObject src, JvmObject dest) {
-        JvmClass srcClass = src.getClazz();
-        JvmClass destClass = dest.getClazz();
-        if (!srcClass.isArray() || !destClass.isArray()) {
-            return false;
-        }
-        if ((srcClass.getElementClass().isPrimitive()) || destClass.getElementClass().isPrimitive()) {
-            return srcClass.equals(destClass);
-        }
-        return true;
     }
 
 
