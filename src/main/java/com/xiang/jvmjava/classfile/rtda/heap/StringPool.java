@@ -18,6 +18,9 @@ public class StringPool {
     }
 
     public static JvmObject getJvmString(ClassLoader loader, String str) {
+        if (loader == null || str == null) {
+            return null;
+        }
         JvmObject internedString = internedStrings.get(str);
         if (internedString != null) {
             return internedString;

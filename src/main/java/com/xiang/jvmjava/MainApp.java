@@ -17,11 +17,6 @@ public class MainApp {
         } else {
             new JVM(cmd).start();
         }
-//        System.getProperties().forEach((key, val) -> {
-//            System.out.print(key);
-//            System.out.print(" ");
-//            System.out.println(val);
-//        });
     }
 
 }

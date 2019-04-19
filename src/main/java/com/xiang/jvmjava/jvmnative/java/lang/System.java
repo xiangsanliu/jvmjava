@@ -10,10 +10,10 @@ import com.xiang.jvmjava.classfile.rtda.heap.StringPool;
 import com.xiang.jvmjava.classfile.rtda.heap.member.Method;
 import com.xiang.jvmjava.instruction.base.Instruction;
 import com.xiang.jvmjava.jvmnative.Registry;
+import com.xiang.jvmjava.util.Function;
 
 import java.util.HashMap;
 import java.util.Map;
-import com.xiang.jvmjava.util.Function;
 
 /**
  * @author 项三六
@@ -70,7 +70,7 @@ public class System {
             throw new IndexOutOfBoundsException();
         }
         java.lang.System.arraycopy(src.getData(), srcPos, dest.getData(), destPos, length);
-        
+
     };
 
     private static Function<Frame> initProperties = frame -> {
@@ -92,14 +92,14 @@ public class System {
             thread.pushFrame(shimFrame);
             Instruction.invokeMethod(shimFrame, setPropMethod);
         });
-        
+
     };
     private static Function<Frame> setOut0 = frame -> {
         Slots vars = frame.getLocalVars();
         JvmObject out = vars.getRef(0);
         JvmClass systemClass = frame.getMethod().getClazz();
         systemClass.setRefVar("out", "Ljava/io/PrintStream;", out);
-        
+
     };
 
     private static Function<Frame> setIn0 = frame -> {
@@ -107,7 +107,7 @@ public class System {
         JvmObject in = vars.getRef(0);
         JvmClass systemClass = frame.getMethod().getClazz();
         systemClass.setRefVar("in", "Ljava/io/InputStream;", in);
-        
+
     };
 
     private static Function<Frame> setErr0 = frame -> {
@@ -115,22 +115,42 @@ public class System {
         JvmObject err = vars.getRef(0);
         JvmClass systemClass = frame.getMethod().getClazz();
         systemClass.setRefVar("err", "Ljava/io/PrintStream;", err);
-        
     };
 
 
     private static Function<Frame> registerNatives = frame -> {
-        Registry.register(CLASS_STR, "arraycopy", "(Ljava/lang/Object;ILjava/lang/Object;II)V", arraycopy);
-        Registry.register(CLASS_STR, "initProperties", "(Ljava/util/Properties;)Ljava/util/Properties;", initProperties);
-        Registry.register(CLASS_STR, "setIn0", "(Ljava/io/InputStream;)V", setIn0);
-        Registry.register(CLASS_STR, "setOut0", "(Ljava/io/PrintStream;)V", setOut0);
-        Registry.register(CLASS_STR, "setErr0", "(Ljava/io/PrintStream;)V", setErr0);
-//        Registry.register(CLASS_STR, "currentTimeMillis", "()J", currentTimeMillis);
-        
     };
 
     public static void registerNatives() {
-        Registry.register(CLASS_STR, "registerNatives", "()V", registerNatives);
+        Registry.register(CLASS_STR, "registerNatives", "()V", frame -> {
+        });
+
+        Registry.register(CLASS_STR, "arraycopy",
+                "(Ljava/lang/Object;ILjava/lang/Object;II)V", arraycopy);
+
+        Registry.register(CLASS_STR, "initProperties",
+                "(Ljava/util/Properties;)Ljava/util/Properties;", initProperties);
+
+        Registry.register(CLASS_STR, "setIn0", "(Ljava/io/InputStream;)V", setIn0);
+
+        Registry.register(CLASS_STR, "setOut0", "(Ljava/io/PrintStream;)V", setOut0);
+
+        Registry.register(CLASS_STR, "setErr0", "(Ljava/io/PrintStream;)V", setErr0);
+
+        Registry.register(CLASS_STR, "currentTimeMillis",
+                "()J", frame -> frame.getOperandStack().pushLong(java.lang.System.currentTimeMillis()));
+
+        Registry.register(CLASS_STR, "mapLibraryName",
+                "(Ljava/lang/String;)Ljava/lang/String;", frame -> {
+                    JvmObject jvmStr = frame.getLocalVars().getRef(0);
+                    java.lang.String libName = StringPool.jvmStrToString(jvmStr);
+                    frame.getOperandStack().pushRef(
+                            StringPool.getJvmString(
+                                    frame.getMethod().getClazz().getLoader(), java.lang.System.mapLibraryName(libName)
+                            )
+                    );
+
+                });
     }
 
     private static boolean checkArrayCopy(JvmObject src, JvmObject dest) {

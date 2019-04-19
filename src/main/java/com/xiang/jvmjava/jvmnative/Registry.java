@@ -24,7 +24,6 @@ public class Registry {
 
     public static Function<Frame> findNativeMethod(String className, String methodName, String methodDescriptor) {
         String key = className + "~" + methodName + "~" + methodDescriptor;
-        System.out.println("key: " + key);
         Function<Frame> method = registry.get(key);
         if (method != null) {
             return method;
@@ -45,14 +44,19 @@ public class Registry {
         com.xiang.jvmjava.jvmnative.java.lang.Double.registerNatives();
         com.xiang.jvmjava.jvmnative.java.lang.Float.registerNatives();
         com.xiang.jvmjava.jvmnative.java.lang.Throwable.registerNatives();
-        com.xiang.jvmjava.jvmnative.sun.misc.Unsafe.registerNatives();
-        com.xiang.jvmjava.jvmnative.sun.reflect.Reflection.registerNatives();
-        com.xiang.jvmjava.jvmnative.sun.reflect.NativeConstructorAccessorImpl.registerNatives();
+        com.xiang.jvmjava.jvmnative.java.lang.Thread.registerNatives();
+        com.xiang.jvmjava.jvmnative.java.lang.ClassLoader.registerNatives();
+        com.xiang.jvmjava.jvmnative.java.lang.ClassLoader$NativeLibrary.registerNatives();
         com.xiang.jvmjava.jvmnative.java.io.FileDescriptor.registerNatives();
         com.xiang.jvmjava.jvmnative.java.io.FileOutputStream.registerNatives();
+        com.xiang.jvmjava.jvmnative.java.io.WinNTFileSystem.registerNatives();
         com.xiang.jvmjava.jvmnative.java.security.AccessController.registerNatives();
-        com.xiang.jvmjava.jvmnative.java.lang.Thread.registerNatives();
         com.xiang.jvmjava.jvmnative.java.util.concurrent.atomic.AtomicLong.registerNatives();
+        com.xiang.jvmjava.jvmnative.sun.misc.Unsafe.registerNatives();
+        com.xiang.jvmjava.jvmnative.sun.misc.Signal.registerNatives();
+        com.xiang.jvmjava.jvmnative.sun.io.Win32ErrorMode.registerNatives();
+        com.xiang.jvmjava.jvmnative.sun.reflect.Reflection.registerNatives();
+        com.xiang.jvmjava.jvmnative.sun.reflect.NativeConstructorAccessorImpl.registerNatives();
     }
 
 }

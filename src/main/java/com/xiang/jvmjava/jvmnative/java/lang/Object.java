@@ -4,7 +4,6 @@ import com.xiang.jvmjava.classfile.rtda.Frame;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmClass;
 import com.xiang.jvmjava.classfile.rtda.heap.JvmObject;
 import com.xiang.jvmjava.jvmnative.Registry;
-
 import com.xiang.jvmjava.util.Function;
 
 /**
@@ -21,13 +20,13 @@ public class Object {
         JvmObject self = frame.getLocalVars().getThis();
         JvmObject jvmClass = self.getClazz().getJvmClass();
         frame.getOperandStack().pushRef(jvmClass);
-        
+
     };
 
     private static Function<Frame> hashCode = frame -> {
         JvmObject self = frame.getLocalVars().getThis();
         frame.getOperandStack().pushInt(self.hashCode());
-        
+
     };
 
     private static Function<Frame> clone = frame -> {
@@ -37,18 +36,19 @@ public class Object {
             throw new Error("java.lang.CloneNotSupportedException");
         }
         frame.getOperandStack().pushRef(self.jvmClone());
-        
-    };
 
-    private static Function<Frame> registerNatives = frame -> {
-        Registry.register(CLASS_STR, "getClass", "()Ljava/lang/Class;", getClass);
-        Registry.register(CLASS_STR, "hashCode", "()I", hashCode);
-        Registry.register(CLASS_STR, "clone", "()Ljava/lang/Object;", clone);
-        
     };
 
     public static void registerNatives() {
-        Registry.register(CLASS_STR, "registerNatives", "()V", registerNatives);
+        Registry.register(CLASS_STR, "registerNatives", "()V", frame -> {
+        });
+        Registry.register(CLASS_STR, "getClass", "()Ljava/lang/Class;", getClass);
+        Registry.register(CLASS_STR, "hashCode", "()I", hashCode);
+        Registry.register(CLASS_STR, "clone", "()Ljava/lang/Object;", clone);
+        Registry.register(CLASS_STR, "notifyAll", "()V", frame -> {
+
+        });
+
     }
 
 
