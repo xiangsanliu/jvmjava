@@ -13,10 +13,10 @@ import java.io.IOException;
  * @comment
  */
 
-public class WinNTFileSystem {
+public class UnixFileSystem {
 
     public static void registerNatives() {
-        Registry.register("java/io/WinNTFileSystem", "getBooleanAttributes", "(Ljava/io/File;)I", frame -> {
+        Registry.register("java/io/UnixFileSystem", "getBooleanAttributes0", "(Ljava/io/File;)I", frame -> {
             JvmObject fileObject = frame.getLocalVars().getRef(1);
             JvmObject pathObject = fileObject.getRefVar("path", "Ljava/lang/String;");
             File file = new File(StringPool.jvmStrToString(pathObject));
@@ -28,7 +28,7 @@ public class WinNTFileSystem {
             frame.getOperandStack().pushInt(attrs);
         });
 
-        Registry.register("java/io/WinNTFileSystem", "canonicalize0", "(Ljava/lang/String;)Ljava/lang/String;", frame -> {
+        Registry.register("java/io/UnixFileSystem", "canonicalize0", "(Ljava/lang/String;)Ljava/lang/String;", frame -> {
             JvmObject pathObject = frame.getLocalVars().getRef(1);
             File file = new File(StringPool.jvmStrToString(pathObject));
             try {

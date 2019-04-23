@@ -1,7 +1,7 @@
 package com.xiang.jvmjava.classfile;
 
-import com.sun.org.apache.bcel.internal.classfile.ClassFormatException;
 import com.xiang.jvmjava.classfile.constantinfo.*;
+import com.xiang.jvmjava.error.ClassFormatException;
 
 import java.util.Objects;
 

@@ -1,6 +1,7 @@
 package com.xiang.jvmjava.jvmnative;
 
 import com.xiang.jvmjava.classfile.rtda.Frame;
+import com.xiang.jvmjava.jvmnative.java.io.UnixFileSystem;
 import com.xiang.jvmjava.jvmnative.sun.misc.VM;
 import com.xiang.jvmjava.util.Function;
 
@@ -49,7 +50,7 @@ public class Registry {
         com.xiang.jvmjava.jvmnative.java.lang.ClassLoader$NativeLibrary.registerNatives();
         com.xiang.jvmjava.jvmnative.java.io.FileDescriptor.registerNatives();
         com.xiang.jvmjava.jvmnative.java.io.FileOutputStream.registerNatives();
-        com.xiang.jvmjava.jvmnative.java.io.WinNTFileSystem.registerNatives();
+        UnixFileSystem.registerNatives();
         com.xiang.jvmjava.jvmnative.java.security.AccessController.registerNatives();
         com.xiang.jvmjava.jvmnative.java.util.concurrent.atomic.AtomicLong.registerNatives();
         com.xiang.jvmjava.jvmnative.sun.misc.Unsafe.registerNatives();

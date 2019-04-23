@@ -1,7 +1,6 @@
 package com.xiang.jvmjava.classfile;
 
 import com.xiang.jvmjava.classfile.constantinfo.*;
-import com.xiang.jvmjava.error.InvalidConstantPoolIndexError;
 import com.xiang.jvmjava.util.Pair;
 import lombok.Getter;
 import lombok.ToString;
@@ -35,12 +34,12 @@ public class ConstantPool {
         return constantPool;
     }
 
-    public ConstantInfo getConstantInfo(int index) {
+    private ConstantInfo getConstantInfo(int index) {
         ConstantInfo constantInfo = this.constantInfos[index];
         if (constantInfo != null) {
             return constantInfo;
         }
-        throw new InvalidConstantPoolIndexError();
+        throw new RuntimeException("InvalidConstantPoolIndexException");
     }
 
     public Pair<String, String> getNameAndType(int index) {
