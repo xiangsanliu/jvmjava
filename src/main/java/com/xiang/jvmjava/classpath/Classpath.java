@@ -50,7 +50,7 @@ public class Classpath {
     }
 
     private void parseBootAndExtClasspath() {
-        String jrePath = "/Library/Java/JavaVirtualMachines/jdk1.8.0_211.jdk/Contents/Home/jre";
+        String jrePath = "C:\\Program Files\\Java\\jdk1.8.0_211\\jre";
         String jreLibPath = jrePath + File.separator + "lib" + File.separator + "*";
         this.bootClasspath = Entry.newEntry(jreLibPath);
         String extLibPath = jrePath + File.separator + "lib" + File.separator + "ext" + File.separator + "*";
