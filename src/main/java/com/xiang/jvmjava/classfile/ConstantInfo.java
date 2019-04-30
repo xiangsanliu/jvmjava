@@ -1,9 +1,6 @@
 package com.xiang.jvmjava.classfile;
 
 import com.xiang.jvmjava.classfile.constantinfo.*;
-import com.xiang.jvmjava.error.ClassFormatException;
-
-import java.util.Objects;
 
 /**
  * @author 项三六
@@ -27,8 +24,6 @@ public abstract class ConstantInfo {
     private static final int ConstantMethodHandle = 15;
     private static final int ConstantMethodType = 16;
     private static final int ConstantInvokeDynamic = 18;
-
-    public abstract void readInfo(ClassReader reader);
 
     static ConstantInfo readConstantInfo(ClassReader reader, ConstantPool constantPool) {
         int tag = reader.readUint8();
@@ -68,8 +63,10 @@ public abstract class ConstantInfo {
             case ConstantInvokeDynamic:
                 return new ConstantInvokeDynamicInfo();
             default:
-                throw new ClassFormatException("constant pool tag");
+                throw new ClassFormatError("constant pool tag");
         }
     }
+
+    public abstract void readInfo(ClassReader reader);
 
 }

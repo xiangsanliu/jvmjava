@@ -1,7 +1,6 @@
 package com.xiang.jvmjava.classfile;
 
 import com.xiang.jvmjava.classfile.attribute.SourceFileAttribute;
-import com.xiang.jvmjava.error.ClassFormatException;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -60,7 +59,7 @@ public class ClassFile {
     private void readAndCheckMagic(ClassReader reader) {
         int magic = reader.readUint32();
         if (magic != 0xCAFEBABE) {
-            throw new ClassFormatException("Magic num err!");
+            throw new ClassFormatError("Magic num err!");
         }
     }
 
