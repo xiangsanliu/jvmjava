@@ -25,6 +25,9 @@ import com.xiang.jvmjava.instruction.stack.Swap;
 import com.xiang.jvmjava.instruction.stack.dup.*;
 import com.xiang.jvmjava.instruction.store.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author 项三六
  * @time 2019/4/2 9:42
@@ -33,409 +36,216 @@ import com.xiang.jvmjava.instruction.store.*;
 
 class InstructionFactory {
 
+    private static Map<Integer, Instruction> instructionMap = new HashMap<>();
+
+    static {
+        instructionMap.put(0x00, new NOP());
+        instructionMap.put(0x01, new Const.AConstNull());
+        instructionMap.put(0x02, new Const.IConstM1());
+        instructionMap.put(0x03, new Const.IConst0());
+        instructionMap.put(0x04, new Const.IConst1());
+        instructionMap.put(0x05, new Const.IConst2());
+        instructionMap.put(0x06, new Const.IConst3());
+        instructionMap.put(0x07, new Const.IConst4());
+        instructionMap.put(0x08, new Const.IConst5());
+        instructionMap.put(0x09, new Const.LConst0());
+        instructionMap.put(0x0a, new Const.LConst1());
+        instructionMap.put(0x0b, new Const.FConst0());
+        instructionMap.put(0x0c, new Const.FConst1());
+        instructionMap.put(0x0d, new Const.FConst2());
+        instructionMap.put(0x0e, new Const.DConst0());
+        instructionMap.put(0x0f, new Const.DConst1());
+        instructionMap.put(0x10, new IPush.BIPush());
+        instructionMap.put(0x11, new IPush.SIPush());
+        instructionMap.put(0x12, new LDC());
+        instructionMap.put(0x13, new LDCW());
+        instructionMap.put(0x14, new LDC2W());
+        instructionMap.put(0x15, new ILoad.ILoadI());
+        instructionMap.put(0x16, new LLoad.LLoadL());
+        instructionMap.put(0x17, new FLoad.FLoadF());
+        instructionMap.put(0x18, new DLoad.DLoadD());
+        instructionMap.put(0x19, new ALoad.ALoadA());
+        instructionMap.put(0x1a, new ILoad.ILoad0());
+        instructionMap.put(0x1b, new ILoad.ILoad1());
+        instructionMap.put(0x1c, new ILoad.ILoad2());
+        instructionMap.put(0x1d, new ILoad.ILoad3());
+        instructionMap.put(0x1e, new LLoad.LLoad0());
+        instructionMap.put(0x1f, new LLoad.LLoad1());
+        instructionMap.put(0x20, new LLoad.LLoad2());
+        instructionMap.put(0x21, new LLoad.LLoad3());
+        instructionMap.put(0x22, new FLoad.FLoad0());
+        instructionMap.put(0x23, new FLoad.FLoad1());
+        instructionMap.put(0x24, new FLoad.FLoad2());
+        instructionMap.put(0x25, new FLoad.FLoad3());
+        instructionMap.put(0x26, new DLoad.DLoad0());
+        instructionMap.put(0x27, new DLoad.DLoad1());
+        instructionMap.put(0x28, new DLoad.DLoad2());
+        instructionMap.put(0x29, new DLoad.DLoad3());
+        instructionMap.put(0x2a, new ALoad.ALoad0());
+        instructionMap.put(0x2b, new ALoad.ALoad1());
+        instructionMap.put(0x2c, new ALoad.ALoad2());
+        instructionMap.put(0x2d, new ALoad.ALoad3());
+        instructionMap.put(0x2e, new XALoad.IALoad());
+        instructionMap.put(0x2f, new XALoad.LALoad());
+        instructionMap.put(0x30, new XALoad.FALoad());
+        instructionMap.put(0x31, new XALoad.DALoad());
+        instructionMap.put(0x32, new XALoad.AALoad());
+        instructionMap.put(0x33, new XALoad.BALoad());
+        instructionMap.put(0x34, new XALoad.CALoad());
+        instructionMap.put(0x35, new XALoad.SALoad());
+        instructionMap.put(0x36, new IStore.IStoreI());
+        instructionMap.put(0x37, new LStore.LStoreL());
+        instructionMap.put(0x38, new FStore.FStoreF());
+        instructionMap.put(0x39, new DStore.DStoreD());
+        instructionMap.put(0x3a, new AStore.AStoreA());
+        instructionMap.put(0x3b, new IStore.IStore0());
+        instructionMap.put(0x3c, new IStore.IStore1());
+        instructionMap.put(0x3d, new IStore.IStore2());
+        instructionMap.put(0x3e, new IStore.IStore3());
+        instructionMap.put(0x3f, new LStore.LStore0());
+        instructionMap.put(0x40, new LStore.LStore1());
+        instructionMap.put(0x41, new LStore.LStore2());
+        instructionMap.put(0x42, new LStore.LStore3());
+        instructionMap.put(0x43, new FStore.FStore0());
+        instructionMap.put(0x44, new FStore.FStore1());
+        instructionMap.put(0x45, new FStore.FStore2());
+        instructionMap.put(0x46, new FStore.FStore3());
+        instructionMap.put(0x47, new DStore.DStore0());
+        instructionMap.put(0x48, new DStore.DStore1());
+        instructionMap.put(0x49, new DStore.DStore2());
+        instructionMap.put(0x4a, new DStore.DStore3());
+        instructionMap.put(0x4b, new AStore.AStore0());
+        instructionMap.put(0x4c, new AStore.AStore1());
+        instructionMap.put(0x4d, new AStore.AStore2());
+        instructionMap.put(0x4e, new AStore.AStore3());
+        instructionMap.put(0x4f, new XAStore.IAStore());
+        instructionMap.put(0x50, new XAStore.LAStore());
+        instructionMap.put(0x51, new XAStore.FAStore());
+        instructionMap.put(0x52, new XAStore.DAStore());
+        instructionMap.put(0x53, new XAStore.AAStore());
+        instructionMap.put(0x54, new XAStore.BAStore());
+        instructionMap.put(0x55, new XAStore.CAStore());
+        instructionMap.put(0x56, new XAStore.SAStore());
+        instructionMap.put(0x57, new POP());
+        instructionMap.put(0x58, new POP2());
+        instructionMap.put(0x59, new DUP());
+        instructionMap.put(0x5a, new DupX1());
+        instructionMap.put(0x5b, new DupX2());
+        instructionMap.put(0x5c, new DUP2());
+        instructionMap.put(0x5d, new Dup2X1());
+        instructionMap.put(0x5e, new Dup2X2());
+        instructionMap.put(0x5f, new Swap());
+        instructionMap.put(0x60, new ADD.IAdd());
+        instructionMap.put(0x61, new ADD.LAdd());
+        instructionMap.put(0x62, new ADD.FAdd());
+        instructionMap.put(0x63, new ADD.DAdd());
+        instructionMap.put(0x64, new SUB.ISub());
+        instructionMap.put(0x65, new SUB.LSub());
+        instructionMap.put(0x66, new SUB.FSub());
+        instructionMap.put(0x67, new SUB.DSub());
+        instructionMap.put(0x68, new MUL.IMul());
+        instructionMap.put(0x69, new MUL.LMul());
+        instructionMap.put(0x6a, new MUL.FMul());
+        instructionMap.put(0x6b, new MUL.DMul());
+        instructionMap.put(0x6c, new DIV.IDiv());
+        instructionMap.put(0x6d, new DIV.LDiv());
+        instructionMap.put(0x6e, new DIV.FDiv());
+        instructionMap.put(0x6f, new DIV.DDiv());
+        instructionMap.put(0x70, new REM.IRem());
+        instructionMap.put(0x71, new REM.LRem());
+        instructionMap.put(0x72, new REM.FRem());
+        instructionMap.put(0x73, new REM.DRem());
+        instructionMap.put(0x74, new NEG.INeg());
+        instructionMap.put(0x75, new NEG.LNeg());
+        instructionMap.put(0x76, new NEG.FNeg());
+        instructionMap.put(0x77, new NEG.DNeg());
+        instructionMap.put(0x78, new SH.ISHL());
+        instructionMap.put(0x79, new SH.LSHL());
+        instructionMap.put(0x7a, new SH.ISHR());
+        instructionMap.put(0x7b, new SH.LSHR());
+        instructionMap.put(0x7c, new SH.IUSHR());
+        instructionMap.put(0x7d, new SH.LUSHR());
+        instructionMap.put(0x7e, new AND.IAnd());
+        instructionMap.put(0x7f, new AND.LAnd());
+        instructionMap.put(0x80, new OR.IOR());
+        instructionMap.put(0x81, new OR.LOR());
+        instructionMap.put(0x82, new XOR.IXOR());
+        instructionMap.put(0x83, new XOR.LXOR());
+        instructionMap.put(0x84, new IInc());
+        instructionMap.put(0x85, new I2X.I2L());
+        instructionMap.put(0x86, new I2X.I2F());
+        instructionMap.put(0x87, new I2X.I2D());
+        instructionMap.put(0x88, new L2X.L2I());
+        instructionMap.put(0x89, new L2X.L2F());
+        instructionMap.put(0x8a, new L2X.L2D());
+        instructionMap.put(0x8b, new F2X.F2I());
+        instructionMap.put(0x8c, new F2X.F2L());
+        instructionMap.put(0x8d, new F2X.F2D());
+        instructionMap.put(0x8e, new D2X.D2I());
+        instructionMap.put(0x8f, new D2X.D2L());
+        instructionMap.put(0x90, new D2X.D2F());
+        instructionMap.put(0x91, new I2X.I2B());
+        instructionMap.put(0x92, new I2X.I2C());
+        instructionMap.put(0x93, new I2X.I2S());
+        instructionMap.put(0x94, new LCmp());
+        instructionMap.put(0x95, new FCmp.FCmpL());
+        instructionMap.put(0x96, new FCmp.FCmpG());
+        instructionMap.put(0x97, new DCmp.DCmpL());
+        instructionMap.put(0x98, new DCmp.DCmpG());
+        instructionMap.put(0x99, new IfCond.IFEQ());
+        instructionMap.put(0x9a, new IfCond.IFNE());
+        instructionMap.put(0x9b, new IfCond.IFLT());
+        instructionMap.put(0x9c, new IfCond.IFGE());
+        instructionMap.put(0x9d, new IfCond.IFGT());
+        instructionMap.put(0x9e, new IfCond.IFLE());
+        instructionMap.put(0x9f, new IF_ICMP.IF_ICMPEQ());
+        instructionMap.put(0xa0, new IF_ICMP.IF_ICMPNE());
+        instructionMap.put(0xa1, new IF_ICMP.IF_ICMPLT());
+        instructionMap.put(0xa2, new IF_ICMP.IF_ICMPGE());
+        instructionMap.put(0xa3, new IF_ICMP.IF_ICMPGT());
+        instructionMap.put(0xa4, new IF_ICMP.IF_ICMPLE());
+        instructionMap.put(0xa5, new IF_ACMP.IF_ACMPEQ());
+        instructionMap.put(0xa6, new IF_ACMP.IF_ACMPNE());
+        instructionMap.put(0xa7, new Goto());
+        instructionMap.put(0xaa, new TableSwitch());
+        instructionMap.put(0xab, new LookupSwitch());
+        instructionMap.put(0xac, new IReturn());
+        instructionMap.put(0xad, new LReturn());
+        instructionMap.put(0xae, new FReturn());
+        instructionMap.put(0xaf, new DRetrun());
+        instructionMap.put(0xb0, new ARetrun());
+        instructionMap.put(0xb1, new Retrun());
+        instructionMap.put(0xb2, new GetStatic());
+        instructionMap.put(0xb3, new PutStatic());
+        instructionMap.put(0xb4, new GetField());
+        instructionMap.put(0xb5, new PutField());
+        instructionMap.put(0xb6, new InvokeVirtual());
+        instructionMap.put(0xb7, new InvokeSpecial());
+        instructionMap.put(0xb8, new InvokeStatic());
+        instructionMap.put(0xb9, new InvokeInterface());
+        instructionMap.put(0xbb, new New());
+        instructionMap.put(0xbc, new NewArray());
+        instructionMap.put(0xbd, new ANewArray());
+        instructionMap.put(0xbe, new ArrayLength());
+        instructionMap.put(0xbf, new AThrow());
+        instructionMap.put(0xc0, new CheckCast());
+        instructionMap.put(0xc1, new Instanceof());
+        instructionMap.put(0xc2, new MonitorEnter());
+        instructionMap.put(0xc3, new MonitorExit());
+        instructionMap.put(0xc4, new Wide());
+        instructionMap.put(0xc5, new MultiANewArray());
+        instructionMap.put(0xc6, new IfNull());
+        instructionMap.put(0xc7, new IfNotNull());
+        instructionMap.put(0xc8, new GotoW());
+        instructionMap.put(0xfe, new InvokeNative());
+    }
+
     static Instruction newInstruction(int opcode) {
-        switch (opcode) {
-            case 0x00:
-                return new NOP();
-            case 0x01:
-                return new Const.AConstNull();
-            case 0x02:
-                return new Const.IConstM1();
-            case 0x03:
-                return new Const.IConst0();
-            case 0x04:
-                return new Const.IConst1();
-            case 0x05:
-                return new Const.IConst2();
-            case 0x06:
-                return new Const.IConst3();
-            case 0x07:
-                return new Const.IConst4();
-            case 0x08:
-                return new Const.IConst5();
-            case 0x09:
-                return new Const.LConst0();
-            case 0x0a:
-                return new Const.LConst1();
-            case 0x0b:
-                return new Const.FConst0();
-            case 0x0c:
-                return new Const.FConst1();
-            case 0x0d:
-                return new Const.FConst2();
-            case 0x0e:
-                return new Const.DConst0();
-            case 0x0f:
-                return new Const.DConst1();
-            case 0x10:
-                return new IPush.BIPush();
-            case 0x11:
-                return new IPush.SIPush();
-            case 0x12:
-                return new LDC();
-            case 0x13:
-                return new LDCW();
-            case 0x14:
-                return new LDC2W();
-            case 0x15:
-                return new ILoad.ILoadI();
-            case 0x16:
-                return new LLoad.LLoadL();
-            case 0x17:
-                return new FLoad.FLoadF();
-            case 0x18:
-                return new DLoad.DLoadD();
-            case 0x19:
-                return new ALoad.ALoadA();
-            case 0x1a:
-                return new ILoad.ILoad0();
-            case 0x1b:
-                return new ILoad.ILoad1();
-            case 0x1c:
-                return new ILoad.ILoad2();
-            case 0x1d:
-                return new ILoad.ILoad3();
-            case 0x1e:
-                return new LLoad.LLoad0();
-            case 0x1f:
-                return new LLoad.LLoad1();
-            case 0x20:
-                return new LLoad.LLoad2();
-            case 0x21:
-                return new LLoad.LLoad3();
-            case 0x22:
-                return new FLoad.FLoad0();
-            case 0x23:
-                return new FLoad.FLoad1();
-            case 0x24:
-                return new FLoad.FLoad2();
-            case 0x25:
-                return new FLoad.FLoad3();
-            case 0x26:
-                return new DLoad.DLoad0();
-            case 0x27:
-                return new DLoad.DLoad1();
-            case 0x28:
-                return new DLoad.DLoad2();
-            case 0x29:
-                return new DLoad.DLoad3();
-            case 0x2a:
-                return new ALoad.ALoad0();
-            case 0x2b:
-                return new ALoad.ALoad1();
-            case 0x2c:
-                return new ALoad.ALoad2();
-            case 0x2d:
-                return new ALoad.ALoad3();
-            case 0x2e:
-                return new XALoad.IALoad();
-            case 0x2f:
-                return new XALoad.LALoad();
-            case 0x30:
-                return new XALoad.FALoad();
-            case 0x31:
-                return new XALoad.DALoad();
-            case 0x32:
-                return new XALoad.AALoad();
-            case 0x33:
-                return new XALoad.BALoad();
-            case 0x34:
-                return new XALoad.CALoad();
-            case 0x35:
-                return new XALoad.SALoad();
-            case 0x36:
-                return new IStore.IStoreI();
-            case 0x37:
-                return new LStore.LStoreL();
-            case 0x38:
-                return new FStore.FStoreF();
-            case 0x39:
-                return new DStore.DStoreD();
-            case 0x3a:
-                return new AStore.AStoreA();
-            case 0x3b:
-                return new IStore.IStore0();
-            case 0x3c:
-                return new IStore.IStore1();
-            case 0x3d:
-                return new IStore.IStore2();
-            case 0x3e:
-                return new IStore.IStore3();
-            case 0x3f:
-                return new LStore.LStore0();
-            case 0x40:
-                return new LStore.LStore1();
-            case 0x41:
-                return new LStore.LStore2();
-            case 0x42:
-                return new LStore.LStore3();
-            case 0x43:
-                return new FStore.FStore0();
-            case 0x44:
-                return new FStore.FStore1();
-            case 0x45:
-                return new FStore.FStore2();
-            case 0x46:
-                return new FStore.FStore3();
-            case 0x47:
-                return new DStore.DStore0();
-            case 0x48:
-                return new DStore.DStore1();
-            case 0x49:
-                return new DStore.DStore2();
-            case 0x4a:
-                return new DStore.DStore3();
-            case 0x4b:
-                return new AStore.AStore0();
-            case 0x4c:
-                return new AStore.AStore1();
-            case 0x4d:
-                return new AStore.AStore2();
-            case 0x4e:
-                return new AStore.AStore3();
-            case 0x4f:
-                return new XAStore.IAStore();
-            case 0x50:
-                return new XAStore.LAStore();
-            case 0x51:
-                return new XAStore.FAStore();
-            case 0x52:
-                return new XAStore.DAStore();
-            case 0x53:
-                return new XAStore.AAStore();
-            case 0x54:
-                return new XAStore.BAStore();
-            case 0x55:
-                return new XAStore.CAStore();
-            case 0x56:
-                return new XAStore.SAStore();
-            case 0x57:
-                return new POP();
-            case 0x58:
-                return new POP2();
-            case 0x59:
-                return new DUP();
-            case 0x5a:
-                return new DupX1();
-            case 0x5b:
-                return new DupX2();
-            case 0x5c:
-                return new DUP2();
-            case 0x5d:
-                return new Dup2X1();
-            case 0x5e:
-                return new Dup2X2();
-            case 0x5f:
-                return new Swap();
-            case 0x60:
-                return new ADD.IAdd();
-            case 0x61:
-                return new ADD.LAdd();
-            case 0x62:
-                return new ADD.FAdd();
-            case 0x63:
-                return new ADD.DAdd();
-            case 0x64:
-                return new SUB.ISub();
-            case 0x65:
-                return new SUB.LSub();
-            case 0x66:
-                return new SUB.FSub();
-            case 0x67:
-                return new SUB.DSub();
-            case 0x68:
-                return new MUL.IMul();
-            case 0x69:
-                return new MUL.LMul();
-            case 0x6a:
-                return new MUL.FMul();
-            case 0x6b:
-                return new MUL.DMul();
-            case 0x6c:
-                return new DIV.IDiv();
-            case 0x6d:
-                return new DIV.LDiv();
-            case 0x6e:
-                return new DIV.FDiv();
-            case 0x6f:
-                return new DIV.DDiv();
-            case 0x70:
-                return new REM.IRem();
-            case 0x71:
-                return new REM.LRem();
-            case 0x72:
-                return new REM.FRem();
-            case 0x73:
-                return new REM.DRem();
-            case 0x74:
-                return new NEG.INeg();
-            case 0x75:
-                return new NEG.LNeg();
-            case 0x76:
-                return new NEG.FNeg();
-            case 0x77:
-                return new NEG.DNeg();
-            case 0x78:
-                return new SH.ISHL();
-            case 0x79:
-                return new SH.LSHL();
-            case 0x7a:
-                return new SH.ISHR();
-            case 0x7b:
-                return new SH.LSHR();
-            case 0x7c:
-                return new SH.IUSHR();
-            case 0x7d:
-                return new SH.LUSHR();
-            case 0x7e:
-                return new AND.IAnd();
-            case 0x7f:
-                return new AND.LAnd();
-            case 0x80:
-                return new OR.IOR();
-            case 0x81:
-                return new OR.LOR();
-            case 0x82:
-                return new XOR.IXOR();
-            case 0x83:
-                return new XOR.LXOR();
-            case 0x84:
-                return new IInc();
-            case 0x85:
-                return new I2X.I2L();
-            case 0x86:
-                return new I2X.I2F();
-            case 0x87:
-                return new I2X.I2D();
-            case 0x88:
-                return new L2X.L2I();
-            case 0x89:
-                return new L2X.L2F();
-            case 0x8a:
-                return new L2X.L2D();
-            case 0x8b:
-                return new F2X.F2I();
-            case 0x8c:
-                return new F2X.F2L();
-            case 0x8d:
-                return new F2X.F2D();
-            case 0x8e:
-                return new D2X.D2I();
-            case 0x8f:
-                return new D2X.D2L();
-            case 0x90:
-                return new D2X.D2F();
-            case 0x91:
-                return new I2X.I2B();
-            case 0x92:
-                return new I2X.I2C();
-            case 0x93:
-                return new I2X.I2S();
-            case 0x94:
-                return new LCmp();
-            case 0x95:
-                return new FCmp.FCmpL();
-            case 0x96:
-                return new FCmp.FCmpG();
-            case 0x97:
-                return new DCmp.DCmpL();
-            case 0x98:
-                return new DCmp.DCmpG();
-            case 0x99:
-                return new IfCond.IFEQ();
-            case 0x9a:
-                return new IfCond.IFNE();
-            case 0x9b:
-                return new IfCond.IFLT();
-            case 0x9c:
-                return new IfCond.IFGE();
-            case 0x9d:
-                return new IfCond.IFGT();
-            case 0x9e:
-                return new IfCond.IFLE();
-            case 0x9f:
-                return new IF_ICMP.IF_ICMPEQ();
-            case 0xa0:
-                return new IF_ICMP.IF_ICMPNE();
-            case 0xa1:
-                return new IF_ICMP.IF_ICMPLT();
-            case 0xa2:
-                return new IF_ICMP.IF_ICMPGE();
-            case 0xa3:
-                return new IF_ICMP.IF_ICMPGT();
-            case 0xa4:
-                return new IF_ICMP.IF_ICMPLE();
-            case 0xa5:
-                return new IF_ACMP.IF_ACMPEQ();
-            case 0xa6:
-                return new IF_ACMP.IF_ACMPNE();
-            case 0xa7:
-                return new Goto();
-            case 0xaa:
-                return new TableSwitch();
-            case 0xab:
-                return new LookupSwitch();
-            case 0xac:
-                return new IReturn();
-            case 0xad:
-                return new LReturn();
-            case 0xae:
-                return new FReturn();
-            case 0xaf:
-                return new DRetrun();
-            case 0xb0:
-                return new ARetrun();
-            case 0xb1:
-                return new Retrun();
-            case 0xb2:
-                return new GetStatic();
-            case 0xb3:
-                return new PutStatic();
-            case 0xb4:
-                return new GetField();
-            case 0xb5:
-                return new PutField();
-            case 0xb6:
-                return new InvokeVirtual();
-            case 0xb7:
-                return new InvokeSpecial();
-            case 0xb8:
-                return new InvokeStatic();
-            case 0xb9:
-                return new InvokeInterface();
-            case 0xbb:
-                return new New();
-            case 0xbc:
-                return new NewArray();
-            case 0xbd:
-                return new ANewArray();
-            case 0xbe:
-                return new ArrayLength();
-            case 0xbf:
-                return new AThrow();
-            case 0xc0:
-                return new CheckCast();
-            case 0xc1:
-                return new Instanceof();
-            case 0xc2:
-                return new MonitorEnter();
-            case 0xc3:
-                return new MonitorExit();
-            case 0xc4:
-                return new Wide();
-            case 0xc5:
-                return new MultiANewArray();
-            case 0xc6:
-                return new IfNull();
-            case 0xc7:
-                return new IfNotNull();
-            case 0xc8:
-                return new GotoW();
-            case 0xfe:
-                return new InvokeNative();
-            default:
-                throw new UnsupportedOperationException(Integer.toHexString(opcode));
+        Instruction instruction = instructionMap.get(opcode);
+        if (instruction == null) {
+            throw new UnsupportedOperationException(Integer.toHexString(opcode));
         }
+        return instruction;
     }
 
 }
