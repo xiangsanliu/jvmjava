@@ -33,8 +33,14 @@ class JVM {
     }
 
     void start() {
+        long time1 = System.currentTimeMillis();
+        System.out.println("Initializing VM···");
         initVM();
+        long time2 = System.currentTimeMillis();
+        System.out.printf("Initialization cost: %fs\n", (time2 - time1) / 1000.0);
         execMain();
+        long time3 = System.currentTimeMillis();
+        System.out.printf("execute cost: %fs\n", (time3 - time2) / 1000.0);
     }
 
     private void initVM() {

@@ -15,10 +15,6 @@ import com.xiang.jvmjava.instruction.base.Instruction;
 public class Interpreter {
 
     public static void interpret(Thread thread) {
-        loop(thread);
-    }
-
-    private static void loop(Thread thread) {
         BytecodeReader reader = new BytecodeReader();
         while (!thread.isStackEmpty()) {
             Frame frame = thread.currentFrame();

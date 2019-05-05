@@ -27,7 +27,7 @@ public class InvokeVirtual extends Index16Instruction {
         }
         JvmObject ref = frame.getOperandStack().getRefFromTop(resolvedMethod.getArgSlotCount() - 1);
         if (ref == null) {
-            throw new NullPointerException();
+            throw new NullPointerException(frame.getMethod().getName());
         }
         if (resolvedMethod.isProtected() &&
                 resolvedMethod.getClazz().isSuperClassOf(currentClass) &&

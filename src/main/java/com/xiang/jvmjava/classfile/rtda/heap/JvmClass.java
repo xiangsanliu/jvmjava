@@ -148,9 +148,7 @@ public class JvmClass {
 
 
     private JvmObject newObject(Object data) {
-        JvmObject object = new JvmObject(this);
-        object.setData(data);
-        return object;
+        return new JvmObject(this, data);
     }
 
     public JvmObject getRefVar(String name, String descriptor) {
