@@ -42,22 +42,18 @@ public class Registry {
         com.xiang.jvmjava.jvmnative.sun.reflect.NativeConstructorAccessorImpl.registerNatives();
     }
 
-    public static void register(String className, String methodName, String methodDescriptor, Function<Frame> method) {
-        String key = className + "~" + methodName + "~" + methodDescriptor;
+    // 注册
+    public static void register(String className, String methodName,
+                                String methodDescriptor, Function<Frame> method) {
+        String key = className + "." + methodName + "." + methodDescriptor;
         registry.put(key, method);
     }
 
-    public static Function<Frame> findNativeMethod(String className, String methodName, String methodDescriptor) {
-        String key = className + "~" + methodName + "~" + methodDescriptor;
-        Function<Frame> method = registry.get(key);
-        if (method != null) {
-            return method;
-        }
-        if (methodDescriptor.equals("()V") && methodName.equals("initIDs")) {
-            return frame -> {
-            };
-        }
-        return null;
+    // 查找
+    public static Function<Frame> findNativeMethod(
+            String className, String methodName, String methodDescriptor) {
+        String key = className + "." + methodName + "." + methodDescriptor;
+        return registry.get(key);
     }
 
 }

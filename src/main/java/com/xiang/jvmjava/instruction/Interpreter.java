@@ -25,13 +25,16 @@ public class Interpreter {
             instruction.fetchOperands(reader);
             frame.setNextPC(reader.getPC());
             if (Cmd.logInstruction) {
-                logInstruction(frame, instruction);
+                logInstruction(frame, instruction, false);
             }
             instruction.execute(frame);
         }
     }
 
-    private static void logInstruction(Frame frame, Instruction instruction) {
+    private static void logInstruction(Frame frame, Instruction instruction, boolean mainOnly) {
+        if (mainOnly && !"main".equals(frame.getMethod().getName())) {
+            return;
+        }
         Method method = frame.getMethod();
         String className = method.getClazz().getName();
         String methodName = method.getName();

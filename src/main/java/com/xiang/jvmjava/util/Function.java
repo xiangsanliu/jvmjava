@@ -8,7 +8,5 @@ package com.xiang.jvmjava.util;
 
 @FunctionalInterface
 public interface Function<T> {
-
-    void apply(T t);
-
+    void execute(T t);
 }

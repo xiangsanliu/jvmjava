@@ -25,6 +25,6 @@ public class InvokeNative extends NoOperandsInstruction {
         if (nativeMethod == null) {
             throw new UnsatisfiedLinkError(String.format("%s.%s%s", method.getClazz().getClassName(), methodName, methodDescriptor));
         }
-        nativeMethod.apply(frame);
+        nativeMethod.execute(frame);
     }
 }

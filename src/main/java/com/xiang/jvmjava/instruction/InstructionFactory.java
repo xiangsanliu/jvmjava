@@ -213,7 +213,7 @@ class InstructionFactory {
         instructionMap.put(0xad, new LReturn());
         instructionMap.put(0xae, new FReturn());
         instructionMap.put(0xaf, new DRetrun());
-        instructionMap.put(0xb0, new ARetrun());
+        instructionMap.put(0xb0, new AReturn());
         instructionMap.put(0xb1, new Retrun());
         instructionMap.put(0xb2, new GetStatic());
         instructionMap.put(0xb3, new PutStatic());

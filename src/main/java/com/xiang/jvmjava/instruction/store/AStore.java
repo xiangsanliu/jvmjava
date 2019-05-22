@@ -31,7 +31,8 @@ public class AStore {
 
         @Override
         public void execute(Frame frame) {
-            aStore(frame, 0);
+            JvmObject ref = frame.getOperandStack().popRef();
+            frame.getLocalVars().setRef(0, ref);
         }
     }
 

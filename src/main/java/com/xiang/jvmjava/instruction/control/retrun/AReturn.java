@@ -9,7 +9,7 @@ import com.xiang.jvmjava.instruction.base.NoOperandsInstruction;
  * @comment
  */
 
-public class ARetrun extends NoOperandsInstruction {
+public class AReturn extends NoOperandsInstruction {
 
     @Override
     public void execute(Frame frame) {
