@@ -53,7 +53,15 @@ public class Registry {
     public static Function<Frame> findNativeMethod(
             String className, String methodName, String methodDescriptor) {
         String key = className + "." + methodName + "." + methodDescriptor;
-        return registry.get(key);
+        Function<Frame> method = registry.get(key);
+        if (method != null) {
+            return method;
+        }
+        if (methodDescriptor.equals("()V") && methodName.equals("initIDs")) {
+            return frame -> {
+            };
+        }
+        return null;
     }
 
 }
