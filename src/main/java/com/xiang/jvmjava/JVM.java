@@ -34,7 +34,7 @@ class JVM {
 
     void start() {
         System.out.println("Initializing VM···");
-        initVM();
+//        initVM();
         System.out.println("Initialization complete!");
         System.out.println("Executing user's program···");
         execMain();
