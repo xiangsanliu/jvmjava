@@ -1,6 +1,6 @@
-package com.xiang.jvmjava.classfile.rtda;
+package com.xiang.jvmjava.rtda;
 
-import com.xiang.jvmjava.classfile.rtda.heap.JvmObject;
+import com.xiang.jvmjava.rtda.heap.JvmObject;
 
 import java.util.Stack;
 

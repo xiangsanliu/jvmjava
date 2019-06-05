@@ -1,9 +1,8 @@
-package com.xiang.jvmjava.classfile.rtda.heap;
+package com.xiang.jvmjava.rtda.heap;
 
 import com.xiang.jvmjava.classfile.attribute.CodeAttribute;
-import com.xiang.jvmjava.classfile.rtda.heap.ref.ClassRef;
+import com.xiang.jvmjava.rtda.heap.ref.ClassRef;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 /**
  * @author 项三六

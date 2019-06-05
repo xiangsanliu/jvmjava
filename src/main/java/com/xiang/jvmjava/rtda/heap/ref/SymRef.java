@@ -1,7 +1,7 @@
-package com.xiang.jvmjava.classfile.rtda.heap.ref;
+package com.xiang.jvmjava.rtda.heap.ref;
 
-import com.xiang.jvmjava.classfile.rtda.heap.JvmClass;
-import com.xiang.jvmjava.classfile.rtda.heap.JvmConstantPool;
+import com.xiang.jvmjava.rtda.heap.JvmClass;
+import com.xiang.jvmjava.rtda.heap.JvmConstantPool;
 import lombok.Getter;
 import lombok.Setter;
 

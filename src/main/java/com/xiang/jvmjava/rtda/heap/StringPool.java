@@ -1,4 +1,4 @@
-package com.xiang.jvmjava.classfile.rtda.heap;
+package com.xiang.jvmjava.rtda.heap;
 
 import java.util.HashMap;
 import java.util.Map;

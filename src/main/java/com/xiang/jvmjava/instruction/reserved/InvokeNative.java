@@ -1,7 +1,7 @@
 package com.xiang.jvmjava.instruction.reserved;
 
-import com.xiang.jvmjava.classfile.rtda.Frame;
-import com.xiang.jvmjava.classfile.rtda.heap.member.Method;
+import com.xiang.jvmjava.rtda.Frame;
+import com.xiang.jvmjava.rtda.heap.member.Method;
 import com.xiang.jvmjava.instruction.base.NoOperandsInstruction;
 import com.xiang.jvmjava.jvmnative.Registry;
 

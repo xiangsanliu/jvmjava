@@ -1,10 +1,10 @@
-package com.xiang.jvmjava.classfile.rtda.heap;
+package com.xiang.jvmjava.rtda.heap;
 
 import com.xiang.jvmjava.classfile.ClassFile;
 import com.xiang.jvmjava.classfile.attribute.SourceFileAttribute;
-import com.xiang.jvmjava.classfile.rtda.Slots;
-import com.xiang.jvmjava.classfile.rtda.heap.member.Field;
-import com.xiang.jvmjava.classfile.rtda.heap.member.Method;
+import com.xiang.jvmjava.rtda.Slots;
+import com.xiang.jvmjava.rtda.heap.member.Field;
+import com.xiang.jvmjava.rtda.heap.member.Method;
 import lombok.Getter;
 import lombok.Setter;
 

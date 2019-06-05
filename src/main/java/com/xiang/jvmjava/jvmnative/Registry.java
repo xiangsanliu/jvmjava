@@ -1,7 +1,6 @@
 package com.xiang.jvmjava.jvmnative;
 
-import com.xiang.jvmjava.classfile.rtda.Frame;
-import com.xiang.jvmjava.jvmnative.sun.misc.VM;
+import com.xiang.jvmjava.rtda.Frame;
 import com.xiang.jvmjava.util.Function;
 
 import java.util.HashMap;
@@ -18,7 +17,7 @@ public class Registry {
     private static Map<String, Function<Frame>> registry = new HashMap<>();
 
     static {
-        VM.registerNatives();
+        com.xiang.jvmjava.jvmnative.sun.misc.VM.registerNatives();
         com.xiang.jvmjava.jvmnative.java.lang.Class.registerNatives();
         com.xiang.jvmjava.jvmnative.java.lang.Object.registerNatives();
         com.xiang.jvmjava.jvmnative.java.lang.System.registerNatives();

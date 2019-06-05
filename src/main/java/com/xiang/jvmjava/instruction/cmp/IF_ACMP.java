@@ -1,7 +1,7 @@
 package com.xiang.jvmjava.instruction.cmp;
 
-import com.xiang.jvmjava.classfile.rtda.Frame;
-import com.xiang.jvmjava.classfile.rtda.heap.JvmObject;
+import com.xiang.jvmjava.rtda.Frame;
+import com.xiang.jvmjava.rtda.heap.JvmObject;
 import com.xiang.jvmjava.instruction.base.BranchInstruction;
 import com.xiang.jvmjava.instruction.base.Instruction;
 

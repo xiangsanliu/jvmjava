@@ -1,7 +1,7 @@
 package com.xiang.jvmjava.jvmnative.java.lang;
 
-import com.xiang.jvmjava.classfile.rtda.heap.JvmObject;
-import com.xiang.jvmjava.classfile.rtda.heap.StringPool;
+import com.xiang.jvmjava.rtda.heap.JvmObject;
+import com.xiang.jvmjava.rtda.heap.StringPool;
 import com.xiang.jvmjava.jvmnative.Registry;
 
 import java.lang.reflect.InvocationTargetException;

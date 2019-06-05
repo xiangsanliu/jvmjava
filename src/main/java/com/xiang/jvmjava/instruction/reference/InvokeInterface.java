@@ -1,15 +1,13 @@
 package com.xiang.jvmjava.instruction.reference;
 
-import com.xiang.jvmjava.classfile.rtda.Frame;
-import com.xiang.jvmjava.classfile.rtda.heap.JvmConstantPool;
-import com.xiang.jvmjava.classfile.rtda.heap.JvmObject;
-import com.xiang.jvmjava.classfile.rtda.heap.member.Method;
-import com.xiang.jvmjava.classfile.rtda.heap.ref.InterfaceMethodRef;
-import com.xiang.jvmjava.classfile.rtda.heap.ref.MethodRef;
+import com.xiang.jvmjava.rtda.Frame;
+import com.xiang.jvmjava.rtda.heap.JvmConstantPool;
+import com.xiang.jvmjava.rtda.heap.JvmObject;
+import com.xiang.jvmjava.rtda.heap.member.Method;
+import com.xiang.jvmjava.rtda.heap.ref.InterfaceMethodRef;
+import com.xiang.jvmjava.rtda.heap.ref.MethodRef;
 import com.xiang.jvmjava.instruction.BytecodeReader;
 import com.xiang.jvmjava.instruction.base.Instruction;
-
-import java.io.IOException;
 
 /**
  * @author 项三六
